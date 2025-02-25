@@ -1,16 +1,20 @@
 using UnityEngine;
 using System.IO;
+using System.Collections.Generic;
 
 // Script that handles the saving and loading of the game data.
 public class SaveSystem
 {
-    private static SaveData m_SaveData = new SaveData();
+    #region Variables
+    public static SaveData m_SaveData = new();
 
     [System.Serializable]
     public struct SaveData
     {
         public PlayerSaveData playerData;
+        public LeaderboardSaveData leaderboardData;
     }
+    #endregion
 
     public static string SaveFileName()
     {
@@ -18,6 +22,7 @@ public class SaveSystem
         return saveFile;
     }
 
+    #region Save
     public static void Save()
     {
         HandleSaveData();
@@ -27,9 +32,11 @@ public class SaveSystem
 
     public static void HandleSaveData()
     {
-        GameManager.Instance.Save(ref m_SaveData.playerData);
+        GameManager.Instance.Save(ref m_SaveData.playerData, ref m_SaveData.leaderboardData);
     }
+    #endregion
 
+    #region Load
     public static void Load()
     {
         string saveFile = SaveFileName();
@@ -51,8 +58,21 @@ public class SaveSystem
 
     public static void HandleLoadData()
     {
-        GameManager.Instance.Load(m_SaveData.playerData);
+        GameManager.Instance.Load(m_SaveData.playerData, m_SaveData.leaderboardData);
+        MainMenuUIManager.Instance.UpdateLeaderboard(m_SaveData.leaderboardData);
     }
+    #endregion
 }
 
+[System.Serializable]
+public struct PlayerSaveData
+{
+    public string currentName;
+    public int credits;
+}
 
+[System.Serializable]
+public struct LeaderboardSaveData
+{
+    public List<GameManager.PlayerScore> leaderboard;
+}

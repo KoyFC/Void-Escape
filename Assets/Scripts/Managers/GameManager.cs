@@ -1,14 +1,25 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 // Script that handles the player data during the execution. Also saves and loads the data automatically.
 public class GameManager : MonoBehaviour
 {
+    #region variables
     public static GameManager Instance = null;
 
     private string m_CurrentName = string.Empty;
-    private int m_Credits = 0;
+    public List<PlayerScore> m_Leaderboard;
 
+    [System.Serializable]
+    public struct PlayerScore
+    {
+        public string playerName;
+        public int score;
+    }
+    #endregion
+
+    #region Main Methods
     private void Awake()
     {
         #if UNITY_ANDROID
@@ -29,31 +40,34 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        #if UNITY_EDITOR
+            Debug.Log("Current name: " + m_CurrentName);
+            Debug.Log("Current credits: " + CurrencyManager.Instance.Credits);
+        #endif
     }
 
     private void OnApplicationQuit()
     {
         SaveSystem.Save();
     }
+    #endregion
 
     #region Save and Load
-    public void Save(ref PlayerSaveData data)
+    public void Save(ref PlayerSaveData playerData, ref LeaderboardSaveData leaderboardData)
     {
-        data.currentName = m_CurrentName;
-        data.credits = m_Credits;
+        playerData.currentName = m_CurrentName;
+        playerData.credits = CurrencyManager.Instance.Credits;
+
+        leaderboardData.leaderboard = m_Leaderboard;
     }
 
-    public void Load(PlayerSaveData data)
+    public void Load(PlayerSaveData playerData, LeaderboardSaveData leaderboardData)
     {
-        m_CurrentName = data.currentName;
-        m_Credits = data.credits;
+        m_CurrentName = playerData.currentName;
+        CurrencyManager.Instance.SetCredits(playerData.credits);
+
+        m_Leaderboard = leaderboardData.leaderboard;
     }
     #endregion
-}
-
-[System.Serializable]
-public struct PlayerSaveData
-{
-    public string currentName;
-    public int credits;
 }
