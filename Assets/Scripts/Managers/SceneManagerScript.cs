@@ -1,13 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneManagerScript : MonoBehaviour
+[CreateAssetMenu(fileName = "SceneManagerScript", menuName = "Scriptable Objects/SceneManagerScript")]
+public class SceneManagerScript : ScriptableObject
 {
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
-
     public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
