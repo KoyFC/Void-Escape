@@ -40,11 +40,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        #if UNITY_EDITOR
-            Debug.Log("Current name: " + m_CurrentName);
-            Debug.Log("Current credits: " + CurrencyManager.Instance.Credits);
-        #endif
     }
 
     private void OnApplicationQuit()

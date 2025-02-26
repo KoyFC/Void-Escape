@@ -1,13 +1,20 @@
-using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
+using System.Text;
+using System.Collections;
 using TMPro;
 
 public class MainMenuUIManager : MonoBehaviour
 {
     public static MainMenuUIManager Instance = null;
 
+    [Header("UI Elements")]
+    [SerializeField] private CanvasGroup m_MainMenuCanvas = null;
     [SerializeField] private TextMeshProUGUI m_CreditText = null;
     [SerializeField] private TextMeshProUGUI m_LeaderboardText = null;
+
+    [Header("Fading")]
+    [SerializeField] private float m_UIFadeTime = 1f;
 
     private void Awake()
     {
@@ -58,5 +65,26 @@ public class MainMenuUIManager : MonoBehaviour
         }
 
         m_LeaderboardText.text = sb.ToString();
+    }
+
+    public void SceneTransitionForUI(string sceneName)
+    {
+        StartCoroutine(SceneTransitionCoroutine(sceneName));
+    }
+
+    private IEnumerator SceneTransitionCoroutine(string sceneName)
+    {
+        // Fade out the UI
+        float elapsedTime = 0f;
+        while (elapsedTime < m_UIFadeTime)
+        {
+            elapsedTime += Time.deltaTime;
+            m_MainMenuCanvas.alpha = Mathf.Lerp(1f, 0f, elapsedTime / m_UIFadeTime);
+            yield return null;
+        }
+        m_MainMenuCanvas.alpha = 0f;
+
+        // Fade in the black panel and load the new scene
+        FadeManager.Instance.FadeOutAndLoadScene(sceneName);
     }
 }

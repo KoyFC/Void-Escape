@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [CreateAssetMenu(fileName = "SceneManager", menuName = "Scriptable Objects/SceneManager")]
-public class SceneManager : ScriptableObject
+public class SceneManagerScript : ScriptableObject
 {
     public void LoadScene(string sceneName)
     {

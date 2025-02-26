@@ -198,6 +198,74 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &55733378
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3418838058180460996, guid: 5884101d5ed15d2409b3fe7ddca67331, type: 3}
+      propertyPath: m_Name
+      value: Fade Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6001676033635481851, guid: 5884101d5ed15d2409b3fe7ddca67331, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6001676033635481851, guid: 5884101d5ed15d2409b3fe7ddca67331, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6001676033635481851, guid: 5884101d5ed15d2409b3fe7ddca67331, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6001676033635481851, guid: 5884101d5ed15d2409b3fe7ddca67331, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6001676033635481851, guid: 5884101d5ed15d2409b3fe7ddca67331, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6001676033635481851, guid: 5884101d5ed15d2409b3fe7ddca67331, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6001676033635481851, guid: 5884101d5ed15d2409b3fe7ddca67331, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6001676033635481851, guid: 5884101d5ed15d2409b3fe7ddca67331, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6001676033635481851, guid: 5884101d5ed15d2409b3fe7ddca67331, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6001676033635481851, guid: 5884101d5ed15d2409b3fe7ddca67331, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5884101d5ed15d2409b3fe7ddca67331, type: 3}
+--- !u!114 &55733379 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6279636600101096438, guid: 5884101d5ed15d2409b3fe7ddca67331, type: 3}
+  m_PrefabInstance: {fileID: 55733378}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13d2bfa566c81d646a07b75f5ba1eea6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &77025244
 GameObject:
   m_ObjectHideFlags: 0
@@ -724,6 +792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbc9198d542250f48a285c657d28f10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Leaderboard: []
 --- !u!4 &940936405
 Transform:
   m_ObjectHideFlags: 0
@@ -919,7 +988,7 @@ GameObject:
   - component: {fileID: 2026273031}
   - component: {fileID: 2026273030}
   m_Layer: 5
-  m_Name: Exit Button
+  m_Name: Back Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -989,9 +1058,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 606c4ba04b6821d47a88934ca09823f4, type: 2}
-        m_TargetAssemblyTypeName: SceneManagerScript, Project.Scripts
-        m_MethodName: LoadScene
+      - m_Target: {fileID: 55733379}
+        m_TargetAssemblyTypeName: FadeManager, Project.Scripts.Managers
+        m_MethodName: FadeOutAndLoadScene
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1048,6 +1117,7 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 958434183}
   - {fileID: 940936405}
+  - {fileID: 55733378}
   - {fileID: 13620901}
   - {fileID: 113433209}
   - {fileID: 77025248}
