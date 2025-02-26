@@ -15,8 +15,7 @@ public class SpaceshipManager : MonoBehaviour
     #region Variables
     public static SpaceshipManager Instance = null;
 
-    [SerializeField]
-    private List<SpaceshipVariant> spaceshipPrefabs;
+    [SerializeField] private List<SpaceshipVariant> spaceshipPrefabs;
     #endregion
 
     #region Main Methods
@@ -34,11 +33,12 @@ public class SpaceshipManager : MonoBehaviour
 
     private void Start()
     {
-        SpaceshipAttributes currentSpaceShip = GameManager.Instance.m_CurrentSpaceShip;
+        //SpaceshipAttributes currentSpaceShip = GameManager.Instance.m_CurrentSpaceShip;
 
-        GameObject spaceshipPrefab = GetSpaceshipPrefab(currentSpaceShip.shipType, currentSpaceShip.shipColor);
+        //GameObject spaceshipPrefab = GetSpaceshipPrefab(currentSpaceShip.shipType, currentSpaceShip.shipColor);
 
-        Instantiate(spaceshipPrefab, PointManager.Instance.m_Points.CenterPoint.position, Quaternion.identity);
+        //Instantiate(spaceshipPrefab, PointManager.Instance.m_Points.CenterPoint.position, Quaternion.identity);
+        // MOVE TO IN-GAME MANAGER
     }
     #endregion
 
@@ -48,7 +48,6 @@ public class SpaceshipManager : MonoBehaviour
         {
             if (ship.type == type)
             {
-                Debug.Log("Found ship type " + type + " and color " + color);
                 return ship.colorVariants[(int)color];
             }
         }
