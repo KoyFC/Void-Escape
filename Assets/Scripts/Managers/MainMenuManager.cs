@@ -4,9 +4,15 @@ using System.Text;
 using System.Collections;
 using TMPro;
 
-public class MainMenuUIManager : MonoBehaviour
+public class MainMenuManager : MonoBehaviour
 {
-    public static MainMenuUIManager Instance = null;
+    public static MainMenuManager Instance = null;
+
+    [Header("Spaceship Model Settings")]
+    [SerializeField] private Transform m_Spawnpoint = null;
+    [SerializeField] private float m_RotationSpeed = 20f;
+    private GameObject m_Spaceship = null;
+    private Quaternion m_SpawnRotation = Quaternion.identity;
 
     [Header("UI Elements")]
     [SerializeField] private CanvasGroup m_MainMenuCanvas = null;
@@ -26,22 +32,49 @@ public class MainMenuUIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        m_SpawnRotation = m_Spawnpoint.rotation;
     }
 
     private void Start()
     {
         UpdateLeaderboard(SaveSystem.m_SaveData.leaderboardData);
+
+        InstantiateSpaceship();
+    }
+
+    private void Update()
+    {
+        // Rotate spaceship around the global Y axis
+        m_Spaceship.transform.Rotate(Vector3.up, m_RotationSpeed * Time.deltaTime);
     }
 
     private void OnEnable()
     {
         CurrencyManager.Instance.OnCreditsChanged += UpdateCreditText;
+        GameManager.OnSpaceshipChanged += InstantiateSpaceship;
         UpdateCreditText(CurrencyManager.Instance.Credits);
     }
 
     private void OnDisable()
     {
         CurrencyManager.Instance.OnCreditsChanged -= UpdateCreditText;
+        GameManager.OnSpaceshipChanged -= InstantiateSpaceship;
+    }
+
+    private void InstantiateSpaceship()
+    {
+        SpaceshipAttributes currentSpaceShip = GameManager.Instance.m_CurrentSpaceShip;
+
+        GameObject spaceshipPrefab = SpaceshipManager.Instance.GetSpaceshipPrefab(currentSpaceShip.shipType, currentSpaceShip.shipColor);
+
+        if (m_Spaceship != null)
+        {
+            m_SpawnRotation = m_Spaceship.transform.rotation;
+            Destroy(m_Spaceship);
+        }
+
+        m_Spaceship = Instantiate(spaceshipPrefab, m_Spawnpoint.position, m_SpawnRotation);
     }
 
     private void UpdateCreditText(int newCredits)
@@ -70,6 +103,11 @@ public class MainMenuUIManager : MonoBehaviour
         }
 
         m_LeaderboardText.text = sb.ToString();
+    }
+
+    public void SetShipModelActive(bool active)
+    {
+        m_Spaceship.SetActive(active);
     }
 
     public void SceneTransitionForUI(string sceneName)

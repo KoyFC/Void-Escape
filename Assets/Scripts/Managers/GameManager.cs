@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -22,19 +23,21 @@ public class GameManager : MonoBehaviour
     private Dictionary<ShipType, bool> m_UnlockedShips;
     private Dictionary<ShipColor, bool> m_UnlockedColors;
 
-    public SpaceshipAttributes m_CurrentSpaceShip;
+    public SpaceshipAttributes m_CurrentSpaceShip; // Holds the current spaceship attributes in order to instantiate it in the scene and save them
+
+    public static event Action OnSpaceshipChanged;
     #endregion
 
     #region Main Methods
     private void Awake()
     {
-        #if UNITY_ANDROID
-            Screen.autorotateToLandscapeLeft = true;
-            Screen.autorotateToLandscapeRight = true;
-            Screen.autorotateToPortrait = false;
-            Screen.autorotateToPortraitUpsideDown = false;
-            Screen.orientation = ScreenOrientation.AutoRotation;
-        #endif
+#if UNITY_ANDROID
+        Screen.autorotateToLandscapeLeft = true;
+        Screen.autorotateToLandscapeRight = true;
+        Screen.autorotateToPortrait = false;
+        Screen.autorotateToPortraitUpsideDown = false;
+        Screen.orientation = ScreenOrientation.AutoRotation;
+#endif
 
         if (Instance == null)
         {
@@ -75,6 +78,25 @@ public class GameManager : MonoBehaviour
         m_CurrentSpaceShip = playerData.currentSpaceship;
 
         m_Leaderboard = leaderboardData.leaderboard;
+    }
+    #endregion
+
+    #region Public Methods
+    public void SetCurrentName(string name)
+    {
+        m_CurrentName = name;
+    }
+
+    public void ChangeCurrentSpaceshipType(int newShipType)
+    {
+        m_CurrentSpaceShip.shipType = (ShipType)newShipType;
+        OnSpaceshipChanged?.Invoke();
+    }
+
+    public void ChangeCurrentSpaceshipColor(int newShipColor)
+    {
+        m_CurrentSpaceShip.shipColor = (ShipColor)newShipColor;
+        OnSpaceshipChanged?.Invoke();
     }
     #endregion
 }
