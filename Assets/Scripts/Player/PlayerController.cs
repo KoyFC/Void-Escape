@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInputScript))]
+[RequireComponent(typeof(PlayerMovementScript))]
 public class PlayerController : MonoBehaviour
 {
     internal PlayerInputScript m_PlayerInput = null;

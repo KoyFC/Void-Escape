@@ -2,14 +2,26 @@ using UnityEngine;
 
 public class PlayerMovementScript : MonoBehaviour
 {
-    public enum CONTROLS
+    #region Structures
+    [System.Serializable]
+    private struct Points
     {
-        TAP_TO_TELEPORT,
-        TAP_TO_MOVE,
-        DRAG_TO_MOVE
-    }
+        public Transform CenterPoint;
+        
+        [Header("Horizontal Points")]
+        public Transform LeftPoint;
+        public Transform RightPoint;
 
-    public CONTROLS m_Controls = CONTROLS.TAP_TO_MOVE;
+        [Header("Vertical Points")]
+        public Transform TopPoint;
+        public Transform BottomPoint;
+    }
+    #endregion
+
+    #region Variables
+    [SerializeField] private Points m_Points;
+
+    #endregion
 
     void Start()
     {

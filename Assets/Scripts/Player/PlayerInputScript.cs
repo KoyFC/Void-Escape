@@ -23,6 +23,6 @@ public class PlayerInputScript : MonoBehaviour
 
     private void HandleInput()
     {
-        m_Movement = m_PlayerInput.actions["Move"].ReadValue<Vector2>();
+        //m_Movement = m_PlayerInput.actions["Move"].ReadValue<Vector2>();
     }
 }

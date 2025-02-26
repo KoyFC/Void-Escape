@@ -5,18 +5,22 @@ using UnityEngine.SceneManagement;
 // Script that handles the player data during the execution. Also saves and loads the data automatically.
 public class GameManager : MonoBehaviour
 {
-    #region variables
-    public static GameManager Instance = null;
-
-    private string m_CurrentName = string.Empty;
-    public List<PlayerScore> m_Leaderboard;
-
+    #region Structures
     [System.Serializable]
     public struct PlayerScore
     {
         public string playerName;
         public int score;
     }
+    #endregion
+
+    #region Variables
+    public static GameManager Instance = null;
+
+    private string m_CurrentName = string.Empty;
+    private List<PlayerScore> m_Leaderboard;
+    private Dictionary<ShipType, bool> m_UnlockedShips;
+    private Dictionary<ShipColors, bool> m_UnlockedColors;
     #endregion
 
     #region Main Methods
@@ -53,6 +57,8 @@ public class GameManager : MonoBehaviour
     {
         playerData.currentName = m_CurrentName;
         playerData.credits = CurrencyManager.Instance.Credits;
+        playerData.unlockedShips = m_UnlockedShips;
+        playerData.unlockedColors = m_UnlockedColors;
 
         leaderboardData.leaderboard = m_Leaderboard;
     }
@@ -61,6 +67,8 @@ public class GameManager : MonoBehaviour
     {
         m_CurrentName = playerData.currentName;
         CurrencyManager.Instance.SetCredits(playerData.credits);
+        m_UnlockedShips = playerData.unlockedShips;
+        m_UnlockedColors = playerData.unlockedColors;
 
         m_Leaderboard = leaderboardData.leaderboard;
     }

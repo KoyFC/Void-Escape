@@ -69,6 +69,8 @@ public struct PlayerSaveData
 {
     public string currentName;
     public int credits;
+    public Dictionary<ShipType, bool> unlockedShips;
+    public Dictionary<ShipColors, bool> unlockedColors;
 }
 
 [System.Serializable]
