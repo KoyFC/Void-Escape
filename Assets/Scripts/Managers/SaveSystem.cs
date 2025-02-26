@@ -69,10 +69,11 @@ public struct PlayerSaveData
 {
     public string currentName;
     public int credits;
-    public Dictionary<ShipType, bool> unlockedShips;
-    public Dictionary<ShipColor, bool> unlockedColors;
+    public List<KeyValuePair<ShipType, bool>> unlockedShips; // We use KeyValuePair to basically store a dictionary in a list
+    public List<KeyValuePair<ShipColor, bool>> unlockedColors;
     public SpaceshipAttributes currentSpaceship;
 }
+
 
 [System.Serializable]
 public struct LeaderboardSaveData

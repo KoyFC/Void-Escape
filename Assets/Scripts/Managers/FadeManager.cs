@@ -93,7 +93,9 @@ public class FadeManager : MonoBehaviour
     {
         StartCoroutine(FadeOutPanel());
         yield return new WaitForSeconds(m_PanelFadeTime + m_SceneLoadDelay);
-        Debug.Log("Loading scene: " + sceneName);
+
+        //Debug.Log("Loading scene: " + sceneName);
+
         m_SceneManager.LoadScene(sceneName);
     }
     #endregion
