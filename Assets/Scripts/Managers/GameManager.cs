@@ -20,7 +20,9 @@ public class GameManager : MonoBehaviour
     private string m_CurrentName = string.Empty;
     private List<PlayerScore> m_Leaderboard;
     private Dictionary<ShipType, bool> m_UnlockedShips;
-    private Dictionary<ShipColors, bool> m_UnlockedColors;
+    private Dictionary<ShipColor, bool> m_UnlockedColors;
+
+    public SpaceshipAttributes m_CurrentSpaceShip;
     #endregion
 
     #region Main Methods
@@ -59,6 +61,7 @@ public class GameManager : MonoBehaviour
         playerData.credits = CurrencyManager.Instance.Credits;
         playerData.unlockedShips = m_UnlockedShips;
         playerData.unlockedColors = m_UnlockedColors;
+        playerData.currentSpaceship = m_CurrentSpaceShip;
 
         leaderboardData.leaderboard = m_Leaderboard;
     }
@@ -69,6 +72,7 @@ public class GameManager : MonoBehaviour
         CurrencyManager.Instance.SetCredits(playerData.credits);
         m_UnlockedShips = playerData.unlockedShips;
         m_UnlockedColors = playerData.unlockedColors;
+        m_CurrentSpaceShip = playerData.currentSpaceship;
 
         m_Leaderboard = leaderboardData.leaderboard;
     }

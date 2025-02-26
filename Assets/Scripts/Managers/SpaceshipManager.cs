@@ -3,24 +3,28 @@ using System.Collections.Generic;
 
 public class SpaceshipManager : MonoBehaviour
 {
-    public static SpaceshipManager Instance { get; private set; }
-
+    #region Structures
     [System.Serializable]
-    public class SpaceshipPrefabs
+    public struct SpaceshipVariant
     {
         public ShipType type;
         public List<GameObject> colorVariants;
     }
+    #endregion
+
+    #region Variables
+    public static SpaceshipManager Instance = null;
 
     [SerializeField]
-    private List<SpaceshipPrefabs> spaceshipPrefabs;
+    private List<SpaceshipVariant> spaceshipPrefabs;
+    #endregion
 
+    #region Main Methods
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -28,35 +32,53 @@ public class SpaceshipManager : MonoBehaviour
         }
     }
 
-    public GameObject GetSpaceshipPrefab(ShipType type, int colorIndex)
+    private void Start()
     {
-        foreach (var shipType in spaceshipPrefabs)
+        SpaceshipAttributes currentSpaceShip = GameManager.Instance.m_CurrentSpaceShip;
+
+        GameObject spaceshipPrefab = GetSpaceshipPrefab(currentSpaceShip.shipType, currentSpaceShip.shipColor);
+
+        Instantiate(spaceshipPrefab, PointManager.Instance.m_Points.CenterPoint.position, Quaternion.identity);
+    }
+    #endregion
+
+    public GameObject GetSpaceshipPrefab(ShipType type, ShipColor color)
+    {
+        foreach (SpaceshipVariant ship in spaceshipPrefabs)
         {
-            if (shipType.type == type)
+            if (ship.type == type)
             {
-                if (colorIndex >= 0 && colorIndex < shipType.colorVariants.Count)
-                {
-                    return shipType.colorVariants[colorIndex];
-                }
+                Debug.Log("Found ship type " + type + " and color " + color);
+                return ship.colorVariants[(int)color];
             }
         }
         return null;
     }
 }
 
+#region Public Structures
 [System.Serializable]
-public enum ShipType
+public struct SpaceshipAttributes
 {
-    Fighter,
-    Bomber,
-    Transport
+    public ShipType shipType;
+    public ShipColor shipColor;
 }
 
 [System.Serializable]
-public enum ShipColors
+public enum ShipType
+{
+    BIRD,
+    FLAT,
+    STINGER,
+    DOUBLE_CANNON
+}
+
+[System.Serializable]
+public enum ShipColor
 {
     NEUTRAL,
     RED,
     BLUE,
     YELLOW
 }
+#endregion

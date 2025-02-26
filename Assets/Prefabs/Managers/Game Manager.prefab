@@ -45,7 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbc9198d542250f48a285c657d28f10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Leaderboard: []
+  m_CurrentSpaceShip:
+    shipType: 0
+    shipColor: 0
 --- !u!114 &6904794913009163963
 MonoBehaviour:
   m_ObjectHideFlags: 0

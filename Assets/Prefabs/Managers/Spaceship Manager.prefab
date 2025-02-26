@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2340795027084432650
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3008540703589586492}
+  - component: {fileID: 4078727323876030712}
+  m_Layer: 0
+  m_Name: Spaceship Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3008540703589586492
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2340795027084432650}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4078727323876030712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2340795027084432650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 653aec9a42d90e34ba80da14f4c2bee5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spaceshipPrefabs:
+  - type: 0
+    colorVariants:
+    - {fileID: 2590961875585455753, guid: 531736f35ba28fa479c43e141ff36eb9, type: 3}
+    - {fileID: 5974848700162863639, guid: 1513517040afd66468b5ae83d46c2d61, type: 3}
+    - {fileID: 4922597481459348963, guid: f644b24d0700a1343bd1588045c74f8c, type: 3}
+    - {fileID: 5528413085628469828, guid: b7e4de459fcdd2c44869e249fe092d2d, type: 3}
+  - type: 1
+    colorVariants:
+    - {fileID: 212329997069218202, guid: 68f4e20f77f55d540964a86dd6d113c6, type: 3}
+    - {fileID: 5222457940648385557, guid: 6ebadf5cef985024e82ac37f64ffb78c, type: 3}
+    - {fileID: 2036206697485847105, guid: 1ad0d55fd8d40d242a8d26fff0cded30, type: 3}
+    - {fileID: 8742597964439968141, guid: 36efb93610f35dd4e8833be7e94d493b, type: 3}
+  - type: 2
+    colorVariants:
+    - {fileID: 5061587511365736196, guid: 8af83662c6b47424f9c7b9e781677c84, type: 3}
+    - {fileID: 4797380588878266374, guid: 41619acd782c4ae4ea6d05ad5a1c3609, type: 3}
+    - {fileID: 5738384060155399600, guid: 64b249edca35037479a0c56e159ef31a, type: 3}
+    - {fileID: 250291374004248630, guid: b3bf1cbc95c2d194e996d4f1e42f34c5, type: 3}
+  - type: 3
+    colorVariants:
+    - {fileID: 1884456511693476945, guid: 44abd18fa82b4064eaa79a477c793c72, type: 3}
+    - {fileID: 3457274990752055698, guid: e90f9af8dd25e6041a968ec8c4b86c48, type: 3}
+    - {fileID: 7256715536270069600, guid: 1fdb6ccc706dc8140b56cb73cfed516b, type: 3}
+    - {fileID: 6197392234556091845, guid: 3470ac2b10f8921468e4e9ccb4442013, type: 3}
