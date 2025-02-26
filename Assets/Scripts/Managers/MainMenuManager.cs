@@ -6,6 +6,7 @@ using TMPro;
 
 public class MainMenuManager : MonoBehaviour
 {
+    #region Variables
     public static MainMenuManager Instance = null;
 
     [Header("Spaceship Model Settings")]
@@ -21,7 +22,9 @@ public class MainMenuManager : MonoBehaviour
 
     [Header("Fading")]
     [SerializeField] private float m_UIFadeTime = 1f;
+    #endregion
 
+    #region Main Methods
     private void Awake()
     {
         if (Instance == null)
@@ -52,16 +55,16 @@ public class MainMenuManager : MonoBehaviour
     private void OnEnable()
     {
         CurrencyManager.Instance.OnCreditsChanged += UpdateCreditText;
-        GameManager.OnSpaceshipChanged += InstantiateSpaceship;
         UpdateCreditText(CurrencyManager.Instance.Credits);
     }
 
     private void OnDisable()
     {
         CurrencyManager.Instance.OnCreditsChanged -= UpdateCreditText;
-        GameManager.OnSpaceshipChanged -= InstantiateSpaceship;
     }
+    #endregion
 
+    #region Helper Methods
     private void InstantiateSpaceship()
     {
         SpaceshipAttributes currentSpaceShip = GameManager.Instance.m_CurrentSpaceShip;
@@ -76,7 +79,9 @@ public class MainMenuManager : MonoBehaviour
 
         m_Spaceship = Instantiate(spaceshipPrefab, m_Spawnpoint.position, m_SpawnRotation);
     }
+    #endregion
 
+    #region UI Methods
     private void UpdateCreditText(int newCredits)
     {
         m_CreditText.text = newCredits.ToString() + (newCredits == 1 ? " credit" : " credits");
@@ -104,6 +109,20 @@ public class MainMenuManager : MonoBehaviour
 
         m_LeaderboardText.text = sb.ToString();
     }
+    #endregion
+
+    #region Public Methods
+    public void ChangeCurrentSpaceshipType(int newShipType)
+    {
+        GameManager.Instance.m_CurrentSpaceShip.shipType = (ShipType)newShipType;
+        InstantiateSpaceship();
+    }
+
+    public void ChangeCurrentSpaceshipColor(int newShipColor)
+    {
+        GameManager.Instance.m_CurrentSpaceShip.shipColor = (ShipColor)newShipColor;
+        InstantiateSpaceship();
+    }
 
     public void SetShipModelActive(bool active)
     {
@@ -130,4 +149,5 @@ public class MainMenuManager : MonoBehaviour
         // Fade in the black panel and load the new scene
         FadeManager.Instance.FadeOutAndLoadScene(sceneName);
     }
+    #endregion
 }

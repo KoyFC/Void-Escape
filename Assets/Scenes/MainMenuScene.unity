@@ -202,8 +202,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 164342619}
-        m_TargetAssemblyTypeName: GameManager, Project.Scripts.Managers
+      - m_Target: {fileID: 903250276}
+        m_TargetAssemblyTypeName: MainMenuManager, Project.Scripts.Managers
         m_MethodName: ChangeCurrentSpaceshipType
         m_Mode: 3
         m_Arguments:
@@ -334,8 +334,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 164342619}
-        m_TargetAssemblyTypeName: GameManager, Project.Scripts.Managers
+      - m_Target: {fileID: 903250276}
+        m_TargetAssemblyTypeName: MainMenuManager, Project.Scripts.Managers
         m_MethodName: ChangeCurrentSpaceshipColor
         m_Mode: 3
         m_Arguments:
@@ -384,17 +384,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 36180331}
   m_CullTransparentMesh: 1
---- !u!114 &164342619 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8457060429530419261, guid: d3359cb58cedb1d40a05d12664ac1020, type: 3}
-  m_PrefabInstance: {fileID: 6189251973324598724}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbc9198d542250f48a285c657d28f10b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &219864251
 GameObject:
   m_ObjectHideFlags: 0
@@ -701,9 +690,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.78867924, g: 0.6199226, b: 0, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.7058824, b: 0, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 1, g: 0.7058824, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -723,8 +712,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 164342619}
-        m_TargetAssemblyTypeName: GameManager, Project.Scripts.Managers
+      - m_Target: {fileID: 903250276}
+        m_TargetAssemblyTypeName: MainMenuManager, Project.Scripts.Managers
         m_MethodName: ChangeCurrentSpaceshipColor
         m_Mode: 3
         m_Arguments:
@@ -1421,8 +1410,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 164342619}
-        m_TargetAssemblyTypeName: GameManager, Project.Scripts.Managers
+      - m_Target: {fileID: 903250276}
+        m_TargetAssemblyTypeName: MainMenuManager, Project.Scripts.Managers
         m_MethodName: ChangeCurrentSpaceshipType
         m_Mode: 3
         m_Arguments:
@@ -1644,9 +1633,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0, g: 0, b: 0.7058824, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0, g: 0, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0, g: 0, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1666,8 +1655,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 164342619}
-        m_TargetAssemblyTypeName: GameManager, Project.Scripts.Managers
+      - m_Target: {fileID: 903250276}
+        m_TargetAssemblyTypeName: MainMenuManager, Project.Scripts.Managers
         m_MethodName: ChangeCurrentSpaceshipColor
         m_Mode: 3
         m_Arguments:
@@ -4423,8 +4412,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 164342619}
-        m_TargetAssemblyTypeName: GameManager, Project.Scripts.Managers
+      - m_Target: {fileID: 903250276}
+        m_TargetAssemblyTypeName: MainMenuManager, Project.Scripts.Managers
         m_MethodName: ChangeCurrentSpaceshipType
         m_Mode: 3
         m_Arguments:
@@ -4959,9 +4948,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.7058824, g: 0, b: 0, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 1, g: 0, b: 0, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 1, g: 0, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -4981,8 +4970,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 164342619}
-        m_TargetAssemblyTypeName: GameManager, Project.Scripts.Managers
+      - m_Target: {fileID: 903250276}
+        m_TargetAssemblyTypeName: MainMenuManager, Project.Scripts.Managers
         m_MethodName: ChangeCurrentSpaceshipColor
         m_Mode: 3
         m_Arguments:
@@ -5853,8 +5842,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 164342619}
-        m_TargetAssemblyTypeName: GameManager, Project.Scripts.Managers
+      - m_Target: {fileID: 903250276}
+        m_TargetAssemblyTypeName: MainMenuManager, Project.Scripts.Managers
         m_MethodName: ChangeCurrentSpaceshipType
         m_Mode: 3
         m_Arguments:

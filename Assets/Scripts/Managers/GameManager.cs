@@ -24,8 +24,6 @@ public class GameManager : MonoBehaviour
     private Dictionary<ShipColor, bool> m_UnlockedColors;
 
     public SpaceshipAttributes m_CurrentSpaceShip; // Holds the current spaceship attributes in order to instantiate it in the scene and save them
-
-    public static event Action OnSpaceshipChanged;
     #endregion
 
     #region Main Methods
@@ -85,18 +83,6 @@ public class GameManager : MonoBehaviour
     public void SetCurrentName(string name)
     {
         m_CurrentName = name;
-    }
-
-    public void ChangeCurrentSpaceshipType(int newShipType)
-    {
-        m_CurrentSpaceShip.shipType = (ShipType)newShipType;
-        OnSpaceshipChanged?.Invoke();
-    }
-
-    public void ChangeCurrentSpaceshipColor(int newShipColor)
-    {
-        m_CurrentSpaceShip.shipColor = (ShipColor)newShipColor;
-        OnSpaceshipChanged?.Invoke();
     }
     #endregion
 }
