@@ -3132,13 +3132,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '1. -
+  m_text: '1. - (Base text)
 
-    2. -
+    2. - (If this is shown,)
 
-    3. -
+    3. - (Something)
 
-    4. -
+    4.
+    - (Went wrong)
 
     5. -
 
@@ -3146,8 +3147,7 @@ MonoBehaviour:
 
     7. -
 
-    8.
-    -
+    8. -
 
     9. -
 

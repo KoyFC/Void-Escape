@@ -28,6 +28,11 @@ public class MainMenuUIManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        UpdateLeaderboard(SaveSystem.m_SaveData.leaderboardData);
+    }
+
     private void OnEnable()
     {
         CurrencyManager.Instance.OnCreditsChanged += UpdateCreditText;
@@ -44,7 +49,7 @@ public class MainMenuUIManager : MonoBehaviour
         m_CreditText.text = newCredits.ToString() + (newCredits == 1 ? " credit" : " credits");
     }
 
-    public void UpdateLeaderboard(LeaderboardSaveData data)
+    private void UpdateLeaderboard(LeaderboardSaveData data)
     {
         StringBuilder sb = new();
 

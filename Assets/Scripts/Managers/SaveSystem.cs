@@ -59,7 +59,7 @@ public class SaveSystem
     public static void HandleLoadData()
     {
         GameManager.Instance.Load(m_SaveData.playerData, m_SaveData.leaderboardData);
-        MainMenuUIManager.Instance.UpdateLeaderboard(m_SaveData.leaderboardData);
+        // We don't need to update the UI here, because the MainMenuUIManager will do it on Start.
     }
     #endregion
 }
