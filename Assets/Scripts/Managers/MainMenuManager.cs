@@ -177,22 +177,12 @@ public class MainMenuManager : MonoBehaviour
                 button.lockIconImage.enabled = false;
                 button.lockIconImage.raycastTarget = false;
                 button.button.interactable = true;
-
-                foreach (Transform child in button.lockIconObject.transform)
-                {
-                    child.gameObject.SetActive(false);
-                }
             }
             else
             {
                 button.lockIconImage.enabled = true;
                 button.lockIconImage.raycastTarget = true;
                 button.button.interactable = false;
-
-                foreach (Transform child in button.lockIconObject.transform)
-                {
-                    child.gameObject.SetActive(true);
-                }
             }
             m_ShipColorButtons[i] = button;
         }

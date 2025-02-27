@@ -105,9 +105,22 @@ public class SaveSystem
 
     public static void HandleLoadLeaderboardData()
     {
+        // We need to sort the leaderboard data before loading it
+        m_SaveData.leaderboardData.leaderboard.Sort(ComparePlayerScores);
+
         GameManager.Instance.Load(m_SaveData.leaderboardData);
         // We don't need to update the UI here because the leaderboard is only displayed in the main menu.
     }
+
+    private static int ComparePlayerScores(GameManager.PlayerScore playerScore1, GameManager.PlayerScore playerScore2)
+    {
+        return playerScore2.score.CompareTo(playerScore1.score);
+
+        // Returns 1 if playerScore2 is greater than playerScore1
+        // Returns 0 if playerScore2 is equal to playerScore1
+        // Returns -1 if playerScore2 is less than playerScore1
+    }
+
     #endregion
 }
 
