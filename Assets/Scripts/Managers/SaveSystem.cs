@@ -16,50 +16,97 @@ public class SaveSystem
     }
     #endregion
 
-    public static string SaveFileName()
+    public static string SaveDataFileName()
     {
         string saveFile = Application.persistentDataPath + "/saveData.kfc";
         return saveFile;
     }
 
+    public static string LeaderboardFileName()
+    {
+        string leaderboardFile = Application.persistentDataPath + "/leaderboardData.kfc";
+        return leaderboardFile;
+    }
+
     #region Save
     public static void Save()
     {
-        HandleSaveData();
+        SavePlayerData();
+        SaveLeaderboardData();
+    }
 
-        File.WriteAllText(SaveFileName(), JsonUtility.ToJson(m_SaveData, true));
+    private static void SavePlayerData()
+    {
+        HandleSaveData();
+        string saveFile = SaveDataFileName();
+        string playerDataJson = JsonUtility.ToJson(m_SaveData.playerData, true);
+        File.WriteAllText(saveFile, playerDataJson);
+    }
+
+    private static void SaveLeaderboardData()
+    {
+        string leaderboardFile = LeaderboardFileName();
+        string leaderboardDataJson = JsonUtility.ToJson(m_SaveData.leaderboardData, true);
+        File.WriteAllText(leaderboardFile, leaderboardDataJson);
     }
 
     public static void HandleSaveData()
     {
         GameManager.Instance.Save(ref m_SaveData.playerData, ref m_SaveData.leaderboardData);
     }
+
     #endregion
 
     #region Load
     public static void Load()
     {
-        string saveFile = SaveFileName();
+        LoadSaveData();
+        LoadLeaderboardData();
+    }
+
+    private static void LoadSaveData()
+    {
+        string saveFile = SaveDataFileName();
         if (!File.Exists(saveFile))
         {
             #if UNITY_EDITOR
                 Debug.LogWarning("Save file not found, nothing to load.");
             #endif
-
-            return;
         }
-
-        string saveContent = File.ReadAllText(saveFile);
-
-        m_SaveData = JsonUtility.FromJson<SaveData>(saveContent);
-
-        HandleLoadData();
+        else
+        {
+            string saveContent = File.ReadAllText(saveFile);
+            m_SaveData.playerData = JsonUtility.FromJson<PlayerSaveData>(saveContent);
+            HandleLoadSaveData();
+        }
     }
 
-    public static void HandleLoadData()
+    private static void LoadLeaderboardData()
     {
-        GameManager.Instance.Load(m_SaveData.playerData, m_SaveData.leaderboardData);
-        // We don't need to update the UI here, because the MainMenuUIManager will do it on Start.
+        string leaderboardFile = LeaderboardFileName();
+        if (!File.Exists(leaderboardFile))
+        {
+            #if UNITY_EDITOR
+                Debug.LogWarning("Leaderboard file not found, nothing to load.");
+            #endif
+        }
+        else
+        {
+            string leaderboardContent = File.ReadAllText(leaderboardFile);
+            m_SaveData.leaderboardData = JsonUtility.FromJson<LeaderboardSaveData>(leaderboardContent);
+            HandleLoadLeaderboardData();
+        }
+    }
+
+    public static void HandleLoadSaveData()
+    {
+        GameManager.Instance.Load(m_SaveData.playerData);
+    }
+
+    public static void HandleLoadLeaderboardData()
+    {
+        GameManager.Instance.Load(m_SaveData.leaderboardData);
+        // We don't need to update the UI here because the leaderboard is only displayed in the main menu.
     }
     #endregion
 }
@@ -69,8 +116,8 @@ public struct PlayerSaveData
 {
     public string currentName;
     public int credits;
-    public List<KeyValuePair<ShipType, bool>> unlockedShips; // We use KeyValuePair to basically store a dictionary in a list
-    public List<KeyValuePair<ShipColor, bool>> unlockedColors;
+    public List<bool> unlockedShips;
+    public List<bool> unlockedColors;
     public SpaceshipAttributes currentSpaceship;
 }
 

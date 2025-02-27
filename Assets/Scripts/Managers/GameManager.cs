@@ -19,11 +19,11 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance = null;
 
     private string m_CurrentName = string.Empty;
-    private List<PlayerScore> m_Leaderboard;
-    public Dictionary<ShipType, bool> m_UnlockedShips = new Dictionary<ShipType, bool>();
-    public Dictionary<ShipColor, bool> m_UnlockedColors = new Dictionary<ShipColor, bool>();
-
+    private List<PlayerScore> m_Leaderboard = new();
+    public List<bool> m_UnlockedShips = new();
+    public List<bool> m_UnlockedColors = new();
     public SpaceshipAttributes m_CurrentSpaceShip; // Holds the current spaceship attributes in order to instantiate it in the scene and save them
+
     #endregion
 
     #region Main Methods
@@ -42,8 +42,9 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            InitializeTypeDictionary();
-            InitializeColorDictionary();
+            InitializeDefaultShipTypes();
+            InitializeDefaultColors();
+            InitializeDefaultShip();
 
             SaveSystem.Load();
         }
@@ -57,24 +58,6 @@ public class GameManager : MonoBehaviour
     {
         SaveSystem.Save();
     }
-
-    private void InitializeTypeDictionary()
-    {
-        m_UnlockedShips = new Dictionary<ShipType, bool>();
-        foreach (ShipType shipType in Enum.GetValues(typeof(ShipType)))
-        {
-            m_UnlockedShips[shipType] = false;
-        }
-    }
-
-    private void InitializeColorDictionary()
-    {
-        m_UnlockedColors = new Dictionary<ShipColor, bool>();
-        foreach (ShipColor shipColor in Enum.GetValues(typeof(ShipColor)))
-        {
-            m_UnlockedColors[shipColor] = false;
-        }
-    }
     #endregion
 
     #region Save and Load
@@ -82,44 +65,64 @@ public class GameManager : MonoBehaviour
     {
         playerData.currentName = m_CurrentName;
         playerData.credits = CurrencyManager.Instance.Credits;
-        playerData.unlockedShips = new List<KeyValuePair<ShipType, bool>>(m_UnlockedShips);
-        playerData.unlockedColors = new List<KeyValuePair<ShipColor, bool>>(m_UnlockedColors);
+        playerData.unlockedShips = m_UnlockedShips;
+        playerData.unlockedColors = m_UnlockedColors;
         playerData.currentSpaceship = m_CurrentSpaceShip;
 
         leaderboardData.leaderboard = m_Leaderboard;
     }
 
-    public void Load(PlayerSaveData playerData, LeaderboardSaveData leaderboardData)
+    public void Load(PlayerSaveData playerData)
     {
         m_CurrentName = playerData.currentName;
         CurrencyManager.Instance.SetCredits(playerData.credits);
-
-        if (playerData.unlockedShips != null)
-        {
-            foreach (var kvp in playerData.unlockedShips)
-            {
-                m_UnlockedShips[kvp.Key] = kvp.Value;
-            }
-        }
-        else
-        {
-            InitializeTypeDictionary();
-        }
-
-        if (playerData.unlockedColors != null)
-        {
-            foreach (var kvp in playerData.unlockedColors)
-            {
-                m_UnlockedColors[kvp.Key] = kvp.Value;
-            }
-        }
-        else
-        {
-            InitializeColorDictionary();
-        }
+        m_UnlockedShips = playerData.unlockedShips;
+        m_UnlockedColors = playerData.unlockedColors;
 
         m_CurrentSpaceShip = playerData.currentSpaceship;
+    }
+
+    public void Load(LeaderboardSaveData leaderboardData)
+    {
         m_Leaderboard = leaderboardData.leaderboard;
+    }
+    #endregion
+
+    #region Helper Methods
+    private void InitializeDefaultShip()
+    {
+        m_CurrentSpaceShip.shipType = ShipType.BIRD;
+        m_CurrentSpaceShip.shipColor = ShipColor.NEUTRAL;
+    }
+
+    private void InitializeDefaultShipTypes()
+    {
+        for (int i = 0; i < Enum.GetValues(typeof(ShipType)).Length; i++)
+        {
+            if (i == 0) // Unlock the first ship by default
+            {
+                m_UnlockedShips.Add(true);
+            }
+            else
+            {
+                m_UnlockedShips.Add(false);
+            }
+        }
+    }
+
+    private void InitializeDefaultColors()
+    {
+        for (int i = 0; i < Enum.GetValues(typeof(ShipColor)).Length; i++)
+        {
+            if (i == 0) // Unlock the first color by default
+            {
+                m_UnlockedColors.Add(true);
+            }
+            else
+            {
+                m_UnlockedColors.Add(false);
+            }
+        }
     }
     #endregion
 
@@ -129,24 +132,52 @@ public class GameManager : MonoBehaviour
         m_CurrentName = name;
     }
 
-    public void UnlockShipType(ShipType shipType)
+    public void UnlockShipType(int shipType)
     {
-        m_UnlockedShips[shipType] = true;
+        if (shipType >= 0 && shipType < m_UnlockedShips.Count)
+        {
+            m_UnlockedShips[shipType] = true;
+        }
+        else
+        {
+            Debug.LogError($"ShipType index {shipType} is out of range.");
+        }
     }
 
-    public void UnlockShipColor(ShipColor shipColor)
+    public void UnlockShipColor(int shipColor)
     {
-        m_UnlockedColors[shipColor] = true;
+        if (shipColor >= 0 && shipColor < m_UnlockedColors.Count)
+        {
+            m_UnlockedColors[shipColor] = true;
+        }
+        else
+        {
+            Debug.LogError($"ShipColor index {shipColor} is out of range.");
+        }
     }
 
-    public void LockShipType(ShipType shipType)
+    public void LockShipType(int shipType)
     {
-        m_UnlockedShips[shipType] = false;
+        if (shipType >= 0 && shipType < m_UnlockedShips.Count)
+        {
+            m_UnlockedShips[shipType] = false;
+        }
+        else
+        {
+            Debug.LogError($"ShipType index {shipType} is out of range.");
+        }
     }
 
-    public void LockShipColor(ShipColor shipColor)
+    public void LockShipColor(int shipColor)
     {
-        m_UnlockedColors[shipColor] = false;
+        if (shipColor >= 0 && shipColor < m_UnlockedColors.Count)
+        {
+            m_UnlockedColors[shipColor] = false;
+        }
+        else
+        {
+            Debug.LogError($"ShipColor index {shipColor} is out of range.");
+        }
     }
     #endregion
 }

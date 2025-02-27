@@ -12,7 +12,8 @@ public class MainMenuManager : MonoBehaviour
     {
         public ShipType shipType;
         public Button button;
-        public GameObject lockIcon;
+        public GameObject lockIconObject;
+        public Image lockIconImage;
     }
 
     [System.Serializable]
@@ -20,7 +21,8 @@ public class MainMenuManager : MonoBehaviour
     {
         public ShipColor shipColor;
         public Button button;
-        public GameObject lockIcon;
+        public GameObject lockIconObject;
+        public Image lockIconImage;
     }
     #endregion
 
@@ -135,53 +137,66 @@ public class MainMenuManager : MonoBehaviour
 
     private void UpdateLocks()
     {
+        UpdateShipTypeLocks();
+        UpdateShipColorLocks();
+    }
+
+    private void UpdateShipTypeLocks()
+    {
         for (int i = 0; i < m_ShipTypeButtons.Length; i++)
         {
-            var button = m_ShipTypeButtons[i];
-            var lockIconImage = button.lockIcon.GetComponent<Image>();
-            if (GameManager.Instance.m_UnlockedShips[button.shipType])
+            ShipTypeSettingsButton button = m_ShipTypeButtons[i];
+
+            if (i < GameManager.Instance.m_UnlockedShips.Count && GameManager.Instance.m_UnlockedShips[(int)button.shipType])
             {
-                lockIconImage.enabled = false;
-                lockIconImage.raycastTarget = false;
+                button.lockIconImage.enabled = false;
+                button.lockIconImage.raycastTarget = false;
                 button.button.interactable = true;
-                foreach (Transform child in button.lockIcon.transform)
+
+                foreach (Transform child in button.lockIconObject.transform)
                 {
                     child.gameObject.SetActive(false);
                 }
             }
             else
             {
-                lockIconImage.enabled = true;
-                lockIconImage.raycastTarget = true;
+                button.lockIconImage.enabled = true;
+                button.lockIconImage.raycastTarget = true;
                 button.button.interactable = false;
-                foreach (Transform child in button.lockIcon.transform)
+
+                foreach (Transform child in button.lockIconObject.transform)
                 {
                     child.gameObject.SetActive(true);
                 }
             }
             m_ShipTypeButtons[i] = button;
         }
+    }
 
+    private void UpdateShipColorLocks()
+    {
         for (int i = 0; i < m_ShipColorButtons.Length; i++)
         {
-            var button = m_ShipColorButtons[i];
-            var lockIconImage = button.lockIcon.GetComponent<Image>();
-            if (GameManager.Instance.m_UnlockedColors[button.shipColor])
+            ShipColorSettingsButton button = m_ShipColorButtons[i];
+
+            if (i < GameManager.Instance.m_UnlockedColors.Count && GameManager.Instance.m_UnlockedColors[(int)button.shipColor])
             {
-                lockIconImage.enabled = false;
-                lockIconImage.raycastTarget = false;
+                button.lockIconImage.enabled = false;
+                button.lockIconImage.raycastTarget = false;
                 button.button.interactable = true;
-                foreach (Transform child in button.lockIcon.transform)
+
+                foreach (Transform child in button.lockIconObject.transform)
                 {
                     child.gameObject.SetActive(false);
                 }
             }
             else
             {
-                lockIconImage.enabled = true;
-                lockIconImage.raycastTarget = true;
+                button.lockIconImage.enabled = true;
+                button.lockIconImage.raycastTarget = true;
                 button.button.interactable = false;
-                foreach (Transform child in button.lockIcon.transform)
+
+                foreach (Transform child in button.lockIconObject.transform)
                 {
                     child.gameObject.SetActive(true);
                 }
@@ -232,22 +247,22 @@ public class MainMenuManager : MonoBehaviour
 
     public void UnlockShipType(int shipType)
     {
-        GameManager.Instance.UnlockShipType((ShipType)shipType);
+        GameManager.Instance.UnlockShipType(shipType);
     }
 
     public void UnlockShipColor(int shipColor)
     {
-        GameManager.Instance.UnlockShipColor((ShipColor)shipColor);
+        GameManager.Instance.UnlockShipColor(shipColor);
     }
 
-    public void LockShipType(ShipType shipType)
+    public void LockShipType(int shipType)
     {
-        GameManager.Instance.LockShipType((ShipType)shipType);
+        GameManager.Instance.LockShipType(shipType);
     }
 
-    public void LockShipColor(ShipColor shipColor)
+    public void LockShipColor(int shipColor)
     {
-        GameManager.Instance.LockShipColor((ShipColor)shipColor);
+        GameManager.Instance.LockShipColor(shipColor);
     }
     #endregion
 }
