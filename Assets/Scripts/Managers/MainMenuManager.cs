@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Text;
 using System.Collections;
 using TMPro;
+using System;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -190,6 +191,16 @@ public class MainMenuManager : MonoBehaviour
             m_ShipColorButtons[i] = button;
         }
     }
+
+    private void UpdateShipTypeShop()
+    {
+        Debug.Log("UpdateShipTypeShop");
+    }
+
+    private void UpdateShipColorShop()
+    {
+        Debug.Log("UpdateShipColorShop");
+    }
     #endregion
 
     #region Public Methods
@@ -231,28 +242,52 @@ public class MainMenuManager : MonoBehaviour
         FadeManager.Instance.FadeOutAndLoadScene(sceneName);
     }
 
-    public void UnlockShipType(int shipType)
+    public void UnlockData(ItemData data)
     {
-        GameManager.Instance.UnlockShipType(shipType);
+        if (CurrencyManager.Instance.Credits < data.m_Price)
+        {
+            Debug.LogWarning("Not enough credits to unlock this item.");
+            return;
+        }
+        
+        switch (data.m_ItemType)
+        {
+            case ItemData.ItemType.Ship:
+                UnlockShip(data);
+                break;
+            case ItemData.ItemType.Color:
+                UnlockColor(data);
+                break;
+            case ItemData.ItemType.Upgrade:
+                UnlockUpgrade(data);
+                break;
+            default:
+                Debug.LogWarning("Invalid item type.");
+                break;
+        }
+
+        CurrencyManager.Instance.RemoveCredits(data.m_Price);
+    }
+
+    private void UnlockShip(ItemData data)
+    {
+        GameManager.Instance.UnlockShipType(data.m_ID);
+
         UpdateShipTypeLocks();
+        UpdateShipTypeShop();
     }
 
-    public void UnlockShipColor(int shipColor)
+    private void UnlockColor(ItemData data)
     {
-        GameManager.Instance.UnlockShipColor(shipColor);
+        GameManager.Instance.UnlockShipColor(data.m_ID);
+
         UpdateShipColorLocks();
+        UpdateShipColorShop();
     }
 
-    public void LockShipType(int shipType)
+    private void UnlockUpgrade(ItemData data)
     {
-        GameManager.Instance.LockShipType(shipType);
-        UpdateShipTypeLocks();
-    }
-
-    public void LockShipColor(int shipColor)
-    {
-        GameManager.Instance.LockShipColor(shipColor);
-        UpdateShipColorLocks();
+        throw new NotImplementedException();
     }
     #endregion
 }

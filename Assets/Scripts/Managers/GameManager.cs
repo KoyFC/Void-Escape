@@ -138,10 +138,6 @@ public class GameManager : MonoBehaviour
         {
             m_UnlockedShips[shipType] = true;
         }
-        else
-        {
-            Debug.LogError($"ShipType index {shipType} is out of range.");
-        }
     }
 
     public void UnlockShipColor(int shipColor)
@@ -149,34 +145,6 @@ public class GameManager : MonoBehaviour
         if (shipColor >= 0 && shipColor < m_UnlockedColors.Count)
         {
             m_UnlockedColors[shipColor] = true;
-        }
-        else
-        {
-            Debug.LogError($"ShipColor index {shipColor} is out of range.");
-        }
-    }
-
-    public void LockShipType(int shipType)
-    {
-        if (shipType >= 0 && shipType < m_UnlockedShips.Count)
-        {
-            m_UnlockedShips[shipType] = false;
-        }
-        else
-        {
-            Debug.LogError($"ShipType index {shipType} is out of range.");
-        }
-    }
-
-    public void LockShipColor(int shipColor)
-    {
-        if (shipColor >= 0 && shipColor < m_UnlockedColors.Count)
-        {
-            m_UnlockedColors[shipColor] = false;
-        }
-        else
-        {
-            Debug.LogError($"ShipColor index {shipColor} is out of range.");
         }
     }
     #endregion
