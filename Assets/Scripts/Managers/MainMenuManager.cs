@@ -43,6 +43,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private CanvasGroup m_MainMenuCanvas = null;
     [SerializeField] private TextMeshProUGUI m_CreditText = null;
     [SerializeField] private TextMeshProUGUI m_LeaderboardText = null;
+    [SerializeField] private TMP_InputField m_InputField = null;
     [SerializeField] private ShipTypeSettingsButton[] m_ShipTypeButtons = null;
     [SerializeField] private ShipColorSettingsButton[] m_ShipColorButtons = null;
     #endregion
@@ -65,6 +66,7 @@ public class MainMenuManager : MonoBehaviour
     private void Start()
     {
         UpdateLeaderboard(SaveSystem.m_SaveData.leaderboardData);
+        m_InputField.text = GameManager.Instance.m_CurrentName;
 
         InstantiateSpaceship();
         UpdateShipTypeLocks();
@@ -103,7 +105,6 @@ public class MainMenuManager : MonoBehaviour
         }
 
         Vector3 spawnPosition = m_Spawnpoint.position + SpaceshipManager.Instance.GetSpawnOffset(currentSpaceShip.shipType);
-        Debug.Log(spawnPosition);
 
         m_Spaceship = Instantiate(spaceshipPrefab, spawnPosition, m_SpawnRotation);
     }
@@ -204,6 +205,16 @@ public class MainMenuManager : MonoBehaviour
     #endregion
 
     #region Public Methods
+    public void SetCurrentName(string name)
+    {
+        if (name == "")
+        {
+            m_InputField.text = GameManager.Instance.m_CurrentName;
+            return;
+        }
+        GameManager.Instance.m_CurrentName = name;
+    }
+
     public void ChangeCurrentSpaceshipType(int newShipType)
     {
         GameManager.Instance.m_CurrentSpaceShip.shipType = (ShipType)newShipType;
@@ -241,7 +252,9 @@ public class MainMenuManager : MonoBehaviour
         // Fade in the black panel and load the new scene
         FadeManager.Instance.FadeOutAndLoadScene(sceneName);
     }
+    #endregion
 
+    #region Unlockables
     public void UnlockData(ItemData data)
     {
         if (CurrencyManager.Instance.Credits < data.m_Price)

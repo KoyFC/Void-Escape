@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     #region Variables
     public static GameManager Instance = null;
 
-    private string m_CurrentName = string.Empty;
+    public string m_CurrentName = string.Empty;
     private List<PlayerScore> m_Leaderboard = new();
     public List<bool> m_UnlockedShips = new();
     public List<bool> m_UnlockedColors = new();
@@ -127,11 +127,6 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Public Methods
-    public void SetCurrentName(string name)
-    {
-        m_CurrentName = name;
-    }
-
     public void UnlockShipType(int shipType)
     {
         if (shipType >= 0 && shipType < m_UnlockedShips.Count)
