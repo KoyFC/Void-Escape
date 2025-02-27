@@ -66,15 +66,14 @@ public class MainMenuManager : MonoBehaviour
         UpdateLeaderboard(SaveSystem.m_SaveData.leaderboardData);
 
         InstantiateSpaceship();
-        
+        UpdateShipTypeLocks();
+        UpdateShipColorLocks();
     }
 
     private void Update()
     {
         // Rotate spaceship around the global Y axis
         m_Spaceship.transform.Rotate(Vector3.up, m_RotationSpeed * Time.deltaTime);
-
-        UpdateLocks(); // Move to use events
     }
 
     private void OnEnable()
@@ -133,12 +132,6 @@ public class MainMenuManager : MonoBehaviour
         }
 
         m_LeaderboardText.text = sb.ToString();
-    }
-
-    private void UpdateLocks()
-    {
-        UpdateShipTypeLocks();
-        UpdateShipColorLocks();
     }
 
     private void UpdateShipTypeLocks()
@@ -248,21 +241,25 @@ public class MainMenuManager : MonoBehaviour
     public void UnlockShipType(int shipType)
     {
         GameManager.Instance.UnlockShipType(shipType);
+        UpdateShipTypeLocks();
     }
 
     public void UnlockShipColor(int shipColor)
     {
         GameManager.Instance.UnlockShipColor(shipColor);
+        UpdateShipColorLocks();
     }
 
     public void LockShipType(int shipType)
     {
         GameManager.Instance.LockShipType(shipType);
+        UpdateShipTypeLocks();
     }
 
     public void LockShipColor(int shipColor)
     {
         GameManager.Instance.LockShipColor(shipColor);
+        UpdateShipColorLocks();
     }
     #endregion
 }
