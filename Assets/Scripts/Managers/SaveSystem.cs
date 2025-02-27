@@ -72,6 +72,10 @@ public class SaveSystem
             #if UNITY_EDITOR
                 Debug.LogWarning("Save file not found, nothing to load.");
             #endif
+
+            // Create a new empty file and load again
+            SavePlayerData();
+            LoadSaveData();
         }
         else
         {
@@ -89,6 +93,10 @@ public class SaveSystem
             #if UNITY_EDITOR
                 Debug.LogWarning("Leaderboard file not found, nothing to load.");
             #endif
+
+            // Create a new empty file and load again
+            SaveLeaderboardData();
+            LoadLeaderboardData();
         }
         else
         {
