@@ -4548,7 +4548,7 @@ GameObject:
   - component: {fileID: 745426777}
   - component: {fileID: 745426778}
   m_Layer: 5
-  m_Name: Type Selector Locks
+  m_Name: Type Selector Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5166,7 +5166,7 @@ GameObject:
   - component: {fileID: 893775612}
   - component: {fileID: 893775613}
   m_Layer: 5
-  m_Name: Color Selector Locks
+  m_Name: Color Selector Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5255,40 +5255,68 @@ MonoBehaviour:
   m_CreditText: {fileID: 302743771}
   m_LeaderboardText: {fileID: 1877574377}
   m_InputField: {fileID: 1568124874}
-  m_ShipTypeButtons:
+  m_ShipTypeSettingsButtons:
   - shipType: 0
     button: {fileID: 1927511959}
-    lockIconObject: {fileID: 1568210846}
-    lockIconImage: {fileID: 1568210848}
+    iconObject: {fileID: 1568210846}
+    iconImage: {fileID: 1568210848}
   - shipType: 1
     button: {fileID: 1489747750}
-    lockIconObject: {fileID: 119607310}
-    lockIconImage: {fileID: 119607312}
+    iconObject: {fileID: 119607310}
+    iconImage: {fileID: 119607312}
   - shipType: 2
     button: {fileID: 506643109}
-    lockIconObject: {fileID: 397948040}
-    lockIconImage: {fileID: 397948042}
+    iconObject: {fileID: 397948040}
+    iconImage: {fileID: 397948042}
   - shipType: 3
     button: {fileID: 21126525}
-    lockIconObject: {fileID: 1477682749}
-    lockIconImage: {fileID: 1477682751}
-  m_ShipColorButtons:
+    iconObject: {fileID: 1477682749}
+    iconImage: {fileID: 1477682751}
+  m_ShipColorSettingsButtons:
   - shipColor: 0
     button: {fileID: 36180333}
-    lockIconObject: {fileID: 1736858130}
-    lockIconImage: {fileID: 1736858133}
+    iconObject: {fileID: 1736858130}
+    iconImage: {fileID: 1736858133}
   - shipColor: 1
     button: {fileID: 1581829146}
-    lockIconObject: {fileID: 1854833838}
-    lockIconImage: {fileID: 1854833841}
+    iconObject: {fileID: 1854833838}
+    iconImage: {fileID: 1854833841}
   - shipColor: 2
     button: {fileID: 567342124}
-    lockIconObject: {fileID: 698077561}
-    lockIconImage: {fileID: 698077564}
+    iconObject: {fileID: 698077561}
+    iconImage: {fileID: 698077564}
   - shipColor: 3
     button: {fileID: 311027178}
-    lockIconObject: {fileID: 861678000}
-    lockIconImage: {fileID: 861678003}
+    iconObject: {fileID: 861678000}
+    iconImage: {fileID: 861678003}
+  m_ShipTypeShopButtons:
+  - shipType: 1
+    button: {fileID: 79922771}
+    iconObject: {fileID: 28415890}
+    iconImage: {fileID: 28415892}
+  - shipType: 2
+    button: {fileID: 625530199}
+    iconObject: {fileID: 1342172845}
+    iconImage: {fileID: 1342172847}
+  - shipType: 3
+    button: {fileID: 424486109}
+    iconObject: {fileID: 908911826}
+    iconImage: {fileID: 908911828}
+  m_ShipColorShopButtons:
+  - shipColor: 1
+    button: {fileID: 1903527831}
+    iconObject: {fileID: 122533286}
+    iconImage: {fileID: 122533288}
+  - shipColor: 2
+    button: {fileID: 461365723}
+    iconObject: {fileID: 1292157468}
+    iconImage: {fileID: 1292157470}
+  - shipColor: 3
+    button: {fileID: 1887488505}
+    iconObject: {fileID: 112960998}
+    iconImage: {fileID: 112961000}
+  m_CartImage: {fileID: -53500078, guid: 20720c7f609ea9b42a5eb7dcc76d3e36, type: 3}
+  m_SoldImage: {fileID: -1093671998, guid: ab104ee4115d9a541a5ae7506ad13db9, type: 3}
 --- !u!4 &903250277
 Transform:
   m_ObjectHideFlags: 0
@@ -8652,7 +8680,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: v0.7.1
+  m_text: v0.7.2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

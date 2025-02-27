@@ -9,21 +9,21 @@ public class MainMenuManager : MonoBehaviour
 {
     #region Structures
     [System.Serializable]
-    private struct ShipTypeSettingsButton
+    private struct ShipTypeButton
     {
         public ShipType shipType;
         public Button button;
-        public GameObject lockIconObject;
-        public Image lockIconImage;
+        public GameObject iconObject;
+        public Image iconImage;
     }
 
     [System.Serializable]
-    private struct ShipColorSettingsButton
+    private struct ShipColorButton
     {
         public ShipColor shipColor;
         public Button button;
-        public GameObject lockIconObject;
-        public Image lockIconImage;
+        public GameObject iconObject;
+        public Image iconImage;
     }
     #endregion
 
@@ -41,11 +41,17 @@ public class MainMenuManager : MonoBehaviour
 
     [Header("UI Elements")]
     [SerializeField] private CanvasGroup m_MainMenuCanvas = null;
+    [Space]
     [SerializeField] private TextMeshProUGUI m_CreditText = null;
     [SerializeField] private TextMeshProUGUI m_LeaderboardText = null;
     [SerializeField] private TMP_InputField m_InputField = null;
-    [SerializeField] private ShipTypeSettingsButton[] m_ShipTypeButtons = null;
-    [SerializeField] private ShipColorSettingsButton[] m_ShipColorButtons = null;
+    [Space]
+    [SerializeField] private ShipTypeButton[] m_ShipTypeSettingsButtons = null;
+    [SerializeField] private ShipColorButton[] m_ShipColorSettingsButtons = null;
+    [Space]
+    [SerializeField] private ShipTypeButton[] m_ShipTypeShopButtons = null;
+    [SerializeField] private ShipColorButton[] m_ShipColorShopButtons = null;
+    [SerializeField] private Sprite m_CartImage = null, m_SoldImage = null;
     #endregion
 
     #region Main Methods
@@ -69,8 +75,7 @@ public class MainMenuManager : MonoBehaviour
         m_InputField.text = GameManager.Instance.m_CurrentName;
 
         InstantiateSpaceship();
-        UpdateShipTypeLocks();
-        UpdateShipColorLocks();
+        UpdateAllUIElements();
     }
 
     private void Update()
@@ -111,6 +116,16 @@ public class MainMenuManager : MonoBehaviour
     #endregion
 
     #region UI Methods
+    private void UpdateAllUIElements()
+    {
+        m_InputField.text = GameManager.Instance.m_CurrentName;
+
+        UpdateShipTypeLocks();
+        UpdateShipColorLocks();
+        UpdateShipTypeShop();
+        UpdateShipColorShop();
+    }
+
     private void UpdateCreditText(int newCredits)
     {
         m_CreditText.text = newCredits.ToString() + (newCredits == 1 ? " credit" : " credits");
@@ -141,66 +156,98 @@ public class MainMenuManager : MonoBehaviour
 
     private void UpdateShipTypeLocks()
     {
-        for (int i = 0; i < m_ShipTypeButtons.Length; i++)
+        for (int i = 0; i < m_ShipTypeSettingsButtons.Length; i++)
         {
-            ShipTypeSettingsButton button = m_ShipTypeButtons[i];
+            ShipTypeButton button = m_ShipTypeSettingsButtons[i];
 
             if (i < GameManager.Instance.m_UnlockedShips.Count && GameManager.Instance.m_UnlockedShips[(int)button.shipType])
-            {
-                button.lockIconImage.enabled = false;
-                button.lockIconImage.raycastTarget = false;
+            { // Can interact with the button
+                button.iconImage.enabled = false;
+                button.iconImage.raycastTarget = false;
                 button.button.interactable = true;
 
-                foreach (Transform child in button.lockIconObject.transform)
+                foreach (Transform child in button.iconObject.transform)
                 {
                     child.gameObject.SetActive(false);
                 }
             }
             else
-            {
-                button.lockIconImage.enabled = true;
-                button.lockIconImage.raycastTarget = true;
+            { // Cannot interact with the button
+                button.iconImage.enabled = true;
+                button.iconImage.raycastTarget = true;
                 button.button.interactable = false;
 
-                foreach (Transform child in button.lockIconObject.transform)
+                foreach (Transform child in button.iconObject.transform)
                 {
                     child.gameObject.SetActive(true);
                 }
             }
-            m_ShipTypeButtons[i] = button;
+            m_ShipTypeSettingsButtons[i] = button;
         }
     }
 
     private void UpdateShipColorLocks()
     {
-        for (int i = 0; i < m_ShipColorButtons.Length; i++)
+        for (int i = 0; i < m_ShipColorSettingsButtons.Length; i++)
         {
-            ShipColorSettingsButton button = m_ShipColorButtons[i];
+            ShipColorButton button = m_ShipColorSettingsButtons[i];
 
             if (i < GameManager.Instance.m_UnlockedColors.Count && GameManager.Instance.m_UnlockedColors[(int)button.shipColor])
-            {
-                button.lockIconImage.enabled = false;
-                button.lockIconImage.raycastTarget = false;
+            { // Can interact
+                button.iconImage.enabled = false;
+                button.iconImage.raycastTarget = false;
                 button.button.interactable = true;
             }
             else
-            {
-                button.lockIconImage.enabled = true;
-                button.lockIconImage.raycastTarget = true;
+            { // Cannot interact
+                button.iconImage.enabled = true;
+                button.iconImage.raycastTarget = true;
                 button.button.interactable = false;
             }
-            m_ShipColorButtons[i] = button;
+            m_ShipColorSettingsButtons[i] = button;
         }
     }
 
     private void UpdateShipTypeShop()
     {
-        Debug.Log("UpdateShipTypeShop");
+        for (int i = 0; i < m_ShipTypeShopButtons.Length; i++)
+        {
+            ShipTypeButton button = m_ShipTypeShopButtons[i];
+            if (i < GameManager.Instance.m_UnlockedShips.Count && GameManager.Instance.m_UnlockedShips[(int)button.shipType])
+            { // Cannot interact with the button (ship unlocked)
+                button.iconImage.sprite = m_SoldImage;
+                button.iconImage.raycastTarget = true;
+                button.button.interactable = false;
+            }
+            else
+            { // Can interact with the button (ship locked)
+                button.iconImage.sprite = m_CartImage;
+                button.iconImage.raycastTarget = false;
+                button.button.interactable = true;
+            }
+            m_ShipTypeShopButtons[i] = button;
+        }
     }
 
     private void UpdateShipColorShop()
     {
-        Debug.Log("UpdateShipColorShop");
+        for (int i = 0; i < m_ShipColorShopButtons.Length; i++)
+        {
+            ShipColorButton button = m_ShipColorShopButtons[i];
+            if (i < GameManager.Instance.m_UnlockedColors.Count && GameManager.Instance.m_UnlockedColors[(int)button.shipColor])
+            { // Cannot interact with the button (color unlocked)
+                button.iconImage.sprite = m_SoldImage;
+                button.iconImage.raycastTarget = true;
+                button.button.interactable = false;
+            }
+            else
+            { // Can interact with the button (color locked)
+                button.iconImage.sprite = m_CartImage;
+                button.iconImage.raycastTarget = false;
+                button.button.interactable = true;
+            }
+            m_ShipColorShopButtons[i] = button;
+        }
     }
     #endregion
 
@@ -273,6 +320,7 @@ public class MainMenuManager : MonoBehaviour
                 break;
             case ItemData.ItemType.Upgrade:
                 UnlockUpgrade(data);
+                
                 break;
             default:
                 Debug.LogWarning("Invalid item type.");

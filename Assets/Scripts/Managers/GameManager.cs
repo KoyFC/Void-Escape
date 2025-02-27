@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     #region Variables
     public static GameManager Instance = null;
 
-    public string m_CurrentName = string.Empty;
+    public string m_CurrentName = "CoolShip";
     private List<PlayerScore> m_Leaderboard = new();
     public List<bool> m_UnlockedShips = new();
     public List<bool> m_UnlockedColors = new();
@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
+            m_CurrentName = "CoolShip";
             InitializeDefaultShipTypes();
             InitializeDefaultColors();
             InitializeDefaultShip();

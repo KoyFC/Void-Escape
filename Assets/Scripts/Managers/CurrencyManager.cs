@@ -20,6 +20,8 @@ public class CurrencyManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        SetCredits(120);
     }
 
     public void SetCredits(int amount)
