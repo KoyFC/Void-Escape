@@ -46,24 +46,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spaceshipPrefabs:
   - type: 0
+    spawnOffset: {x: 0, y: 0, z: 0}
     colorVariants:
     - {fileID: 2590961875585455753, guid: 531736f35ba28fa479c43e141ff36eb9, type: 3}
     - {fileID: 5974848700162863639, guid: 1513517040afd66468b5ae83d46c2d61, type: 3}
     - {fileID: 4922597481459348963, guid: f644b24d0700a1343bd1588045c74f8c, type: 3}
     - {fileID: 5528413085628469828, guid: b7e4de459fcdd2c44869e249fe092d2d, type: 3}
   - type: 1
+    spawnOffset: {x: 0, y: 0.5, z: 0}
     colorVariants:
     - {fileID: 212329997069218202, guid: 68f4e20f77f55d540964a86dd6d113c6, type: 3}
     - {fileID: 5222457940648385557, guid: 6ebadf5cef985024e82ac37f64ffb78c, type: 3}
     - {fileID: 2036206697485847105, guid: 1ad0d55fd8d40d242a8d26fff0cded30, type: 3}
     - {fileID: 8742597964439968141, guid: 36efb93610f35dd4e8833be7e94d493b, type: 3}
   - type: 2
+    spawnOffset: {x: 0, y: -1, z: 0}
     colorVariants:
     - {fileID: 5061587511365736196, guid: 8af83662c6b47424f9c7b9e781677c84, type: 3}
     - {fileID: 4797380588878266374, guid: 41619acd782c4ae4ea6d05ad5a1c3609, type: 3}
     - {fileID: 5738384060155399600, guid: 64b249edca35037479a0c56e159ef31a, type: 3}
     - {fileID: 250291374004248630, guid: b3bf1cbc95c2d194e996d4f1e42f34c5, type: 3}
   - type: 3
+    spawnOffset: {x: 0, y: 0, z: 0}
     colorVariants:
     - {fileID: 1884456511693476945, guid: 44abd18fa82b4064eaa79a477c793c72, type: 3}
     - {fileID: 3457274990752055698, guid: e90f9af8dd25e6041a968ec8c4b86c48, type: 3}

@@ -101,7 +101,10 @@ public class MainMenuManager : MonoBehaviour
             Destroy(m_Spaceship);
         }
 
-        m_Spaceship = Instantiate(spaceshipPrefab, m_Spawnpoint.position, m_SpawnRotation);
+        Vector3 spawnPosition = m_Spawnpoint.position + SpaceshipManager.Instance.GetSpawnOffset(currentSpaceShip.shipType);
+        Debug.Log(spawnPosition);
+
+        m_Spaceship = Instantiate(spaceshipPrefab, spawnPosition, m_SpawnRotation);
     }
     #endregion
 

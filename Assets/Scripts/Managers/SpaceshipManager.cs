@@ -8,6 +8,7 @@ public class SpaceshipManager : MonoBehaviour
     public struct SpaceshipVariant
     {
         public ShipType type;
+        public Vector3 spawnOffset;
         public List<GameObject> colorVariants;
     }
     #endregion
@@ -52,6 +53,18 @@ public class SpaceshipManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public Vector3 GetSpawnOffset(ShipType type)
+    {
+        foreach (SpaceshipVariant ship in spaceshipPrefabs)
+        {
+            if (ship.type == type)
+            {
+                return ship.spawnOffset;
+            }
+        }
+        return Vector3.zero;
     }
 }
 
