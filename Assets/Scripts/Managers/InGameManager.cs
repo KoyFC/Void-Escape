@@ -1,6 +1,6 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
 
 public class InGameManager : MonoBehaviour
 {
@@ -8,6 +8,15 @@ public class InGameManager : MonoBehaviour
 
     [SerializeField] private InputActionAsset m_InputActions = null;
     private GameObject m_Player = null;
+
+    [Header("Game Settings")]
+    public bool m_ChangePerspectiveNow = false;
+    public event Action OnPerspectiveChanged;
+
+    [Header("Player Settings")]
+    public float m_LerpDuration = 0.25f;
+    [HideInInspector] public bool m_IsHorizontal = true;
+    public bool m_InvertedControls = false;
 
     private void Awake()
     {
@@ -24,11 +33,14 @@ public class InGameManager : MonoBehaviour
         ApplyPlayerComponents();
     }
 
-    private void Start()
+    private void Update()
     {
-        
-
-
+        if (m_ChangePerspectiveNow)
+        {
+            m_ChangePerspectiveNow = false;
+            m_IsHorizontal = !m_IsHorizontal;
+            OnPerspectiveChanged?.Invoke();
+        }
     }
 
     private void SpawnSpaceship()

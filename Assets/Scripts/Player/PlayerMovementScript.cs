@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerMovementScript : MonoBehaviour
 {
@@ -8,13 +9,13 @@ public class PlayerMovementScript : MonoBehaviour
     private void OnEnable()
     {
         PlayerInputScript.Instance.OnMovementPressed += HandleMovement;
-        PlayerInputScript.Instance.OnPerspectiveChanged += ResetPosition;
+        InGameManager.Instance.OnPerspectiveChanged += ResetPosition;
     }
 
     private void OnDisable()
     {
         PlayerInputScript.Instance.OnMovementPressed -= HandleMovement;
-        PlayerInputScript.Instance.OnPerspectiveChanged -= ResetPosition;
+        InGameManager.Instance.OnPerspectiveChanged -= ResetPosition;
     }
     #endregion
 
@@ -28,16 +29,20 @@ public class PlayerMovementScript : MonoBehaviour
         if (PlayerInputScript.Instance.m_PreviousPressed && m_CurrentIndex > -1)
         {
             m_CurrentIndex--;
-            UpdatePlayerPositionHorizontal();
         }
 
-        if (PlayerInputScript.Instance.m_IsHorizontal)
+        StopAllCoroutines();
+
+        Vector3 newPosition;
+        if (InGameManager.Instance.m_IsHorizontal)
         {
-            UpdatePlayerPositionHorizontal();
+            newPosition = UpdatePlayerPositionHorizontal();
+            StartCoroutine(LerpToPosition(newPosition));
         }
         else
         {
-            UpdatePlayerPositionVertical();
+            newPosition = UpdatePlayerPositionVertical();
+            StartCoroutine(LerpToPosition(newPosition));
         }
     }
     #endregion
@@ -46,10 +51,11 @@ public class PlayerMovementScript : MonoBehaviour
     private void ResetPosition()
     {
         m_CurrentIndex = 0;
-        transform.position = PointManager.Instance.m_Points.CenterPoint.position;
+        Vector3 centerPoint = PointManager.Instance.m_Points.CenterPoint.position;
+        StartCoroutine(LerpToPosition(centerPoint));
     }
 
-    private void UpdatePlayerPositionHorizontal()
+    private Vector3 UpdatePlayerPositionHorizontal()
     {
         Vector3 newPosition = new Vector3(0, 0, 10);
 
@@ -57,20 +63,19 @@ public class PlayerMovementScript : MonoBehaviour
         {
             case -1:
                 newPosition.x = PointManager.Instance.m_Points.LeftPoint.position.x;
-                transform.position = newPosition;
                 break;
             case 0:
                 newPosition.x = PointManager.Instance.m_Points.CenterPoint.position.x;
-                transform.position = newPosition;
                 break;
             case 1:
                 newPosition.x = PointManager.Instance.m_Points.RightPoint.position.x;
-                transform.position = newPosition;
                 break;
         }
+
+        return newPosition;
     }
 
-    private void UpdatePlayerPositionVertical()
+    private Vector3 UpdatePlayerPositionVertical()
     {
         Vector3 newPosition = new Vector3(0, 0, 10);
 
@@ -78,17 +83,32 @@ public class PlayerMovementScript : MonoBehaviour
         {
             case 1:
                 newPosition.y = PointManager.Instance.m_Points.BottomPoint.position.y;
-                transform.position = newPosition;
                 break;
             case 0:
                 newPosition.y = PointManager.Instance.m_Points.CenterPoint.position.y;
-                transform.position = newPosition;
                 break;
             case -1:
                 newPosition.y = PointManager.Instance.m_Points.TopPoint.position.y;
-                transform.position = newPosition;
                 break;
         }
+
+        return newPosition;
+    }
+
+    private IEnumerator LerpToPosition(Vector3 targetPosition)
+    {
+        float time = 0;
+        float duration = InGameManager.Instance.m_LerpDuration;
+        Vector3 startPosition = transform.position;
+
+        while (time < duration)
+        {
+            transform.position = Vector3.Lerp(startPosition, targetPosition, time / duration);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = targetPosition;
     }
     #endregion
 }

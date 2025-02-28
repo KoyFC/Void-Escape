@@ -10,16 +10,11 @@ public class PlayerInputScript : MonoBehaviour
 
     private PlayerInput m_PlayerInput = null;
 
-    public bool m_ChangePerspectiveNow = false;
-    [HideInInspector] public bool m_IsHorizontal = true;
-    public bool m_InvertedControls = false;
-
     [HideInInspector] public bool m_PreviousPressed = false;
     [HideInInspector] public bool m_NextPressed = false;
     [HideInInspector] public bool m_FireHeld = false;
 
     public event Action OnMovementPressed;
-    public event Action OnPerspectiveChanged;
 
     void Awake()
     {
@@ -54,7 +49,7 @@ public class PlayerInputScript : MonoBehaviour
             m_PlayerInput.actions["Right"].WasPressedThisFrame() ||
             m_PlayerInput.actions["Down"].WasPressedThisFrame();
 
-        if (m_InvertedControls)
+        if (InGameManager.Instance.m_InvertedControls)
         {
             bool aux = m_PreviousPressed;
             m_PreviousPressed = m_NextPressed;
@@ -69,13 +64,6 @@ public class PlayerInputScript : MonoBehaviour
         if (m_PreviousPressed || m_NextPressed)
         {
             OnMovementPressed?.Invoke();
-        }
-
-        if (m_ChangePerspectiveNow)
-        {
-            m_ChangePerspectiveNow = false;
-            m_IsHorizontal = !m_IsHorizontal;
-            OnPerspectiveChanged?.Invoke();
         }
     }
 }
