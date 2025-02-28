@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 public class InGameManager : MonoBehaviour
@@ -25,6 +26,11 @@ public class InGameManager : MonoBehaviour
     [Header("Player Settings")]
     public float m_MovementLerpDuration = 0.1f;
     public float m_RotationLerpDuration = 0.1f;
+
+    [Header("UI Settings")]
+    [SerializeField] private Image m_LeftArrowImage = null;
+    [SerializeField] private Image m_RightArrowImage = null;
+    [SerializeField] private Sprite[] m_ArrowSprites = null;
 
 
     private void Awake()
@@ -79,7 +85,7 @@ public class InGameManager : MonoBehaviour
         StartCoroutine(ChangePerspective());
     }
 
-    private void EndGame()
+    public void EndGame()
     {
         StopAllCoroutines();
 
@@ -108,7 +114,12 @@ public class InGameManager : MonoBehaviour
             m_PlayerController.m_PlayerMovement.m_IsMoving = true;
 
             yield return new WaitForSeconds(0.75f);
+
             OnPerspectiveChanged?.Invoke(); // Notify the player movement script that the perspective has changed
+
+            m_LeftArrowImage.sprite = m_IsHorizontal ? m_ArrowSprites[2] : m_ArrowSprites[0];
+            m_RightArrowImage.sprite = m_IsHorizontal ? m_ArrowSprites[3] : m_ArrowSprites[1];
+
             yield return new WaitForSeconds(0.25f);
 
             m_PlayerController.m_PlayerMovement.m_IsMoving = false;
