@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,7 +10,28 @@ public class PlayerInputScript : MonoBehaviour
 
     private PlayerInput m_PlayerInput = null;
 
-    [HideInInspector] public Vector2 m_Movement = Vector2.zero;
+    public bool m_ChangePerspectiveNow = false;
+    [HideInInspector] public bool m_IsHorizontal = true;
+    public bool m_InvertedControls = false;
+
+    [HideInInspector] public bool m_PreviousPressed = false;
+    [HideInInspector] public bool m_NextPressed = false;
+    [HideInInspector] public bool m_FireHeld = false;
+
+    public event Action OnMovementPressed;
+    public event Action OnPerspectiveChanged;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -19,10 +41,41 @@ public class PlayerInputScript : MonoBehaviour
     void Update()
     {
         HandleInput();
+        HandleEvents();
     }
 
     private void HandleInput()
     {
-        //m_Movement = m_PlayerInput.actions["Move"].ReadValue<Vector2>();
+        m_PreviousPressed =
+            m_PlayerInput.actions["Left"].WasPressedThisFrame() ||
+            m_PlayerInput.actions["Up"].WasPressedThisFrame();
+
+        m_NextPressed = 
+            m_PlayerInput.actions["Right"].WasPressedThisFrame() ||
+            m_PlayerInput.actions["Down"].WasPressedThisFrame();
+
+        if (m_InvertedControls)
+        {
+            bool aux = m_PreviousPressed;
+            m_PreviousPressed = m_NextPressed;
+            m_NextPressed = aux;
+        }
+
+        m_FireHeld = m_PlayerInput.actions["Fire"].IsPressed();
+    }
+
+    private void HandleEvents()
+    {
+        if (m_PreviousPressed || m_NextPressed)
+        {
+            OnMovementPressed?.Invoke();
+        }
+
+        if (m_ChangePerspectiveNow)
+        {
+            m_ChangePerspectiveNow = false;
+            m_IsHorizontal = !m_IsHorizontal;
+            OnPerspectiveChanged?.Invoke();
+        }
     }
 }

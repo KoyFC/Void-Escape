@@ -43,6 +43,17 @@ public class SpaceshipManager : MonoBehaviour
     }
     #endregion
 
+    #region Helper Methods
+    public GameObject InstantiateCurrentSpaceship(Vector3 position, Quaternion rotation)
+    {
+        SpaceshipAttributes currentSpaceShip = GameManager.Instance.m_CurrentSpaceShip;
+
+        GameObject spaceshipPrefab = GetSpaceshipPrefab(currentSpaceShip.shipType, currentSpaceShip.shipColor);
+
+        return Instantiate(spaceshipPrefab, position, rotation);
+    }
+    #endregion
+
     public GameObject GetSpaceshipPrefab(ShipType type, ShipColor color)
     {
         foreach (SpaceshipVariant ship in spaceshipPrefabs)

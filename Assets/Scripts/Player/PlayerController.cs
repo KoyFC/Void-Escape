@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerMovementScript))]
 public class PlayerController : MonoBehaviour
 {
-    internal PlayerInputScript m_PlayerInput = null;
+    public PlayerInputScript m_PlayerInput = null;
     internal PlayerMovementScript m_PlayerMovement = null;
 
     void Awake()

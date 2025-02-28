@@ -101,8 +101,6 @@ public class MainMenuManager : MonoBehaviour
     {
         SpaceshipAttributes currentSpaceShip = GameManager.Instance.m_CurrentSpaceShip;
 
-        GameObject spaceshipPrefab = SpaceshipManager.Instance.GetSpaceshipPrefab(currentSpaceShip.shipType, currentSpaceShip.shipColor);
-
         if (m_Spaceship != null)
         {
             m_SpawnRotation = m_Spaceship.transform.rotation;
@@ -110,8 +108,8 @@ public class MainMenuManager : MonoBehaviour
         }
 
         Vector3 spawnPosition = m_Spawnpoint.position + SpaceshipManager.Instance.GetSpawnOffset(currentSpaceShip.shipType);
-
-        m_Spaceship = Instantiate(spaceshipPrefab, spawnPosition, m_SpawnRotation);
+        
+        m_Spaceship = SpaceshipManager.Instance.InstantiateCurrentSpaceship(spawnPosition, m_SpawnRotation);
     }
     #endregion
 
