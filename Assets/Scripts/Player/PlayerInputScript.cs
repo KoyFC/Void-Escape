@@ -41,13 +41,9 @@ public class PlayerInputScript : MonoBehaviour
 
     private void HandleInput()
     {
-        m_PreviousPressed =
-            m_PlayerInput.actions["Left"].WasPressedThisFrame() ||
-            m_PlayerInput.actions["Up"].WasPressedThisFrame();
+        m_PreviousPressed = m_PlayerInput.actions["Previous"].WasPressedThisFrame();
 
-        m_NextPressed = 
-            m_PlayerInput.actions["Right"].WasPressedThisFrame() ||
-            m_PlayerInput.actions["Down"].WasPressedThisFrame();
+        m_NextPressed = m_PlayerInput.actions["Next"].WasPressedThisFrame();
 
         if (InGameManager.Instance.m_InvertedControls)
         {

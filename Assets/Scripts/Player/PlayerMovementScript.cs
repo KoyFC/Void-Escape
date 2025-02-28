@@ -4,6 +4,8 @@ using System.Collections;
 public class PlayerMovementScript : MonoBehaviour
 {
     private int m_CurrentIndex = 0;
+    private int m_PreviousIndex = 0;
+    private bool m_IsMoving = false;
 
     #region Main Methods
     private void OnEnable()
@@ -22,6 +24,10 @@ public class PlayerMovementScript : MonoBehaviour
     #region Handling Methods
     private void HandleMovement()
     {
+        if (m_IsMoving) return;
+
+        m_PreviousIndex = m_CurrentIndex;
+
         if (PlayerInputScript.Instance.m_NextPressed && m_CurrentIndex < 1)
         {
             m_CurrentIndex++;
@@ -31,19 +37,30 @@ public class PlayerMovementScript : MonoBehaviour
             m_CurrentIndex--;
         }
 
+        // If we try to move to the same position (if we're already at the extremes) we don't continue.
+        // If we did continue, player movement would get disabled for the duration of the movement,
+        // even if we didn't physically move. Anyway, just leave this line here.
+        if (m_PreviousIndex == m_CurrentIndex) return; 
+
         StopAllCoroutines();
 
         Vector3 newPosition;
+        Quaternion newRotation;
+        int indexDifference = m_PreviousIndex - m_CurrentIndex; // Determining the multiplier that we apply to the rotation
+
         if (InGameManager.Instance.m_IsHorizontal)
         {
             newPosition = UpdatePlayerPositionHorizontal();
-            StartCoroutine(LerpToPosition(newPosition));
+            newRotation = Quaternion.Euler(0, 0, indexDifference * 45);
         }
         else
         {
             newPosition = UpdatePlayerPositionVertical();
-            StartCoroutine(LerpToPosition(newPosition));
+            newRotation = Quaternion.Euler(-indexDifference * 30, 0, 0);
         }
+
+        StartCoroutine(LerpToPosition(newPosition));
+        StartCoroutine(LerpRotation(newRotation));
     }
     #endregion
 
@@ -97,8 +114,10 @@ public class PlayerMovementScript : MonoBehaviour
 
     private IEnumerator LerpToPosition(Vector3 targetPosition)
     {
+        m_IsMoving = true;
+
         float time = 0;
-        float duration = InGameManager.Instance.m_LerpDuration;
+        float duration = InGameManager.Instance.m_MovementLerpDuration;
         Vector3 startPosition = transform.position;
 
         while (time < duration)
@@ -109,6 +128,32 @@ public class PlayerMovementScript : MonoBehaviour
         }
 
         transform.position = targetPosition;
+        m_IsMoving = false;
+    }
+
+    private IEnumerator LerpRotation(Quaternion targetRotation)
+    {
+        float time = 0;
+        float duration = InGameManager.Instance.m_RotationLerpDuration;
+        Quaternion originalRotation = transform.rotation;
+
+        while (time < duration)
+        {
+            transform.rotation = Quaternion.Lerp(originalRotation, targetRotation, time / duration);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        transform.rotation = targetRotation;
+
+        time = 0;
+        while (time < duration)
+        {
+            transform.rotation = Quaternion.Lerp(targetRotation, Quaternion.identity, time / duration);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        transform.rotation = Quaternion.identity;
     }
     #endregion
 }
+

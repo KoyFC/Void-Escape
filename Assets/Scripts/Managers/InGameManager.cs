@@ -14,7 +14,9 @@ public class InGameManager : MonoBehaviour
     public event Action OnPerspectiveChanged;
 
     [Header("Player Settings")]
-    public float m_LerpDuration = 0.25f;
+    public float m_MovementLerpDuration = 0.05f;
+    public float m_RotationLerpDuration = 0.2f;
+
     [HideInInspector] public bool m_IsHorizontal = true;
     public bool m_InvertedControls = false;
 
