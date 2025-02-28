@@ -1795,19 +1795,58 @@ MonoBehaviour:
       LookAtTarget: {fileID: 0}
       CustomLookAtTarget: 0
   DefaultBlend:
-    Style: 1
-    Time: 0.5
+    Style: 7
+    Time: 1
     CustomCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.61075634
+        value: 0.53485936
+        inSlope: 1.496755
+        outSlope: 1.496755
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
   AnimatedTarget: {fileID: 1952263573}
   LayerIndex: 0
-  Instructions: []
-  HashOfParent: []
+  Instructions:
+  - FullHash: -1156395619
+    Camera: {fileID: 2098959469}
+    ActivateAfter: 0
+    MinDuration: 0
+  - FullHash: 882153084
+    Camera: {fileID: 514580879}
+    ActivateAfter: 0
+    MinDuration: 0
+  HashOfParent:
+  - Hash: -1156395619
+    HashOfParent: 756556552
+  - Hash: 882153084
+    HashOfParent: 756556552
   m_LegacyLookAt: {fileID: 0}
   m_LegacyFollow: {fileID: 0}
 --- !u!4 &1823106492
@@ -2025,11 +2064,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_Score: 0
   m_ChangePerspectiveNow: 0
-  m_MovementLerpDuration: 0.1
-  m_RotationLerpDuration: 0.1
   m_IsHorizontal: 1
   m_InvertedControls: 0
+  m_MovementLerpDuration: 0.1
+  m_RotationLerpDuration: 0.1
 --- !u!4 &1952263572
 Transform:
   m_ObjectHideFlags: 0
@@ -2055,7 +2095,7 @@ Animator:
   m_GameObject: {fileID: 1952263570}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b11cb70bc84fc4b429c80bbcd73a7752, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

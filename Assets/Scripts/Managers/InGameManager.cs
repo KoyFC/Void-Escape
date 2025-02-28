@@ -8,17 +8,23 @@ public class InGameManager : MonoBehaviour
 
     [SerializeField] private InputActionAsset m_InputActions = null;
     private GameObject m_Player = null;
+    private PlayerController m_PlayerController = null;
+    private Animator m_CameraStateAnimator = null;
+
+    [Header("Game Stats")]
+    [SerializeField] private int m_Score = 0;
+
 
     [Header("Game Settings")]
     public bool m_ChangePerspectiveNow = false;
+    [HideInInspector] public bool m_IsHorizontal = true;
+    public bool m_InvertedControls = false;
     public event Action OnPerspectiveChanged;
 
     [Header("Player Settings")]
-    public float m_MovementLerpDuration = 0.05f;
-    public float m_RotationLerpDuration = 0.2f;
+    public float m_MovementLerpDuration = 0.1f;
+    public float m_RotationLerpDuration = 0.1f;
 
-    [HideInInspector] public bool m_IsHorizontal = true;
-    public bool m_InvertedControls = false;
 
     private void Awake()
     {
@@ -31,8 +37,15 @@ public class InGameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        m_CameraStateAnimator = GetComponent<Animator>();
+
         SpawnSpaceship();
         ApplyPlayerComponents();
+    }
+
+    private void Start()
+    {
+        StartGame();
     }
 
     private void Update()
@@ -40,8 +53,7 @@ public class InGameManager : MonoBehaviour
         if (m_ChangePerspectiveNow)
         {
             m_ChangePerspectiveNow = false;
-            m_IsHorizontal = !m_IsHorizontal;
-            OnPerspectiveChanged?.Invoke();
+            ChangePerspective();
         }
     }
 
@@ -54,18 +66,29 @@ public class InGameManager : MonoBehaviour
 
     private void ApplyPlayerComponents()
     {
-        m_Player.AddComponent<PlayerController>();
+        m_PlayerController = m_Player.AddComponent<PlayerController>();
 
         m_Player.GetComponent<PlayerInput>().actions = m_InputActions;
     }
 
     private void StartGame()
     {
+        m_Score = 0;
 
+        InvokeRepeating("ChangePerspective", 5, 5);
     }
 
     private void EndGame()
     {
 
+    }
+
+    private void ChangePerspective()
+    {
+        m_CameraStateAnimator.SetTrigger("ChangePerspective");
+
+        m_IsHorizontal = !m_IsHorizontal;
+
+        OnPerspectiveChanged?.Invoke();
     }
 }

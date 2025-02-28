@@ -31,16 +31,6 @@ public class SpaceshipManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    private void Start()
-    {
-        //SpaceshipAttributes currentSpaceShip = GameManager.Instance.m_CurrentSpaceShip;
-
-        //GameObject spaceshipPrefab = GetSpaceshipPrefab(currentSpaceShip.shipType, currentSpaceShip.shipColor);
-
-        //Instantiate(spaceshipPrefab, PointManager.Instance.m_Points.CenterPoint.position, Quaternion.identity);
-        // MOVE TO IN-GAME MANAGER
-    }
     #endregion
 
     #region Helper Methods
