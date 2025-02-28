@@ -5,7 +5,7 @@ public class PlayerMovementScript : MonoBehaviour
 {
     private int m_CurrentIndex = 0;
     private int m_PreviousIndex = 0;
-    private bool m_IsMoving = false;
+    [HideInInspector] public bool m_IsMoving = false;
 
     #region Main Methods
     private void OnEnable()
@@ -59,7 +59,7 @@ public class PlayerMovementScript : MonoBehaviour
             newRotation = Quaternion.Euler(-indexDifference * 30, 0, 0);
         }
 
-        StartCoroutine(LerpToPosition(newPosition));
+        StartCoroutine(LerpToPosition(newPosition, true));
         StartCoroutine(LerpRotation(newRotation));
     }
     #endregion
@@ -69,7 +69,7 @@ public class PlayerMovementScript : MonoBehaviour
     {
         m_CurrentIndex = 0;
         Vector3 centerPoint = PointManager.Instance.m_Points.CenterPoint.position;
-        StartCoroutine(LerpToPosition(centerPoint));
+        StartCoroutine(LerpToPosition(centerPoint, false));
     }
 
     private Vector3 UpdatePlayerPositionHorizontal()
@@ -112,9 +112,9 @@ public class PlayerMovementScript : MonoBehaviour
         return newPosition;
     }
 
-    private IEnumerator LerpToPosition(Vector3 targetPosition)
+    private IEnumerator LerpToPosition(Vector3 targetPosition, bool blockMovement)
     {
-        m_IsMoving = true;
+        if (blockMovement) m_IsMoving = true;
 
         float time = 0;
         float duration = InGameManager.Instance.m_MovementLerpDuration;
@@ -128,7 +128,8 @@ public class PlayerMovementScript : MonoBehaviour
         }
 
         transform.position = targetPosition;
-        m_IsMoving = false;
+
+        if (blockMovement) m_IsMoving = false;
     }
 
     private IEnumerator LerpRotation(Quaternion targetRotation)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -75,20 +76,42 @@ public class InGameManager : MonoBehaviour
     {
         m_Score = 0;
 
-        InvokeRepeating("ChangePerspective", 5, 5);
+        StartCoroutine(ChangePerspective());
     }
 
     private void EndGame()
     {
+        StopAllCoroutines();
 
+        // Save score
+
+        // Show end screen
+
+        // Add score to leaderboard
     }
 
-    private void ChangePerspective()
+    private IEnumerator ChangePerspective()
     {
-        m_CameraStateAnimator.SetTrigger("ChangePerspective");
+        yield return new WaitForSeconds(1);
 
-        m_IsHorizontal = !m_IsHorizontal;
+        while (true)
+        {
+            yield return new WaitForSeconds(4);
 
-        OnPerspectiveChanged?.Invoke();
+            // Wait until the player stops moving so we can ensure no variables
+            // are modified by the movement script during the transition
+            yield return new WaitUntil(() => !m_PlayerController.m_PlayerMovement.m_IsMoving);
+
+            m_CameraStateAnimator.SetTrigger("ChangePerspective");
+            m_IsHorizontal = !m_IsHorizontal;
+
+            m_PlayerController.m_PlayerMovement.m_IsMoving = true;
+
+            yield return new WaitForSeconds(0.75f);
+            OnPerspectiveChanged?.Invoke(); // Notify the player movement script that the perspective has changed
+            yield return new WaitForSeconds(0.25f);
+
+            m_PlayerController.m_PlayerMovement.m_IsMoving = false;
+        }
     }
 }
