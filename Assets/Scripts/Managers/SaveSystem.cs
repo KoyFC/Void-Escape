@@ -69,7 +69,10 @@ public class SaveSystem
 
     public static void HandleSaveData()
     {
-        GameManager.Instance.Save(ref m_SaveData.playerData, ref m_SaveData.leaderboardData);
+        GameManager.Instance.Save(
+            ref m_SaveData.playerData, 
+            ref m_SaveData.leaderboardData, 
+            ref m_SaveData.settingsData);
     }
     #endregion
 
@@ -133,6 +136,7 @@ public class SaveSystem
 #endif
             // Create a new empty file and load again
             SaveSettingsData();
+            Application.targetFrameRate = 60;
             LoadSettingsData();
         }
         else
@@ -177,7 +181,7 @@ public class SaveSystem
 
     public static void DeleteFile(int dataToDelete)
     {
-        switch (dataToDelete) // Delete the corresponding file
+        switch (dataToDelete)
         {
             case 0:
                 File.Delete(SaveDataFileName());
@@ -217,8 +221,6 @@ public struct LeaderboardSaveData
 [System.Serializable]
 public struct SettingsSaveData
 {
-    public float musicVolume;
-    public float sfxVolume;
     public int targetFPS;
     public int qualityLevel;
 }

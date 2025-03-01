@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Save and Load
-    public void Save(ref PlayerSaveData playerData, ref LeaderboardSaveData leaderboardData)
+    public void Save(ref PlayerSaveData playerData, ref LeaderboardSaveData leaderboardData, ref SettingsSaveData settingsData)
     {
         playerData.currentName = m_CurrentName;
         playerData.credits = CurrencyManager.Instance.Credits;
@@ -71,6 +71,9 @@ public class GameManager : MonoBehaviour
         playerData.currentSpaceship = m_CurrentSpaceShip;
 
         leaderboardData.leaderboard = m_Leaderboard;
+
+        settingsData.targetFPS = Application.targetFrameRate;
+        // Save resolution
     }
 
     public void Load(PlayerSaveData playerData)
@@ -86,6 +89,12 @@ public class GameManager : MonoBehaviour
     public void Load(LeaderboardSaveData leaderboardData)
     {
         m_Leaderboard = leaderboardData.leaderboard;
+    }
+
+    public void Load(SettingsSaveData settingsData)
+    {
+        Application.targetFrameRate = settingsData.targetFPS;
+        // Scale resolution
     }
     #endregion
 
