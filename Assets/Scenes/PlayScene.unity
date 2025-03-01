@@ -469,7 +469,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 150, y: 0}
+  m_AnchoredPosition: {x: 175, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &225043447
@@ -745,7 +745,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -150, y: 0}
+  m_AnchoredPosition: {x: -175, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &381381331
@@ -2490,15 +2490,10 @@ MonoBehaviour:
   m_ChangePerspectiveNow: 0
   m_IsHorizontal: 1
   m_InvertedControls: 0
-  m_MovementLerpDuration: 0.1
-  m_RotationLerpDuration: 0.1
+  m_MovementLerpDuration: 0.15
+  m_RotationLerpDuration: 0.15
   m_LeftArrowImage: {fileID: 381381331}
   m_RightArrowImage: {fileID: 225043447}
-  m_ArrowSprites:
-  - {fileID: -2064757026, guid: 225c67f66b91feb418772b78277ba530, type: 3}
-  - {fileID: 234514174, guid: 225c67f66b91feb418772b78277ba530, type: 3}
-  - {fileID: -620531591, guid: 225c67f66b91feb418772b78277ba530, type: 3}
-  - {fileID: 1212790102, guid: 225c67f66b91feb418772b78277ba530, type: 3}
 --- !u!4 &1952263572
 Transform:
   m_ObjectHideFlags: 0
