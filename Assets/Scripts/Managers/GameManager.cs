@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
 #if UNITY_ANDROID
+        Application.targetFrameRate = 60;
+
         Screen.autorotateToLandscapeLeft = true;
         Screen.autorotateToLandscapeRight = true;
         Screen.autorotateToPortrait = false;

@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2030884378839937817
 Transform:
@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbc9198d542250f48a285c657d28f10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_CurrentName: 
+  m_UnlockedShips: 
+  m_UnlockedColors: 
   m_CurrentSpaceShip:
     shipType: 0
     shipColor: 0
