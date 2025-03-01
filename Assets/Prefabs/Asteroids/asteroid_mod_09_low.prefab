@@ -100,3 +100,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ObstacleData: {fileID: 11400000, guid: f55985058f6e5e74b906f3aa1c29e72f, type: 2}
+  m_Scale: {x: 9.5, y: 9.5, z: 9.5}

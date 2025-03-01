@@ -4,11 +4,17 @@ using System.Collections;
 public class ObstacleController : MonoBehaviour
 {
     [SerializeField] private ObstacleData m_ObstacleData;
+    [SerializeField] private Vector3 m_Scale = Vector3.one;
 
     private float m_Speed;
 
     private float m_RotationSpeed;
     private Vector3 m_RotationAxis;
+
+    private void Start()
+    {
+        transform.localScale = m_Scale;
+    }
 
     private void OnEnable()
     {

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: ObstacleAsteroid
   m_EditorClassIdentifier: 
   m_ObstacleType: 0
-  m_LifeTime: 7
+  m_LifeTime: 6
   m_MinSpeed: 25
   m_MaxSpeed: 50
-  m_MinRotationSpeed: 1
-  m_MaxRotationSpeed: 3
+  m_MinRotationSpeed: 30
+  m_MaxRotationSpeed: 180

@@ -41,7 +41,6 @@ public class ObstaclePoolManager : MonoBehaviour
             GameObject obstacle = Instantiate(m_AsteroidPrefabs[i]);
             obstacle.SetActive(false);
             obstacle.transform.parent = transform;
-            obstacle.transform.localScale = Vector3.one * 7;
 
             m_AsteroidPool.Add(obstacle);
         }
@@ -107,7 +106,6 @@ public class ObstaclePoolManager : MonoBehaviour
         GameObject newObstacle = Instantiate(m_AsteroidPrefabs[index]);
         newObstacle.transform.parent = transform;
         newObstacle.name = m_AsteroidPrefabs[index].name;
-        newObstacle.transform.localScale = Vector3.one * 7;
 
         m_AsteroidPool.Add(newObstacle);
         return newObstacle;
