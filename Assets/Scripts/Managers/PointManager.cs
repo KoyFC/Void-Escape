@@ -20,7 +20,8 @@ public class PointManager : MonoBehaviour
 
     #region Variables
     public static PointManager Instance = null;
-    public Points m_Points;
+    public Points m_PlayerPoints;
+    public Points m_EnemyPoints;
     #endregion
 
     private void Awake()
@@ -33,5 +34,37 @@ public class PointManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public Transform GetRandomHorizontalPoint()
+    {
+        int random = Random.Range(0, 3);
+
+        switch (random)
+        {
+            case 0:
+                return m_EnemyPoints.LeftPoint;
+            case 1:
+                return m_EnemyPoints.CenterPoint;
+            case 2:
+                return m_EnemyPoints.RightPoint;
+        }
+
+        return null;
+    }
+
+    public Transform GetRandomVerticalPoint()
+    {
+        int random = Random.Range(0, 3);
+        switch (random)
+        {
+            case 0:
+                return m_EnemyPoints.TopPoint;
+            case 1:
+                return m_EnemyPoints.CenterPoint;
+            case 2:
+                return m_EnemyPoints.BottomPoint;
+        }
+        return null;
     }
 }

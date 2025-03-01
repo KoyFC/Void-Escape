@@ -68,7 +68,7 @@ public class PlayerMovementScript : MonoBehaviour
     private void ResetPosition()
     {
         m_CurrentIndex = 0;
-        Vector3 centerPoint = PointManager.Instance.m_Points.CenterPoint.position;
+        Vector3 centerPoint = PointManager.Instance.m_PlayerPoints.CenterPoint.position;
         StartCoroutine(LerpToPosition(centerPoint, false));
     }
 
@@ -79,13 +79,13 @@ public class PlayerMovementScript : MonoBehaviour
         switch (m_CurrentIndex)
         {
             case -1:
-                newPosition.x = PointManager.Instance.m_Points.LeftPoint.position.x;
+                newPosition.x = PointManager.Instance.m_PlayerPoints.LeftPoint.position.x;
                 break;
             case 0:
-                newPosition.x = PointManager.Instance.m_Points.CenterPoint.position.x;
+                newPosition.x = PointManager.Instance.m_PlayerPoints.CenterPoint.position.x;
                 break;
             case 1:
-                newPosition.x = PointManager.Instance.m_Points.RightPoint.position.x;
+                newPosition.x = PointManager.Instance.m_PlayerPoints.RightPoint.position.x;
                 break;
         }
 
@@ -99,13 +99,13 @@ public class PlayerMovementScript : MonoBehaviour
         switch (m_CurrentIndex)
         {
             case 1:
-                newPosition.y = PointManager.Instance.m_Points.BottomPoint.position.y;
+                newPosition.y = PointManager.Instance.m_PlayerPoints.BottomPoint.position.y;
                 break;
             case 0:
-                newPosition.y = PointManager.Instance.m_Points.CenterPoint.position.y;
+                newPosition.y = PointManager.Instance.m_PlayerPoints.CenterPoint.position.y;
                 break;
             case -1:
-                newPosition.y = PointManager.Instance.m_Points.TopPoint.position.y;
+                newPosition.y = PointManager.Instance.m_PlayerPoints.TopPoint.position.y;
                 break;
         }
 

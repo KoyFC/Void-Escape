@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class InGameManager : MonoBehaviour
 {
+    #region Variables
     public static InGameManager Instance = null;
 
     [SerializeField] private InputActionAsset m_InputActions = null;
@@ -17,7 +18,10 @@ public class InGameManager : MonoBehaviour
     [SerializeField] private int m_Score = 0;
 
     [Header("Game Settings")]
-    [SerializeField] private float m_CinematicStateDuration = 2f;
+    [SerializeField] private float m_CinematicStateDuration = 2.5f;
+    [SerializeField] private float m_GameStateDuration = 10f;
+    public bool m_ChangingPerspective = false;
+    [SerializeField] private float m_ObstacleSpawnRate = 1.5f;
 
     [HideInInspector] public bool m_IsHorizontal = true;
     public bool m_InvertedControls = false;
@@ -30,8 +34,9 @@ public class InGameManager : MonoBehaviour
     [Header("UI Settings")]
     [SerializeField] private Image m_LeftArrowImage = null;
     [SerializeField] private Image m_RightArrowImage = null;
+    #endregion
 
-
+    #region Main Methods
     private void Awake()
     {
         if (Instance == null)
@@ -69,11 +74,50 @@ public class InGameManager : MonoBehaviour
         m_PlayerController.m_PlayerMovement.m_IsMoving = false;
         m_LeftArrowImage.enabled = true;
         m_RightArrowImage.enabled = true;
+
+        StartCoroutine(SpawnObstacles());
+    }
+    #endregion
+
+    #region Obstacle Methods
+    private IEnumerator SpawnObstacles()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(m_ObstacleSpawnRate);
+            yield return new WaitUntil(() => !m_ChangingPerspective);
+            SpawnRandomPortal();
+        }
     }
 
+    private void SpawnRandomPortal()
+    {
+        if (m_ChangingPerspective) return;
+
+        Transform spawnPoint = null;
+        if (m_IsHorizontal)
+        {
+            spawnPoint = PointManager.Instance.GetRandomHorizontalPoint();
+        }
+        else
+        {
+            spawnPoint = PointManager.Instance.GetRandomVerticalPoint();
+        }
+
+        GameObject portal = ObstaclePoolManager.Instance.GetPortal();
+        portal.transform.position = spawnPoint.position;
+    }
+
+    private void AddScore(int score)
+    {
+        m_Score += score;
+    }
+    #endregion
+
+    #region Helper Methods
     private void SpawnSpaceship()
     {
-        Transform spawnPoint = PointManager.Instance.m_Points.CenterPoint;
+        Transform spawnPoint = PointManager.Instance.m_PlayerPoints.CenterPoint;
 
         m_Player = SpaceshipManager.Instance.InstantiateCurrentSpaceship(spawnPoint.position, spawnPoint.rotation);
     }
@@ -103,7 +147,9 @@ public class InGameManager : MonoBehaviour
 
         // Add score to leaderboard
     }
+    #endregion
 
+    #region Coroutines
     private IEnumerator ChangePerspective()
     {
         bool returnToOriginal = false; // Used to determine if the arrows should rotate back to their original position
@@ -111,13 +157,16 @@ public class InGameManager : MonoBehaviour
 
         while (true)
         {
-            yield return new WaitForSeconds(4);
+            yield return new WaitForSeconds(m_GameStateDuration - 1);
 
             yield return new WaitUntil(() => !m_PlayerController.m_PlayerMovement.m_IsMoving);
+
+            ObstaclePoolManager.Instance.ReturnAllToPool();
 
             m_CameraStateAnimator.SetTrigger("ChangePerspective");
             m_IsHorizontal = !m_IsHorizontal;
 
+            m_ChangingPerspective = true;
             m_PlayerController.m_PlayerMovement.m_IsMoving = true;
 
             StartCoroutine(RotateSprite(m_LeftArrowImage, -90f, returnToOriginal));
@@ -129,6 +178,7 @@ public class InGameManager : MonoBehaviour
 
             yield return new WaitForSeconds(0.25f);
 
+            m_ChangingPerspective = false;
             m_PlayerController.m_PlayerMovement.m_IsMoving = false;
 
             returnToOriginal = !returnToOriginal;
@@ -154,4 +204,5 @@ public class InGameManager : MonoBehaviour
 
         image.transform.rotation = endRotation;
     }
+    #endregion
 }
