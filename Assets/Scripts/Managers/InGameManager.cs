@@ -16,8 +16,9 @@ public class InGameManager : MonoBehaviour
     [Header("Game Stats")]
     [SerializeField] private int m_Score = 0;
 
-
     [Header("Game Settings")]
+    [SerializeField] private float m_CinematicStateDuration = 2f;
+
     [HideInInspector] public bool m_IsHorizontal = true;
     public bool m_InvertedControls = false;
     public event Action OnPerspectiveChanged;
@@ -48,9 +49,26 @@ public class InGameManager : MonoBehaviour
         ApplyPlayerComponents();
     }
 
-    private void Start()
+    // On start, there's a slight delay before the game starts for a cinematic where the player can't move
+    private IEnumerator Start()
     {
+        m_LeftArrowImage.enabled = false;
+        m_RightArrowImage.enabled = false;
+        m_PlayerController.m_PlayerMovement.m_IsMoving = true;
+
+        yield return new WaitForSeconds(m_CinematicStateDuration);
+
+        m_CameraStateAnimator.SetTrigger("ContinueCinematic");
+
+        yield return new WaitForSeconds(m_CinematicStateDuration + 1f);
+
         StartGame();
+
+        yield return new WaitForSeconds(0.9f);
+
+        m_PlayerController.m_PlayerMovement.m_IsMoving = false;
+        m_LeftArrowImage.enabled = true;
+        m_RightArrowImage.enabled = true;
     }
 
     private void SpawnSpaceship()
@@ -70,6 +88,7 @@ public class InGameManager : MonoBehaviour
     private void StartGame()
     {
         m_Score = 0;
+        m_CameraStateAnimator.SetTrigger("StartGame");
 
         StartCoroutine(ChangePerspective());
     }
