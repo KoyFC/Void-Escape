@@ -277,6 +277,37 @@ public class MainMenuManager : MonoBehaviour
         m_Spaceship.SetActive(active);
     }
 
+    public void SetTargetFramerate(int fps)
+    {
+        Application.targetFrameRate = fps;
+    }
+
+    public void SetQuality(int qualityLevel)
+    {
+        switch (qualityLevel)
+        {
+            case 0:
+                QualitySettings.SetQualityLevel(0);
+                break;
+            case 1:
+                QualitySettings.SetQualityLevel(2);
+                break;
+            case 2:
+                QualitySettings.SetQualityLevel(4);
+                break;
+            case 3:
+                QualitySettings.SetQualityLevel(6);
+                break;
+        }
+    }
+
+    public void ResetData(int dataToReset)
+    {
+        GameManager.Instance.ResetData(dataToReset);
+
+        FadeManager.Instance.FadeOutAndLoadScene("MainMenuScene");
+    }
+
     public void SceneTransitionForUI(string sceneName)
     {
         StartCoroutine(SceneTransitionCoroutine(sceneName));

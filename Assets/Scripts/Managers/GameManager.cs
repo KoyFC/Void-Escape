@@ -30,8 +30,6 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
 #if UNITY_ANDROID
-        Application.targetFrameRate = 60;
-
         Screen.autorotateToLandscapeLeft = true;
         Screen.autorotateToLandscapeRight = true;
         Screen.autorotateToPortrait = false;
@@ -144,6 +142,54 @@ public class GameManager : MonoBehaviour
         {
             m_UnlockedColors[shipColor] = true;
         }
+    }
+
+    public void ResetData(int dataToReset)
+    {
+        SaveSystem.DeleteFile(dataToReset);
+        switch (dataToReset)
+        {
+            case 0:
+                ResetPlayerData();
+                break;
+            case 1:
+                ResetLeaderboardData();
+                break;
+            case 2:
+                ResetSettingsData();
+                break;
+            case 3:
+                ResetPlayerData();
+                ResetLeaderboardData();
+                ResetSettingsData();
+                break;
+        }
+    }
+    #endregion
+
+    #region Resetting
+    private void ResetPlayerData()
+    {
+        m_CurrentName = "CoolShip";
+        CurrencyManager.Instance.ResetCredits();
+
+        m_UnlockedShips.Clear();
+        InitializeDefaultShipTypes();
+
+        m_UnlockedColors.Clear();
+        InitializeDefaultColors();
+
+        InitializeDefaultShip();
+    }
+
+    private void ResetLeaderboardData()
+    {
+        m_Leaderboard.Clear();
+    }
+
+    private void ResetSettingsData()
+    {
+        Application.targetFrameRate = 60;
     }
     #endregion
 }

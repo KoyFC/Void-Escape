@@ -5,6 +5,7 @@ public class CurrencyManager : MonoBehaviour
 {
     public static CurrencyManager Instance = null;
 
+    [SerializeField] int m_StartingCredits = 120;
     public int Credits { get; private set; } = 0;
 
     public event Action<int> OnCreditsChanged;
@@ -21,7 +22,12 @@ public class CurrencyManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        SetCredits(120);
+        ResetCredits();
+    }
+
+    public void ResetCredits()
+    {
+        SetCredits(m_StartingCredits);
     }
 
     public void SetCredits(int amount)

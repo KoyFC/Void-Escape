@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FPSManager : MonoBehaviour
 {
-    private static FPSManager Instance;
+    public static FPSManager Instance;
 
     private int m_FPS;
     [SerializeField] private TMPro.TextMeshProUGUI m_Text;
@@ -13,6 +13,10 @@ public class FPSManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+#if UNITY_ANDROID
+            Application.targetFrameRate = 60;
+#endif
         }
         else if (Instance != this)
         {

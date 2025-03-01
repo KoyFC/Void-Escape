@@ -13,9 +13,11 @@ public class SaveSystem
     {
         public PlayerSaveData playerData;
         public LeaderboardSaveData leaderboardData;
+        public SettingsSaveData settingsData;
     }
     #endregion
 
+    #region File Paths
     public static string SaveDataFileName()
     {
         string saveFile = Application.persistentDataPath + "/saveData.kfc";
@@ -28,11 +30,19 @@ public class SaveSystem
         return leaderboardFile;
     }
 
+    public static string SettingsFileName()
+    {
+        string settingsFile = Application.persistentDataPath + "/playerSettings.kfc";
+        return settingsFile;
+    }
+    #endregion
+
     #region Save
     public static void Save()
     {
         SavePlayerData();
         SaveLeaderboardData();
+        SaveSettingsData();
     }
 
     private static void SavePlayerData()
@@ -50,11 +60,17 @@ public class SaveSystem
         File.WriteAllText(leaderboardFile, leaderboardDataJson);
     }
 
+    private static void SaveSettingsData()
+    {
+        string settingsFile = SettingsFileName();
+        string settingsDataJson = JsonUtility.ToJson(m_SaveData.settingsData, true);
+        File.WriteAllText(settingsFile, settingsDataJson);
+    }
+
     public static void HandleSaveData()
     {
         GameManager.Instance.Save(ref m_SaveData.playerData, ref m_SaveData.leaderboardData);
     }
-
     #endregion
 
     #region Load
@@ -62,6 +78,7 @@ public class SaveSystem
     {
         LoadSaveData();
         LoadLeaderboardData();
+        LoadSettingsData();
     }
 
     private static void LoadSaveData()
@@ -106,18 +123,47 @@ public class SaveSystem
         }
     }
 
-    public static void HandleLoadSaveData()
+    private static void LoadSettingsData()
+    {
+        string settingsFile = SettingsFileName();
+        if (!File.Exists(settingsFile))
+        {
+#if UNITY_EDITOR
+            Debug.LogWarning("Settings file not found, nothing to load.");
+#endif
+            // Create a new empty file and load again
+            SaveSettingsData();
+            LoadSettingsData();
+        }
+        else
+        {
+            string settingsContent = File.ReadAllText(settingsFile);
+            m_SaveData.settingsData = JsonUtility.FromJson<SettingsSaveData>(settingsContent);
+            HandleLoadSettingsData();
+        }
+    }
+
+    private static void HandleLoadSaveData()
     {
         GameManager.Instance.Load(m_SaveData.playerData);
     }
 
-    public static void HandleLoadLeaderboardData()
+    private static void HandleLoadLeaderboardData()
     {
         // We need to sort the leaderboard data before loading it
         m_SaveData.leaderboardData.leaderboard.Sort(ComparePlayerScores);
 
         GameManager.Instance.Load(m_SaveData.leaderboardData);
         // We don't need to update the UI here because the leaderboard is only displayed in the main menu.
+    }
+
+    private static void HandleLoadSettingsData()
+    {
+        // Audio
+
+        Application.targetFrameRate = m_SaveData.settingsData.targetFPS;
+
+        QualitySettings.SetQualityLevel(m_SaveData.settingsData.qualityLevel);
     }
 
     private static int ComparePlayerScores(GameManager.PlayerScore playerScore1, GameManager.PlayerScore playerScore2)
@@ -129,6 +175,26 @@ public class SaveSystem
         // Returns -1 if playerScore2 is less than playerScore1
     }
 
+    public static void DeleteFile(int dataToDelete)
+    {
+        switch (dataToDelete) // Delete the corresponding file
+        {
+            case 0:
+                File.Delete(SaveDataFileName());
+                break;
+            case 1:
+                File.Delete(LeaderboardFileName());
+                break;
+            case 2:
+                File.Delete(SettingsFileName());
+                break;
+            case 3:
+                File.Delete(SaveDataFileName());
+                File.Delete(LeaderboardFileName());
+                File.Delete(SettingsFileName());
+                break;
+        }
+    }
     #endregion
 }
 
@@ -142,9 +208,17 @@ public struct PlayerSaveData
     public SpaceshipAttributes currentSpaceship;
 }
 
-
 [System.Serializable]
 public struct LeaderboardSaveData
 {
     public List<GameManager.PlayerScore> leaderboard;
+}
+
+[System.Serializable]
+public struct SettingsSaveData
+{
+    public float musicVolume;
+    public float sfxVolume;
+    public int targetFPS;
+    public int qualityLevel;
 }
