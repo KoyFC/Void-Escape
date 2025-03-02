@@ -8,6 +8,7 @@ public class ObstaclePortalScript : MonoBehaviour
     private void Awake()
     {
         m_OriginalScale = transform.localScale;
+        transform.localScale = Vector3.zero;
     }
 
     private void OnEnable()

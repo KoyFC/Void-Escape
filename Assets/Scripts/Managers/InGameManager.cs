@@ -163,6 +163,7 @@ public class InGameManager : MonoBehaviour
         // Save score
 
         // Show end screen
+        Time.timeScale = 0f;
 
         // Add score to leaderboard
     }
@@ -179,6 +180,7 @@ public class InGameManager : MonoBehaviour
             yield return new WaitForSeconds(m_GameStateDuration - 1);
 
             yield return new WaitUntil(() => !m_PlayerController.m_PlayerMovement.m_IsMoving);
+            m_PlayerController.m_PlayerShooting.StopAllCoroutines(); // To prevent the player from shooting while changing perspective
 
             // Change perspective, moving obstacles out of the way and making the player unable to shoot or move
             m_CameraStateAnimator.SetTrigger("ChangePerspective");

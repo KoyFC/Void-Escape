@@ -8,6 +8,9 @@ public class InGameUIManager : MonoBehaviour
 {
     public static InGameUIManager Instance = null;
 
+    [SerializeField] private GameObject m_MoveButtons = null;
+    [SerializeField] private GameObject m_FireButton = null;
+
     [Header("Game Stats")]
     [SerializeField] private TextMeshProUGUI m_ScoreText = null;
 
@@ -55,7 +58,7 @@ public class InGameUIManager : MonoBehaviour
 
     private void Update()
     {
-        if (m_ConfidenceSlider.gameObject.activeSelf)
+        if (m_ConfidenceSlider.gameObject.activeSelf && !InGameManager.Instance.m_ChangingPerspective)
         {
             m_ConfidenceSlider.value -= m_ConfidenceDepletionRate * Time.deltaTime;
         }
@@ -73,18 +76,18 @@ public class InGameUIManager : MonoBehaviour
 
     public void EnableUIElements()
     {
-        m_ScoreText.enabled = true;
-        m_LeftArrowImage.enabled = true;
-        m_RightArrowImage.enabled = true;
+        m_ScoreText.gameObject.SetActive(true);
         m_ConfidenceSlider.gameObject.SetActive(true);
+        m_MoveButtons.SetActive(true);
+        m_FireButton.SetActive(true);
     }
 
     public void DisableUIElements()
     {
-        m_ScoreText.enabled = false;
-        m_LeftArrowImage.enabled = false;
-        m_RightArrowImage.enabled = false;
+        m_ScoreText.gameObject.SetActive(false);
         m_ConfidenceSlider.gameObject.SetActive(false);
+        m_MoveButtons.SetActive(false);
+        m_FireButton.SetActive(false);
     }
 
     public void RotateArrows(bool returnToOriginal)
