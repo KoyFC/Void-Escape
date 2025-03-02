@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ObstacleType: 0
   m_LifeTime: 6
-  m_MinSpeed: 25
-  m_MaxSpeed: 50
-  m_MinRotationSpeed: 30
+  m_MinSpeed: 65
+  m_MaxSpeed: 90
+  m_MinRotationSpeed: 50
   m_MaxRotationSpeed: 180

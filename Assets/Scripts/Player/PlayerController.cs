@@ -3,11 +3,12 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInputScript))]
 [RequireComponent(typeof(PlayerMovementScript))]
 [RequireComponent(typeof(PlayerHealthScript))]
+[RequireComponent(typeof(PlayerShootingScript))]
 public class PlayerController : MonoBehaviour
 {
-    public PlayerInputScript m_PlayerInput = null;
     internal PlayerMovementScript m_PlayerMovement = null;
     internal PlayerHealthScript m_PlayerHealth = null;
+    internal PlayerShootingScript m_PlayerShooting = null;
 
     void Awake()
     {
@@ -16,8 +17,8 @@ public class PlayerController : MonoBehaviour
 
     private void GetAllComponents()
     {
-        m_PlayerInput = GetComponent<PlayerInputScript>();
         m_PlayerMovement = GetComponent<PlayerMovementScript>();
         m_PlayerHealth = GetComponent<PlayerHealthScript>();
+        m_PlayerShooting = GetComponent<PlayerShootingScript>();
     }
 }

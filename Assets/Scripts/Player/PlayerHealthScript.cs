@@ -7,8 +7,8 @@ public class PlayerHealthScript : MonoBehaviour
     private PlayerMovementScript m_PlayerMovement = null;
 
     internal bool m_Hit = false;
-    private float m_HitDisplacement = 5f;
-    private float m_HitDuration = 0.1f;
+    private float m_HitDisplacement = 5.5f;
+    private float m_HitDuration = 0.075f;
 
     private void Start()
     {

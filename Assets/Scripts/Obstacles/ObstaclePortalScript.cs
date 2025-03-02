@@ -22,6 +22,8 @@ public class ObstaclePortalScript : MonoBehaviour
 
     private IEnumerator HandleObstacle()
     {
+        yield return new WaitUntil(() => !InGameManager.Instance.m_ChangingPerspective);
+
         StartCoroutine(ChangeScale(Vector3.zero, m_OriginalScale, 1f));
 
         yield return new WaitForSeconds(1.2f);

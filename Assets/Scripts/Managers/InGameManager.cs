@@ -25,15 +25,11 @@ public class InGameManager : MonoBehaviour
 
     [HideInInspector] public bool m_IsHorizontal = true;
     public bool m_InvertedControls = false;
-    public event Action OnPerspectiveChanged;
+    public event Action OnPerspectiveChanged; // Event that allows the player to know when to reset its position
 
     [Header("Player Settings")]
     public float m_MovementLerpDuration = 0.1f;
     public float m_RotationLerpDuration = 0.1f;
-
-    [Header("UI Settings")]
-    [SerializeField] private Image m_LeftArrowImage = null;
-    [SerializeField] private Image m_RightArrowImage = null;
     #endregion
 
     #region Main Methods
@@ -43,9 +39,9 @@ public class InGameManager : MonoBehaviour
         {
             Instance = this;
         }
-        else if (Instance != this)
+        else
         {
-            Destroy(gameObject);
+            Destroy(this);
         }
 
         m_CameraStateAnimator = GetComponent<Animator>();
@@ -57,8 +53,7 @@ public class InGameManager : MonoBehaviour
     // On start, there's a slight delay before the game starts for a cinematic where the player can't move
     private IEnumerator Start()
     {
-        m_LeftArrowImage.enabled = false;
-        m_RightArrowImage.enabled = false;
+        InGameUIManager.Instance.DisableUIElements();
         m_PlayerController.m_PlayerMovement.m_IsMoving = true;
 
         yield return new WaitForSeconds(m_CinematicStateDuration);
@@ -72,8 +67,7 @@ public class InGameManager : MonoBehaviour
         yield return new WaitForSeconds(0.9f);
 
         m_PlayerController.m_PlayerMovement.m_IsMoving = false;
-        m_LeftArrowImage.enabled = true;
-        m_RightArrowImage.enabled = true;
+        InGameUIManager.Instance.EnableUIElements();
 
         StartCoroutine(SpawnObstacles());
     }
@@ -127,10 +121,6 @@ public class InGameManager : MonoBehaviour
         m_PlayerController = m_Player.AddComponent<PlayerController>();
 
         m_Player.GetComponent<PlayerInput>().actions = m_InputActions;
-
-        Rigidbody rigidbody = m_Player.AddComponent<Rigidbody>();
-        rigidbody.useGravity = false;
-        rigidbody.isKinematic = true;
     }
 
     private void StartGame()
@@ -139,6 +129,7 @@ public class InGameManager : MonoBehaviour
         m_CameraStateAnimator.SetTrigger("StartGame");
 
         StartCoroutine(ChangePerspective());
+        m_PlayerController.m_PlayerShooting.m_CanFire = true;
     }
 
     public void EndGame()
@@ -165,16 +156,18 @@ public class InGameManager : MonoBehaviour
 
             yield return new WaitUntil(() => !m_PlayerController.m_PlayerMovement.m_IsMoving);
 
+            // Change perspective, moving obstacles out of the way and making the player unable to shoot or move
             m_CameraStateAnimator.SetTrigger("ChangePerspective");
             m_IsHorizontal = !m_IsHorizontal;
+            m_ChangingPerspective = true;
+
+            m_PlayerController.m_PlayerShooting.m_CanFire = false;
+            m_PlayerController.m_PlayerMovement.m_IsMoving = true;
 
             ObstaclePoolManager.Instance.MoveOutOfTheWay(m_IsHorizontal);
 
-            m_ChangingPerspective = true;
-            m_PlayerController.m_PlayerMovement.m_IsMoving = true;
-
-            StartCoroutine(RotateSprite(m_LeftArrowImage, -90f, returnToOriginal));
-            StartCoroutine(RotateSprite(m_RightArrowImage, -90f, returnToOriginal));
+            // Rotating the UI arrows
+            InGameUIManager.Instance.RotateArrows(returnToOriginal);
 
             yield return new WaitForSeconds(0.75f);
 
@@ -184,29 +177,10 @@ public class InGameManager : MonoBehaviour
 
             m_ChangingPerspective = false;
             m_PlayerController.m_PlayerMovement.m_IsMoving = false;
+            m_PlayerController.m_PlayerShooting.m_CanFire = true;
 
             returnToOriginal = !returnToOriginal;
         }
-    }
-
-    private IEnumerator RotateSprite(Image image, float newZRotation, bool returnToOriginal)
-    {
-        Quaternion startRotation = image.transform.rotation;
-
-        Quaternion endRotation = returnToOriginal ? 
-            Quaternion.Euler(0, 0, 0) :
-            Quaternion.Euler(0, 0, newZRotation);
-
-        float elapsedTime = 0.0f;
-
-        while (elapsedTime < 0.5f)
-        {
-            image.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsedTime / 0.5f);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        image.transform.rotation = endRotation;
     }
     #endregion
 }

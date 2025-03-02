@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7904919051472046633}
   - component: {fileID: 3065501950710006868}
   - component: {fileID: 1777349929591413202}
-  - component: {fileID: 9091218244588976610}
+  - component: {fileID: 8394090033961774313}
   m_Layer: 0
   m_Name: asteroid_mod_03_low
   m_TagString: Asteroid
@@ -124,7 +124,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.34
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &9091218244588976610
+--- !u!54 &8394090033961774313
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

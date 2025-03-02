@@ -9,12 +9,18 @@ public class ObstaclePoolManager : MonoBehaviour
 
     [SerializeField] private float m_MoveOutOfTheWayDuration = 1f;
 
+    [Header("Portals")]
+    [SerializeField] private Transform m_PortalParent = null;
     public GameObject m_PortalPrefab = null;
     private List<GameObject> m_PortalPool = new List<GameObject>();
 
+    [Header("Asteroids")]
+    [SerializeField] private Transform m_AsteroidParent = null;
     public List<GameObject> m_AsteroidPrefabs = null;
     private List<GameObject> m_AsteroidPool = new List<GameObject>();
 
+    [Header("Items")]
+    [SerializeField] private Transform m_ItemParent = null;
     public List<GameObject> m_ItemPrefabs = null;
     private List<GameObject> m_ItemPool = new List<GameObject>();
     #endregion
@@ -29,7 +35,7 @@ public class ObstaclePoolManager : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(this);
         }
     }
 
@@ -39,7 +45,7 @@ public class ObstaclePoolManager : MonoBehaviour
         {
             GameObject obstacle = Instantiate(m_AsteroidPrefabs[i]);
             obstacle.SetActive(false);
-            obstacle.transform.parent = transform;
+            obstacle.transform.parent = m_AsteroidParent;
             obstacle.name = m_AsteroidPrefabs[i].name;
 
             m_AsteroidPool.Add(obstacle);
@@ -49,10 +55,20 @@ public class ObstaclePoolManager : MonoBehaviour
         {
             GameObject obstacle = Instantiate(m_ItemPrefabs[i]);
             obstacle.SetActive(false);
-            obstacle.transform.parent = transform;
+            obstacle.transform.parent = m_ItemParent;
             obstacle.name = m_ItemPrefabs[i].name;
 
             m_ItemPool.Add(obstacle);
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject portal = Instantiate(m_PortalPrefab);
+            portal.SetActive(false);
+            portal.transform.parent = m_PortalParent;
+            portal.name = m_PortalPrefab.name;
+
+            m_PortalPool.Add(portal);
         }
     }
     #endregion
@@ -77,7 +93,7 @@ public class ObstaclePoolManager : MonoBehaviour
         }
 
         GameObject newPortal = Instantiate(m_PortalPrefab);
-        newPortal.transform.parent = transform;
+        newPortal.transform.parent = m_PortalParent;
         newPortal.name = m_PortalPrefab.name;
 
         m_PortalPool.Add(newPortal);
@@ -105,7 +121,7 @@ public class ObstaclePoolManager : MonoBehaviour
         }
 
         GameObject newObstacle = Instantiate(m_AsteroidPrefabs[index]);
-        newObstacle.transform.parent = transform;
+        newObstacle.transform.parent = m_AsteroidParent;
         newObstacle.name = m_AsteroidPrefabs[index].name;
 
         m_AsteroidPool.Add(newObstacle);
@@ -132,7 +148,7 @@ public class ObstaclePoolManager : MonoBehaviour
         }
 
         GameObject newObstacle = Instantiate(m_ItemPrefabs[index]);
-        newObstacle.transform.parent = transform;
+        newObstacle.transform.parent = m_ItemParent;
         newObstacle.name = m_ItemPrefabs[index].name;
 
         m_ItemPool.Add(newObstacle);
@@ -180,7 +196,6 @@ public class ObstaclePoolManager : MonoBehaviour
 
         Vector3 initialPosition = asteroid.transform.position;
         float elapsedTime = 0f;
-
         while (elapsedTime < m_MoveOutOfTheWayDuration)
         {
             elapsedTime += Time.deltaTime;
