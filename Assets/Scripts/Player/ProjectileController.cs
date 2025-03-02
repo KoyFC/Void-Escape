@@ -27,7 +27,6 @@ public class ProjectileController : MonoBehaviour
         if (collision.gameObject.CompareTag("Asteroid"))
         {
             StopAllCoroutines();
-            ObstaclePoolManager.Instance.ReturnToPool(collision.gameObject);
             ProjectilePoolManager.Instance.ReturnToPool(gameObject);
         }
     }

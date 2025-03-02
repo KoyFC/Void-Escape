@@ -16,6 +16,8 @@ public class InGameManager : MonoBehaviour
 
     [Header("Game Stats")]
     [SerializeField] private int m_Score = 0;
+    public int m_MaxConfidence = 100;
+    public event Action<int> OnScoreChanged;
 
     [Header("Game Settings")]
     [SerializeField] private float m_CinematicStateDuration = 2.5f;
@@ -66,10 +68,21 @@ public class InGameManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.9f);
 
-        m_PlayerController.m_PlayerMovement.m_IsMoving = false;
         InGameUIManager.Instance.EnableUIElements();
+        m_PlayerController.m_PlayerMovement.m_IsMoving = false;
 
         StartCoroutine(SpawnObstacles());
+        StartCoroutine(AddScoreRepeatedly());
+    }
+
+    private void OnEnable()
+    {
+        ObstacleController.OnAddScore += AddScore;
+    }
+
+    private void OnDisable()
+    {
+        ObstacleController.OnAddScore -= AddScore;
     }
     #endregion
 
@@ -102,9 +115,20 @@ public class InGameManager : MonoBehaviour
         portal.transform.position = spawnPoint.position;
     }
 
+    private IEnumerator AddScoreRepeatedly()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.1f);
+            yield return new WaitUntil(() => !m_ChangingPerspective);
+            AddScore(1);
+        }
+    }
+
     private void AddScore(int score)
     {
         m_Score += score;
+        OnScoreChanged?.Invoke(m_Score);
     }
     #endregion
 
@@ -180,6 +204,13 @@ public class InGameManager : MonoBehaviour
             m_PlayerController.m_PlayerShooting.m_CanFire = true;
 
             returnToOriginal = !returnToOriginal;
+
+            if (returnToOriginal)
+            {
+                m_MaxConfidence = (int) (m_MaxConfidence * 1.1f);
+                m_ObstacleSpawnRate *= 1.1f;
+                Debug.Log("Increased difficulty");
+            }
         }
     }
     #endregion

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
+using System;
 
 public class InGameUIManager : MonoBehaviour
 {
@@ -15,7 +16,10 @@ public class InGameUIManager : MonoBehaviour
     [SerializeField] private Image m_RightArrowImage = null;
 
     [Header("Slider")]
-    [SerializeField] private Slider m_HealthSlider = null;
+    [SerializeField] private float m_ConfidenceDepletionRate = 5f;
+    [SerializeField] private Slider m_ConfidenceSlider = null;
+
+    public event Action OnConfidenceDepleted;
 
     void Awake()
     {
@@ -29,30 +33,58 @@ public class InGameUIManager : MonoBehaviour
         }
     }
 
-    void Start()
+    private void OnEnable()
     {
-        
+        ObstacleController.OnAsteroidDestroyed += UpdateConfidenceSlider;
+        InGameManager.Instance.OnScoreChanged += UpdateScoreText;
     }
 
-    void Update()
+    private void OnDisable()
     {
-        
+        ObstacleController.OnAsteroidDestroyed -= UpdateConfidenceSlider;
+        InGameManager.Instance.OnScoreChanged -= UpdateScoreText;
+    }
+
+    void Start()
+    {
+        float maxConfidence = InGameManager.Instance.m_MaxConfidence;
+
+        m_ConfidenceSlider.maxValue = maxConfidence;
+        m_ConfidenceSlider.value = maxConfidence;
+    }
+
+    private void Update()
+    {
+        if (m_ConfidenceSlider.gameObject.activeSelf)
+        {
+            m_ConfidenceSlider.value -= m_ConfidenceDepletionRate * Time.deltaTime;
+        }
+    }
+
+    private void UpdateScoreText(int newScore)
+    {
+        m_ScoreText.text = "Score: " + newScore;
+    }
+
+    private void UpdateConfidenceSlider(float newValue)
+    {
+        m_ConfidenceSlider.value += newValue;
     }
 
     public void EnableUIElements()
     {
-        //m_ScoreText.enabled = true;
+        m_ScoreText.enabled = true;
         m_LeftArrowImage.enabled = true;
         m_RightArrowImage.enabled = true;
-        m_HealthSlider.enabled = true;
+        m_ConfidenceSlider.gameObject.SetActive(true);
     }
 
     public void DisableUIElements()
     {
-        //m_ScoreText.enabled = false;
+        m_ScoreText.enabled = false;
         m_LeftArrowImage.enabled = false;
         m_RightArrowImage.enabled = false;
-        m_HealthSlider.enabled = false;
+        m_ConfidenceSlider.gameObject.SetActive(false);
     }
 
     public void RotateArrows(bool returnToOriginal)
