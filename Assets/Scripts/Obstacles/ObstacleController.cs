@@ -42,4 +42,13 @@ public class ObstacleController : MonoBehaviour
         yield return new WaitForSeconds(m_ObstacleData.m_LifeTime);
         ObstaclePoolManager.Instance.ReturnToPool(gameObject);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            StopAllCoroutines();
+            ObstaclePoolManager.Instance.ReturnToPool(gameObject);
+        }
+    }
 }

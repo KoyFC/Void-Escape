@@ -2951,7 +2951,7 @@ MonoBehaviour:
   m_CinematicStateDuration: 2.5
   m_GameStateDuration: 10
   m_ChangingPerspective: 0
-  m_ObstacleSpawnRate: 1.9
+  m_ObstacleSpawnRate: 1
   m_IsHorizontal: 1
   m_InvertedControls: 0
   m_MovementLerpDuration: 0.15
@@ -3007,8 +3007,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3b40160fe3f3984cac58d889b7b68ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AsteroidData: {fileID: 11400000, guid: f55985058f6e5e74b906f3aa1c29e72f, type: 2}
-  m_ItemData: {fileID: 11400000, guid: 6992c2817df423143ab6fe16575d2a78, type: 2}
+  m_AsteroidData: {fileID: 0}
+  m_ItemData: {fileID: 0}
+  m_MoveOutOfTheWayDuration: 1.25
   m_PortalPrefab: {fileID: 2866374220558820773, guid: 8140b504b63729c45842d975855e36b4, type: 3}
   m_PortalPool: []
   m_AsteroidPrefabs:

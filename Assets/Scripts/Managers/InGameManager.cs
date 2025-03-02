@@ -127,6 +127,10 @@ public class InGameManager : MonoBehaviour
         m_PlayerController = m_Player.AddComponent<PlayerController>();
 
         m_Player.GetComponent<PlayerInput>().actions = m_InputActions;
+
+        Rigidbody rigidbody = m_Player.AddComponent<Rigidbody>();
+        rigidbody.useGravity = false;
+        rigidbody.isKinematic = true;
     }
 
     private void StartGame()
@@ -161,10 +165,10 @@ public class InGameManager : MonoBehaviour
 
             yield return new WaitUntil(() => !m_PlayerController.m_PlayerMovement.m_IsMoving);
 
-            ObstaclePoolManager.Instance.ReturnAllToPool();
-
             m_CameraStateAnimator.SetTrigger("ChangePerspective");
             m_IsHorizontal = !m_IsHorizontal;
+
+            ObstaclePoolManager.Instance.MoveOutOfTheWay(m_IsHorizontal);
 
             m_ChangingPerspective = true;
             m_PlayerController.m_PlayerMovement.m_IsMoving = true;

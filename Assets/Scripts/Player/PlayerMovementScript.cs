@@ -3,11 +3,18 @@ using System.Collections;
 
 public class PlayerMovementScript : MonoBehaviour
 {
+    private PlayerController m_PlayerController = null;
+
     private int m_CurrentIndex = 0;
     private int m_PreviousIndex = 0;
     [HideInInspector] public bool m_IsMoving = false;
 
     #region Main Methods
+    private void Start()
+    {
+        m_PlayerController = GetComponent<PlayerController>();
+    }
+
     private void OnEnable()
     {
         PlayerInputScript.Instance.OnMovementPressed += HandleMovement;
@@ -122,6 +129,8 @@ public class PlayerMovementScript : MonoBehaviour
 
         while (time < duration)
         {
+            if (m_PlayerController.m_PlayerHealth.m_Hit) yield break;
+
             transform.position = Vector3.Lerp(startPosition, targetPosition, time / duration);
             time += Time.deltaTime;
             yield return null;

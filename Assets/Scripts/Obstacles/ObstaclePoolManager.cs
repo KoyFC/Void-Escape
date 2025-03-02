@@ -7,17 +7,16 @@ public class ObstaclePoolManager : MonoBehaviour
     #region Variables
     public static ObstaclePoolManager Instance = null;
 
-    [SerializeField] private ObstacleData m_AsteroidData = null;
-    [SerializeField] private ObstacleData m_ItemData = null;
+    [SerializeField] private float m_MoveOutOfTheWayDuration = 1f;
 
     public GameObject m_PortalPrefab = null;
-    public List<GameObject> m_PortalPool = new List<GameObject>();
+    private List<GameObject> m_PortalPool = new List<GameObject>();
 
     public List<GameObject> m_AsteroidPrefabs = null;
-    [HideInInspector] public List<GameObject> m_AsteroidPool = new List<GameObject>();
+    private List<GameObject> m_AsteroidPool = new List<GameObject>();
 
     public List<GameObject> m_ItemPrefabs = null;
-    [HideInInspector] public List<GameObject> m_ItemPool = new List<GameObject>();
+    private List<GameObject> m_ItemPool = new List<GameObject>();
     #endregion
 
     #region Main Methods
@@ -41,6 +40,7 @@ public class ObstaclePoolManager : MonoBehaviour
             GameObject obstacle = Instantiate(m_AsteroidPrefabs[i]);
             obstacle.SetActive(false);
             obstacle.transform.parent = transform;
+            obstacle.name = m_AsteroidPrefabs[i].name;
 
             m_AsteroidPool.Add(obstacle);
         }
@@ -50,6 +50,7 @@ public class ObstaclePoolManager : MonoBehaviour
             GameObject obstacle = Instantiate(m_ItemPrefabs[i]);
             obstacle.SetActive(false);
             obstacle.transform.parent = transform;
+            obstacle.name = m_ItemPrefabs[i].name;
 
             m_ItemPool.Add(obstacle);
         }
@@ -156,6 +157,48 @@ public class ObstaclePoolManager : MonoBehaviour
         for (int i = 0; i < m_PortalPool.Count; i++)
         {
             m_PortalPool[i].SetActive(false);
+        }
+    }
+
+    public void MoveOutOfTheWay(bool isHorizontal)
+    {
+        foreach (GameObject asteroid in m_AsteroidPool)
+        {
+            if (asteroid.activeSelf)
+            {
+                StartCoroutine(MoveAsteroidOutOfTheWay(asteroid, isHorizontal));
+            }
+        }
+    }
+
+    private IEnumerator MoveAsteroidOutOfTheWay(GameObject asteroid, bool isHorizontal)
+    {
+        // Determining the target value for the asteroid based on the current state (horizontal or vertical)
+        float targetValue = isHorizontal ? 12.5f : 12f;
+        float direction = isHorizontal ? asteroid.transform.position.x : asteroid.transform.position.y;
+        targetValue *= direction > 0 ? 1 : -1;
+
+        Vector3 initialPosition = asteroid.transform.position;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < m_MoveOutOfTheWayDuration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            float newValue = 0f;
+
+            if (isHorizontal)
+            {
+                newValue = Mathf.Lerp(initialPosition.x, targetValue, elapsedTime / m_MoveOutOfTheWayDuration);
+                asteroid.transform.position = new Vector3(newValue, initialPosition.y, initialPosition.z);
+            }
+            else
+            {
+                newValue = Mathf.Lerp(initialPosition.y, targetValue, elapsedTime / m_MoveOutOfTheWayDuration);
+                asteroid.transform.position = new Vector3(initialPosition.x, newValue, initialPosition.z);
+            }
+
+            yield return null;
         }
     }
     #endregion
