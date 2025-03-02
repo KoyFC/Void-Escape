@@ -129,7 +129,11 @@ public class PlayerMovementScript : MonoBehaviour
 
         while (time < duration)
         {
-            if (m_PlayerController.m_PlayerHealth.m_Hit) yield break;
+            // If the player gets hit while moving, we stop the movement and return to the previous position when done
+            if (m_PlayerController.m_PlayerHealth.m_Hit)
+            {
+                while (m_PlayerController.m_PlayerHealth.m_Hit) yield return null;
+            }
 
             transform.position = Vector3.Lerp(startPosition, targetPosition, time / duration);
             time += Time.deltaTime;
