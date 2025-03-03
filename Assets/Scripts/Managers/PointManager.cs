@@ -22,6 +22,9 @@ public class PointManager : MonoBehaviour
     public static PointManager Instance = null;
     public Points m_PlayerPoints;
     public Points m_EnemyPoints;
+
+    private int m_PreviousRandom = 1;
+    private int m_RandomRepetitions = 0;
     #endregion
 
     private void Awake()
@@ -38,7 +41,7 @@ public class PointManager : MonoBehaviour
 
     public Transform GetRandomHorizontalPoint()
     {
-        int random = Random.Range(0, 3);
+        int random = GetRandomNumber();
 
         switch (random)
         {
@@ -55,7 +58,8 @@ public class PointManager : MonoBehaviour
 
     public Transform GetRandomVerticalPoint()
     {
-        int random = Random.Range(0, 3);
+        int random = GetRandomNumber();
+
         switch (random)
         {
             case 0:
@@ -66,5 +70,25 @@ public class PointManager : MonoBehaviour
                 return m_EnemyPoints.BottomPoint;
         }
         return null;
+    }
+
+    // We want to avoid the same number being generated twice in a row
+    private int GetRandomNumber()
+    {
+        int random = Random.Range(0, 3);
+
+        if (random == m_PreviousRandom)
+        {
+            m_RandomRepetitions++;
+        }
+
+        while (random == m_PreviousRandom && m_RandomRepetitions > 1)
+        {
+            random = Random.Range(0, 3);
+            m_RandomRepetitions++;
+        }
+
+        m_RandomRepetitions = 0;
+        return random;
     }
 }

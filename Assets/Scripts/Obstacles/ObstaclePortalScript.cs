@@ -3,6 +3,7 @@ using System.Collections;
 
 public class ObstaclePortalScript : MonoBehaviour
 {
+    [SerializeField] private float m_ChangeScaleDuration = 0.75f;
     private Vector3 m_OriginalScale = Vector3.one;
 
     private void Awake()
@@ -25,15 +26,15 @@ public class ObstaclePortalScript : MonoBehaviour
     {
         yield return new WaitUntil(() => !InGameManager.Instance.m_ChangingPerspective);
 
-        StartCoroutine(ChangeScale(Vector3.zero, m_OriginalScale, 1f));
+        StartCoroutine(ChangeScale(Vector3.zero, m_OriginalScale));
 
-        yield return new WaitForSeconds(1.2f);
+        yield return new WaitForSeconds(m_ChangeScaleDuration);
         SpawnObstacle();
 
-        yield return new WaitForSeconds(1f);
-        StartCoroutine(ChangeScale(m_OriginalScale, Vector3.zero, 1f));
+        yield return new WaitForSeconds(0.25f);
+        StartCoroutine(ChangeScale(m_OriginalScale, Vector3.zero));
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(m_ChangeScaleDuration);
         ObstaclePoolManager.Instance.ReturnToPool(gameObject);
     }
 
@@ -59,15 +60,15 @@ public class ObstaclePortalScript : MonoBehaviour
         spawnObject.transform.position = transform.position;
     }
 
-    private IEnumerator ChangeScale(Vector3 initialScale, Vector3 finalScale, float duration)
+    private IEnumerator ChangeScale(Vector3 initialScale, Vector3 finalScale)
     {
         transform.localScale = initialScale;
 
         float elapsedTime = 0f;
 
-        while (elapsedTime < duration)
+        while (elapsedTime < m_ChangeScaleDuration)
         {
-            transform.localScale = Vector3.Lerp(initialScale, finalScale, elapsedTime / duration);
+            transform.localScale = Vector3.Lerp(initialScale, finalScale, elapsedTime / m_ChangeScaleDuration);
             elapsedTime += Time.deltaTime;
             yield return null;
         }

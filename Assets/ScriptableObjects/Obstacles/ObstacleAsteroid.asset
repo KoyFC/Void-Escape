@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ObstacleType: 0
   m_LifeTime: 6
-  m_GainedConfidenceOnDestroy: 5
-  m_ScoreOnDestroy: 20
-  m_LostConfidenceOnCollision: 10
-  m_ScoreOnCollision: 50
+  m_GainedConfidenceOnDestroy: 10
+  m_ScoreOnDestroy: 10
+  m_LostConfidenceOnCollision: 17.5
+  m_ScoreOnCollision: 90
   m_MinSpeed: 45
   m_MaxSpeed: 85
   m_MinRotationSpeed: 50

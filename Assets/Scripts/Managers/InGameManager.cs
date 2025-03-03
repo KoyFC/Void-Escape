@@ -16,8 +16,10 @@ public class InGameManager : MonoBehaviour
 
     [Header("Game Stats")]
     [SerializeField] private int m_Score = 0;
+    [HideInInspector] private int m_Difficulty = 1;
     public int m_MaxConfidence = 100;
     public event Action<int> OnScoreChanged;
+    public event Action<int> OnDifficultyChanged;
 
     [Header("Game Settings")]
     [SerializeField] private float m_CinematicStateDuration = 2.5f;
@@ -69,6 +71,8 @@ public class InGameManager : MonoBehaviour
         yield return new WaitForSeconds(0.9f);
 
         InGameUIManager.Instance.EnableUIElements();
+        OnDifficultyChanged?.Invoke(m_Difficulty);
+
         m_PlayerController.m_PlayerMovement.m_IsMoving = false;
 
         StartCoroutine(SpawnObstacles());
@@ -119,7 +123,7 @@ public class InGameManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.25f);
             yield return new WaitUntil(() => !m_ChangingPerspective);
             AddScore(1);
         }
@@ -187,7 +191,7 @@ public class InGameManager : MonoBehaviour
             m_IsHorizontal = !m_IsHorizontal;
             m_ChangingPerspective = true;
 
-            m_PlayerController.m_PlayerShooting.m_CanFire = false;
+            m_PlayerController.m_PlayerShooting.m_CanFire = true;
             m_PlayerController.m_PlayerMovement.m_IsMoving = true;
 
             ObstaclePoolManager.Instance.MoveOutOfTheWay(m_IsHorizontal);
@@ -203,16 +207,19 @@ public class InGameManager : MonoBehaviour
 
             m_ChangingPerspective = false;
             m_PlayerController.m_PlayerMovement.m_IsMoving = false;
-            m_PlayerController.m_PlayerShooting.m_CanFire = true;
 
-            returnToOriginal = !returnToOriginal;
-
-            if (returnToOriginal)
+            // Increasing difficulty every other perspective change
+            if (returnToOriginal && m_Difficulty < 15)
             {
                 m_MaxConfidence = (int) (m_MaxConfidence * 1.1f);
-                m_ObstacleSpawnRate *= 1.1f;
+                InGameUIManager.Instance.m_ConfidenceDepletionRate *= 1.05f;
+                m_ObstacleSpawnRate *= 0.95f;
+                m_Difficulty++;
+                OnDifficultyChanged?.Invoke(m_Difficulty);
                 Debug.Log("Increased difficulty");
             }
+
+            returnToOriginal = !returnToOriginal;
         }
     }
     #endregion

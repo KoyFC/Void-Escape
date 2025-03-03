@@ -6,6 +6,7 @@ public class ObstacleController : MonoBehaviour
 {
     [SerializeField] private ObstacleData m_ObstacleData;
     [SerializeField] private Vector3 m_Scale = Vector3.one;
+    private float m_LocalDifficulty = 1;
 
     public static event Action<float> OnAsteroidDestroyed;
     public static event Action<int> OnAddScore;
@@ -22,15 +23,22 @@ public class ObstacleController : MonoBehaviour
 
     private void OnEnable()
     {
+        InGameManager.Instance.OnDifficultyChanged += HandleDifficultyChange;
+
         m_RotationAxis = new Vector3(
             UnityEngine.Random.Range(-1f, 1f),
             UnityEngine.Random.Range(-1f, 1f),
             UnityEngine.Random.Range(-1f, 1f));
 
-        m_Speed = UnityEngine.Random.Range(m_ObstacleData.m_MinSpeed, m_ObstacleData.m_MaxSpeed);
+        m_Speed = m_LocalDifficulty * UnityEngine.Random.Range(m_ObstacleData.m_MinSpeed, m_ObstacleData.m_MaxSpeed);
         m_RotationSpeed = UnityEngine.Random.Range(m_ObstacleData.m_MinRotationSpeed, m_ObstacleData.m_MaxRotationSpeed);
 
         StartCoroutine(DeactivateObstacle());
+    }
+
+    private void OnDisable()
+    {
+        InGameManager.Instance.OnDifficultyChanged -= HandleDifficultyChange;
     }
 
     void Update()
@@ -39,6 +47,12 @@ public class ObstacleController : MonoBehaviour
         transform.rotation *= rotation;
 
         transform.position += -Vector3.forward * m_Speed * Time.deltaTime;
+    }
+
+    private void HandleDifficultyChange(int newDifficulty)
+    {
+        if (newDifficulty > 1) return;
+        m_LocalDifficulty = newDifficulty / 1.5f;
     }
 
     private IEnumerator DeactivateObstacle()

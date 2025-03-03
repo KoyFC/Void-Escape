@@ -13,13 +13,14 @@ public class InGameUIManager : MonoBehaviour
 
     [Header("Game Stats")]
     [SerializeField] private TextMeshProUGUI m_ScoreText = null;
+    [SerializeField] private TextMeshProUGUI m_RoundText = null;
 
     [Header("Arrows")]
     [SerializeField] private Image m_LeftArrowImage = null;
     [SerializeField] private Image m_RightArrowImage = null;
 
     [Header("Slider")]
-    [SerializeField] private float m_ConfidenceDepletionRate = 5f;
+    public float m_ConfidenceDepletionRate = 5f;
     [SerializeField] private Slider m_ConfidenceSlider = null;
 
     public event Action OnConfidenceDepleted;
@@ -40,12 +41,14 @@ public class InGameUIManager : MonoBehaviour
     {
         ObstacleController.OnAsteroidDestroyed += UpdateConfidenceSlider;
         InGameManager.Instance.OnScoreChanged += UpdateScoreText;
+        InGameManager.Instance.OnDifficultyChanged += UpdateRoundText;
     }
 
     private void OnDisable()
     {
         ObstacleController.OnAsteroidDestroyed -= UpdateConfidenceSlider;
         InGameManager.Instance.OnScoreChanged -= UpdateScoreText;
+        InGameManager.Instance.OnDifficultyChanged -= UpdateRoundText;
     }
 
     void Start()
@@ -60,13 +63,18 @@ public class InGameUIManager : MonoBehaviour
     {
         if (m_ConfidenceSlider.gameObject.activeSelf && !InGameManager.Instance.m_ChangingPerspective)
         {
-            m_ConfidenceSlider.value -= m_ConfidenceDepletionRate * Time.deltaTime;
+            m_ConfidenceSlider.value -= (m_ConfidenceDepletionRate / 100f) * InGameManager.Instance.m_MaxConfidence * Time.deltaTime;
         }
     }
 
     private void UpdateScoreText(int newScore)
     {
         m_ScoreText.text = "Score: " + newScore;
+    }
+
+    private void UpdateRoundText(int round)
+    {
+        m_RoundText.text = "Round " + round;
     }
 
     private void UpdateConfidenceSlider(float newValue)
@@ -77,6 +85,7 @@ public class InGameUIManager : MonoBehaviour
     public void EnableUIElements()
     {
         m_ScoreText.gameObject.SetActive(true);
+        m_RoundText.gameObject.SetActive(true);
         m_ConfidenceSlider.gameObject.SetActive(true);
         m_MoveButtons.SetActive(true);
         m_FireButton.SetActive(true);
@@ -85,6 +94,7 @@ public class InGameUIManager : MonoBehaviour
     public void DisableUIElements()
     {
         m_ScoreText.gameObject.SetActive(false);
+        m_RoundText.gameObject.SetActive(false);
         m_ConfidenceSlider.gameObject.SetActive(false);
         m_MoveButtons.SetActive(false);
         m_FireButton.SetActive(false);
