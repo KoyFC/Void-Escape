@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerInputScript : MonoBehaviour
 {
@@ -13,6 +12,8 @@ public class PlayerInputScript : MonoBehaviour
     [HideInInspector] public bool m_PreviousPressed = false;
     [HideInInspector] public bool m_NextPressed = false;
     [HideInInspector] public bool m_FireHeld = false;
+    [HideInInspector] public Vector3 m_Accelerometer = Vector3.zero;
+    [HideInInspector] public Vector3 m_Gyroscope = Vector3.zero;
 
     public event Action OnMovementPressed;
 
@@ -25,6 +26,16 @@ public class PlayerInputScript : MonoBehaviour
         else if (Instance != this)
         {
             Destroy(gameObject);
+        }
+
+        if (UnityEngine.InputSystem.Accelerometer.current != null)
+        {
+            InputSystem.EnableDevice(UnityEngine.InputSystem.Accelerometer.current);
+        }
+
+        if (UnityEngine.InputSystem.Gyroscope.current != null)
+        {
+            InputSystem.EnableDevice(UnityEngine.InputSystem.Gyroscope.current);
         }
     }
 
@@ -45,7 +56,7 @@ public class PlayerInputScript : MonoBehaviour
 
         m_NextPressed = m_PlayerInput.actions["Next"].WasPressedThisFrame();
 
-        if (InGameManager.Instance.m_InvertedControls)
+        if (InGameManager.Instance != null && InGameManager.Instance.m_InvertedControls)
         {
             bool aux = m_PreviousPressed;
             m_PreviousPressed = m_NextPressed;
@@ -53,11 +64,21 @@ public class PlayerInputScript : MonoBehaviour
         }
 
         m_FireHeld = m_PlayerInput.actions["Fire"].IsPressed();
+
+        if (UnityEngine.InputSystem.Accelerometer.current != null)
+        {
+            m_Accelerometer = UnityEngine.InputSystem.Accelerometer.current.acceleration.ReadValue();
+        }
+        if (UnityEngine.InputSystem.Gyroscope.current != null)
+        {
+            m_Gyroscope = UnityEngine.InputSystem.Gyroscope.current.angularVelocity.ReadValue();
+        }
     }
 
     private void HandleEvents()
     {
-        if (m_PreviousPressed || m_NextPressed)
+        if (m_PreviousPressed || m_NextPressed 
+            || Mathf.Abs(m_Accelerometer.x) > 0.1f || Mathf.Abs(m_Accelerometer.y) > 0.1f)
         {
             OnMovementPressed?.Invoke();
         }

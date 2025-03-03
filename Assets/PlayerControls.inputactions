@@ -31,6 +31,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Gyroscope",
+                    "type": "Value",
+                    "id": "1c5d45a7-9a25-4cb1-a31b-34442ec1eb5c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Accelerometer",
+                    "type": "Value",
+                    "id": "aeb0a2cc-f7b3-40dd-9030-35d1ee2ae928",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -273,6 +291,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Previous",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1bcd93c9-393b-452c-8dad-d7100333ba28",
+                    "path": "<Gyroscope>/angularVelocity",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Gyroscope",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "515a2f7a-45a9-43b5-b912-b754ed5c4f35",
+                    "path": "<Accelerometer>/acceleration",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Accelerometer",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

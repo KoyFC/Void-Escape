@@ -19,18 +19,30 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void OnEnable()
     {
+#if UNITY_EDITOR
         PlayerInputScript.Instance.OnMovementPressed += HandleMovement;
+#elif UNITY_ANDROID
+        PlayerInputScript.Instance.OnMovementPressed += HandleMovementAccelerometer;
+#else
+        PlayerInputScript.Instance.OnMovementPressed += HandleMovement;
+#endif
         InGameManager.Instance.OnPerspectiveChanged += ResetPosition;
         InGameUIManager.OnConfidenceDepleted += HandleGameOver;
     }
 
     private void OnDisable()
     {
+#if UNITY_EDITOR
         PlayerInputScript.Instance.OnMovementPressed -= HandleMovement;
+#elif UNITY_ANDROID
+        PlayerInputScript.Instance.OnMovementPressed -= HandleMovementAccelerometer;
+#else
+        PlayerInputScript.Instance.OnMovementPressed -= HandleMovement;
+#endif
         InGameManager.Instance.OnPerspectiveChanged -= ResetPosition;
         InGameUIManager.OnConfidenceDepleted -= HandleGameOver;
     }
-    #endregion
+#endregion
 
     #region Handling Methods
     private void HandleMovement()
@@ -73,6 +85,54 @@ public class PlayerMovementScript : MonoBehaviour
         StartCoroutine(LerpToPosition(newPosition, true));
         StartCoroutine(LerpRotation(newRotation));
     }
+
+    private void HandleMovementAccelerometer()
+    {
+        if (m_IsMoving) return;
+
+        m_PreviousIndex = m_CurrentIndex;
+
+        Vector3 accelerometer = PlayerInputScript.Instance.m_Accelerometer;
+        float sensitivity = 0.25f;
+
+        // Determining the new index based on the accelerometer input
+        if (accelerometer.x > sensitivity)
+        {
+            m_CurrentIndex = 1;
+        }
+        else if (accelerometer.x < -sensitivity)
+        {
+            m_CurrentIndex = -1;
+        }
+        else
+        {
+            m_CurrentIndex = 0;
+        }
+
+        // If we try to move to the same position (if we're already at the extremes) we don't continue.
+        if (m_PreviousIndex == m_CurrentIndex) return;
+
+        StopAllCoroutines();
+
+        Vector3 newPosition;
+        Quaternion newRotation;
+        int indexDifference = m_PreviousIndex - m_CurrentIndex;
+
+        if (InGameManager.Instance.m_IsHorizontal)
+        {
+            newPosition = UpdatePlayerPositionHorizontal();
+            newRotation = Quaternion.Euler(0, 0, indexDifference * 45);
+        }
+        else
+        {
+            newPosition = UpdatePlayerPositionVertical();
+            newRotation = Quaternion.Euler(-indexDifference * 30, 0, 0);
+        }
+
+        StartCoroutine(LerpToPosition(newPosition, true));
+        StartCoroutine(LerpRotation(newRotation));
+    }
+
 
     private void HandleGameOver()
     {
