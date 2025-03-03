@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ObstacleAsteroid
   m_EditorClassIdentifier: 
   m_ObstacleType: 0
-  m_LifeTime: 6
+  m_LifeTime: 4
   m_GainedConfidenceOnDestroy: 10
   m_ScoreOnDestroy: 10
   m_LostConfidenceOnCollision: 17.5

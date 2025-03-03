@@ -8,6 +8,9 @@ public class InGameUIManager : MonoBehaviour
 {
     public static InGameUIManager Instance = null;
 
+    [SerializeField] private GameObject m_NormalCanvas = null;
+    [SerializeField] private GameObject m_GameOverScreen = null;
+
     [SerializeField] private GameObject m_MoveButtons = null;
     [SerializeField] private GameObject m_FireButton = null;
 
@@ -23,13 +26,14 @@ public class InGameUIManager : MonoBehaviour
     public float m_ConfidenceDepletionRate = 5f;
     [SerializeField] private Slider m_ConfidenceSlider = null;
 
-    public event Action OnConfidenceDepleted;
+    public static event Action OnConfidenceDepleted;
 
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            
         }
         else
         {
@@ -65,6 +69,12 @@ public class InGameUIManager : MonoBehaviour
         {
             m_ConfidenceSlider.value -= (m_ConfidenceDepletionRate / 100f) * InGameManager.Instance.m_MaxConfidence * Time.deltaTime;
         }
+
+        if (m_ConfidenceSlider.gameObject.activeSelf && m_ConfidenceSlider.value <= 0)
+        {
+            StartCoroutine(EnableGameOverScreen());
+            OnConfidenceDepleted?.Invoke();
+        }
     }
 
     private void UpdateScoreText(int newScore)
@@ -98,6 +108,15 @@ public class InGameUIManager : MonoBehaviour
         m_ConfidenceSlider.gameObject.SetActive(false);
         m_MoveButtons.SetActive(false);
         m_FireButton.SetActive(false);
+    }
+
+    public IEnumerator EnableGameOverScreen()
+    {
+        DisableUIElements();
+        m_NormalCanvas.SetActive(false);
+
+        yield return new WaitForSeconds(2f);
+        m_GameOverScreen.SetActive(true);
     }
 
     public void RotateArrows(bool returnToOriginal)

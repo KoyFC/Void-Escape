@@ -82,11 +82,13 @@ public class InGameManager : MonoBehaviour
     private void OnEnable()
     {
         ObstacleController.OnAddScore += AddScore;
+        InGameUIManager.OnConfidenceDepleted += EndGame;
     }
 
     private void OnDisable()
     {
         ObstacleController.OnAddScore -= AddScore;
+        InGameUIManager.OnConfidenceDepleted -= EndGame;
     }
     #endregion
 
@@ -164,12 +166,13 @@ public class InGameManager : MonoBehaviour
     {
         StopAllCoroutines();
 
-        // Save score
+        m_CameraStateAnimator.SetTrigger("GameOver");
 
-        // Show end screen
-        Time.timeScale = 0f;
+        // Disabling input
+        PlayerInputScript.Instance.DisableInput();
 
         // Add score to leaderboard
+        GameManager.Instance.AddToLeaderboard(m_Score);
     }
     #endregion
 
@@ -211,7 +214,7 @@ public class InGameManager : MonoBehaviour
             // Increasing difficulty every other perspective change
             if (returnToOriginal && m_Difficulty < 15)
             {
-                m_MaxConfidence = (int) (m_MaxConfidence * 1.1f);
+                m_MaxConfidence = (int) (m_MaxConfidence * 1.05f);
                 InGameUIManager.Instance.m_ConfidenceDepletionRate *= 1.05f;
                 m_ObstacleSpawnRate *= 0.95f;
                 m_Difficulty++;

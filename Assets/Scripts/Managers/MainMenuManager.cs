@@ -131,10 +131,15 @@ public class MainMenuManager : MonoBehaviour
 
     private void UpdateLeaderboard(LeaderboardSaveData data)
     {
+        // Sorting using the method that is already in the SaveSystem
+        data.leaderboard.Sort(SaveSystem.ComparePlayerScores);
+
         StringBuilder sb = new();
 
         for (int i = 0; i < data.leaderboard.Count; i++)
         {
+            if (i >= 10) break;
+
             sb.Append((i + 1).ToString())
               .Append(". ")
               .Append(data.leaderboard[i].playerName)

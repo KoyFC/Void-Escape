@@ -23,6 +23,8 @@ public class PointManager : MonoBehaviour
     public Points m_PlayerPoints;
     public Points m_EnemyPoints;
 
+    public Transform m_GameOverPoint;
+
     private int m_PreviousRandom = 1;
     private int m_RandomRepetitions = 0;
     #endregion

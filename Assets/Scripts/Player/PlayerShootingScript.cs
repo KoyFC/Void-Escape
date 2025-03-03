@@ -38,10 +38,10 @@ public class PlayerShootingScript : MonoBehaviour
     {
         switch (newDifficulty)
         {
-            case 2:
+            case 3:
                 m_CurrentFireRate = m_DefaultFireRate * 0.75f;
                 break;
-            case 3:
+            case 5:
                 m_CurrentFireRate = m_DefaultFireRate * 0.4f;
                 break;
             default:

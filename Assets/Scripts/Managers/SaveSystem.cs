@@ -170,7 +170,7 @@ public class SaveSystem
         QualitySettings.SetQualityLevel(m_SaveData.settingsData.qualityLevel);
     }
 
-    private static int ComparePlayerScores(GameManager.PlayerScore playerScore1, GameManager.PlayerScore playerScore2)
+    public static int ComparePlayerScores(GameManager.PlayerScore playerScore1, GameManager.PlayerScore playerScore2)
     {
         return playerScore2.score.CompareTo(playerScore1.score);
 

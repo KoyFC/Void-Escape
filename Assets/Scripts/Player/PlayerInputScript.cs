@@ -62,4 +62,9 @@ public class PlayerInputScript : MonoBehaviour
             OnMovementPressed?.Invoke();
         }
     }
+
+    public void DisableInput()
+    {
+        this.enabled = false;
+    }
 }

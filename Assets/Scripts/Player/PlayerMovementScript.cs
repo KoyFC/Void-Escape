@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class PlayerMovementScript : MonoBehaviour
 {
     private PlayerController m_PlayerController = null;
 
+    private bool m_IsAlive = true;
     private int m_CurrentIndex = 0;
     private int m_PreviousIndex = 0;
     [HideInInspector] public bool m_IsMoving = false;
@@ -19,12 +21,14 @@ public class PlayerMovementScript : MonoBehaviour
     {
         PlayerInputScript.Instance.OnMovementPressed += HandleMovement;
         InGameManager.Instance.OnPerspectiveChanged += ResetPosition;
+        InGameUIManager.OnConfidenceDepleted += HandleGameOver;
     }
 
     private void OnDisable()
     {
         PlayerInputScript.Instance.OnMovementPressed -= HandleMovement;
         InGameManager.Instance.OnPerspectiveChanged -= ResetPosition;
+        InGameUIManager.OnConfidenceDepleted -= HandleGameOver;
     }
     #endregion
 
@@ -68,6 +72,13 @@ public class PlayerMovementScript : MonoBehaviour
 
         StartCoroutine(LerpToPosition(newPosition, true));
         StartCoroutine(LerpRotation(newRotation));
+    }
+
+    private void HandleGameOver()
+    {
+        m_IsAlive = false;
+        StartCoroutine(LerpToPosition(PointManager.Instance.m_GameOverPoint.position, false, 3f));
+        StartCoroutine(LerpScale(Vector3.zero));
     }
     #endregion
 
@@ -119,18 +130,19 @@ public class PlayerMovementScript : MonoBehaviour
         return newPosition;
     }
 
-    private IEnumerator LerpToPosition(Vector3 targetPosition, bool blockMovement)
+    private IEnumerator LerpToPosition(Vector3 targetPosition, bool blockMovement, float duration = 0)
     {
         if (blockMovement) m_IsMoving = true;
 
         float elapsedTime = 0f;
-        float duration = InGameManager.Instance.m_MovementLerpDuration;
+        // If the duration is the default value, we use the lerp duration from the InGameManager.
+        duration = (duration == 0) ? InGameManager.Instance.m_MovementLerpDuration : duration;
         Vector3 startPosition = transform.position;
 
         while (elapsedTime < duration)
         {
             // If the player gets hit while moving, we stop the movement and return to the previous position when done
-            if (m_PlayerController.m_PlayerHealth.m_Hit)
+            if (m_PlayerController.m_PlayerHealth.m_Hit && m_IsAlive)
             {
                 while (m_PlayerController.m_PlayerHealth.m_Hit) yield return null;
 
@@ -154,26 +166,38 @@ public class PlayerMovementScript : MonoBehaviour
 
     private IEnumerator LerpRotation(Quaternion targetRotation)
     {
-        float time = 0;
+        float elapsedTime = 0;
         float duration = InGameManager.Instance.m_RotationLerpDuration;
         Quaternion originalRotation = transform.rotation;
 
-        while (time < duration)
+        while (elapsedTime < duration)
         {
-            transform.rotation = Quaternion.Lerp(originalRotation, targetRotation, time / duration);
-            time += Time.deltaTime;
+            transform.rotation = Quaternion.Lerp(originalRotation, targetRotation, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
         transform.rotation = targetRotation;
 
-        time = 0;
-        while (time < duration)
+        elapsedTime = 0;
+        while (elapsedTime < duration)
         {
-            transform.rotation = Quaternion.Lerp(targetRotation, Quaternion.identity, time / duration);
-            time += Time.deltaTime;
+            transform.rotation = Quaternion.Lerp(targetRotation, Quaternion.identity, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
         transform.rotation = Quaternion.identity;
+    }
+
+    private IEnumerator LerpScale(Vector3 targetScale, float duration = 3f)
+    {
+        float elapsedTime = 0;
+        Vector3 originalScale = transform.localScale;
+        while (elapsedTime < duration)
+        {
+            transform.localScale = Vector3.Lerp(originalScale, targetScale, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
     }
     #endregion
 }

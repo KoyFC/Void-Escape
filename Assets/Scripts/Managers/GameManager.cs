@@ -137,6 +137,15 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Public Methods
+    public void AddToLeaderboard(int score)
+    {
+        PlayerScore newPlayer;
+        newPlayer.playerName = m_CurrentName;
+        newPlayer.score = score;
+
+        m_Leaderboard.Add(newPlayer);
+    }
+
     public void UnlockShipType(int shipType)
     {
         if (shipType >= 0 && shipType < m_UnlockedShips.Count)
