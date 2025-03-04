@@ -89,10 +89,6 @@ public class ObstacleController : MonoBehaviour
                 OnAsteroidDestroyed?.Invoke(m_ObstacleData.m_GainedConfidenceOnDestroy);
                 OnAddScore?.Invoke(m_ObstacleData.m_ScoreOnDestroy);
             }
-            else
-            {
-                OnItemCollected?.Invoke(m_ObstacleData.m_PowerUpType);
-            }
         }
     }
 }

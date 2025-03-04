@@ -44,13 +44,18 @@ public class PlayerController : MonoBehaviour
         switch (type)
         {
             case PowerUpType.NO_FIRE_COOLDOWN:
+                m_PlayerShooting.m_CurrentFireRate = 0.005f;
                 break;
+
             case PowerUpType.SHIELD:
                 break;
+
             case PowerUpType.SLOW_MO:
-                Time.timeScale = 0.5f;
+                Time.timeScale = 0.33f;
                 break;
+
             case PowerUpType.SCORE_MULTIPLIER:
+                InGameManager.Instance.m_ScoreMultiplier *= 2; // Can be stacked
                 break;
         }
 
@@ -59,13 +64,18 @@ public class PlayerController : MonoBehaviour
         switch (type)
         {
             case PowerUpType.NO_FIRE_COOLDOWN:
+                m_PlayerShooting.m_CurrentFireRate = m_PlayerShooting.m_UnmodifiedCurrentFireRate;
                 break;
+
             case PowerUpType.SHIELD:
                 break;
+
             case PowerUpType.SLOW_MO:
                 Time.timeScale = 1f;
                 break;
+
             case PowerUpType.SCORE_MULTIPLIER:
+                InGameManager.Instance.m_ScoreMultiplier /= 2;
                 break;
         }
     }

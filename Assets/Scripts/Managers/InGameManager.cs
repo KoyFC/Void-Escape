@@ -16,6 +16,7 @@ public class InGameManager : MonoBehaviour
 
     [Header("Game Stats")]
     [SerializeField] private int m_Score = 0;
+    internal int m_ScoreMultiplier = 1;
     [HideInInspector] private int m_Difficulty = 1;
     public int m_MaxConfidence = 100;
     public event Action<int> OnScoreChanged;
@@ -97,7 +98,7 @@ public class InGameManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(m_ObstacleSpawnRate);
+            yield return new WaitForSecondsRealtime(m_ObstacleSpawnRate);
             yield return new WaitUntil(() => !m_ChangingPerspective);
             SpawnRandomPortal();
         }
@@ -133,7 +134,7 @@ public class InGameManager : MonoBehaviour
 
     private void AddScore(int score)
     {
-        m_Score += score;
+        m_Score += score * m_ScoreMultiplier;
         OnScoreChanged?.Invoke(m_Score);
     }
     #endregion

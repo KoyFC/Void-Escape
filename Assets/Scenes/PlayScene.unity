@@ -5132,6 +5132,9 @@ MonoBehaviour:
   m_ItemParent: {fileID: 7151938503600118788}
   m_ItemPrefabs:
   - {fileID: 7160685784636109299, guid: 5551d87cff4998942a5b376ab297df71, type: 3}
+  - {fileID: 7160685784636109299, guid: eb164db878e21d842aafa9aee56565a0, type: 3}
+  - {fileID: 7160685784636109299, guid: 047df32ebff202b4f8c123be98446ef8, type: 3}
+  - {fileID: 7160685784636109299, guid: 6ab05424bdbf24b43ae93a8d2c605efd, type: 3}
 --- !u!1 &3341716627599052774
 GameObject:
   m_ObjectHideFlags: 0

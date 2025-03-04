@@ -216,6 +216,7 @@ public class PlayerMovementScript : MonoBehaviour
 
             transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
+            elapsedTime /= Time.timeScale;
             yield return null;
         }
 
@@ -234,6 +235,7 @@ public class PlayerMovementScript : MonoBehaviour
         {
             transform.rotation = Quaternion.Lerp(originalRotation, targetRotation, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
+            elapsedTime /= Time.timeScale;
             yield return null;
         }
         transform.rotation = targetRotation;
@@ -243,6 +245,7 @@ public class PlayerMovementScript : MonoBehaviour
         {
             transform.rotation = Quaternion.Lerp(targetRotation, Quaternion.identity, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
+            elapsedTime /= Time.timeScale;
             yield return null;
         }
         transform.rotation = Quaternion.identity;
@@ -256,6 +259,7 @@ public class PlayerMovementScript : MonoBehaviour
         {
             transform.localScale = Vector3.Lerp(originalScale, targetScale, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
+            elapsedTime /= Time.timeScale;
             yield return null;
         }
     }

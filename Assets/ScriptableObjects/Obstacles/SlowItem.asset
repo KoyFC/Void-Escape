@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a1893e2f26e6ab43a14289855942db6, type: 3}
-  m_Name: InfinityItem
+  m_Name: SlowItem
   m_EditorClassIdentifier: 
   m_ObstacleType: 1
   m_LifeTime: 3
@@ -18,7 +18,7 @@ MonoBehaviour:
   m_ScoreOnDestroy: 0
   m_LostConfidenceOnCollision: 0
   m_ScoreOnCollision: 1
-  m_PowerUpType: 0
+  m_PowerUpType: 2
   m_MinSpeed: 20
   m_MaxSpeed: 60
   m_MinRotationSpeed: 0

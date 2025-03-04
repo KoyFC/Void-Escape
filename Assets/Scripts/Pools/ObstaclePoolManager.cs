@@ -147,13 +147,6 @@ public class ObstaclePoolManager : MonoBehaviour
             }
         }
 
-        //GameObject newObstacle = Instantiate(m_ItemPrefabs[index]);
-        //newObstacle.transform.parent = m_ItemParent;
-        //newObstacle.name = m_ItemPrefabs[index].name;
-
-        //m_ItemPool.Add(newObstacle);
-        //return newObstacle;
-
         // If we run out of items, we don't spawn another one and instead spawn an asteroid.
         // We don't want 2 of the same item active at once.
         return GetAsteroid(index); 

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 878dc54a3c5b9084faa79473a4778eca
+guid: 75957bf8ff3c669428baf850226fa540
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,7 +97,7 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 256
     resizeAlgorithm: 0
-    textureFormat: 50
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -110,13 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: infinity-icon-white_0
+      name: slow-sign_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 500
-        height: 500
+        width: 512
+        height: 512
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -125,8 +125,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c1f2c1587ee6edf40b38487504338cf4
-      internalID: 1033451251
+      spriteID: 15edfb529c43f9a4089721c5ada2fd83
+      internalID: 1451735342
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 14b604c03e6b3554d92968b1d4d0b5ae
+    spriteID: 9e802154dccf73d469599252dd3f1034
     internalID: 0
     vertices: []
     indices: 
@@ -145,7 +145,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      infinity-icon-white_0: 1033451251
+      slow-sign_0: 1451735342
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
