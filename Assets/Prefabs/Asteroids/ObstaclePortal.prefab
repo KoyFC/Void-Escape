@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6219935561045627994}
   - component: {fileID: -6354830430916392977}
+  - component: {fileID: 4131284971217411155}
   m_Layer: 0
   m_Name: ObstaclePortal
-  m_TagString: Untagged
+  m_TagString: Portal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -45,6 +46,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08369709ad7636b45862efdb673cb780, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_ChangeScaleDuration: 0.75
+--- !u!135 &4131284971217411155
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2866374220558820773}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4013930516666157011
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,7 +24,22 @@ public class ProjectileController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Asteroid"))
+        bool collidedWithObstacle =
+            collision.gameObject.CompareTag("Asteroid")
+            || collision.gameObject.CompareTag("Item");
+
+        if (collidedWithObstacle)
+        {
+            StopAllCoroutines();
+            ProjectilePoolManager.Instance.ReturnToPool(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // We also check for the portal tag. Though even if it collides, we don't destroy the portal.
+        // We just prevent the projectile from going through it.
+        if (other.CompareTag("Portal"))
         {
             StopAllCoroutines();
             ProjectilePoolManager.Instance.ReturnToPool(gameObject);

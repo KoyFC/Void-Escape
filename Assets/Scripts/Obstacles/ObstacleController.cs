@@ -8,7 +8,8 @@ public class ObstacleController : MonoBehaviour
     [SerializeField] private Vector3 m_Scale = Vector3.one;
     private float m_LocalDifficulty = 1;
 
-    public static event Action<float> OnAsteroidDestroyed;
+    public static event Action<float> OnAsteroidDestroyed; // Event that gives or takes confidence
+    public static event Action<PowerUpType> OnItemCollected; // Event that gives the player the ability to use an item
     public static event Action<int> OnAddScore;
 
     private float m_Speed;
@@ -67,15 +68,31 @@ public class ObstacleController : MonoBehaviour
         {
             StopAllCoroutines();
             ObstaclePoolManager.Instance.ReturnToPool(gameObject);
-            OnAsteroidDestroyed?.Invoke(-m_ObstacleData.m_LostConfidenceOnCollision);
-            OnAddScore?.Invoke(-m_ObstacleData.m_ScoreOnCollision);
+
+            if (m_ObstacleData.m_ObstacleType == ObstacleData.ObstacleType.ASTEROID)
+            {
+                OnAsteroidDestroyed?.Invoke(-m_ObstacleData.m_LostConfidenceOnCollision);
+                OnAddScore?.Invoke(-m_ObstacleData.m_ScoreOnCollision);
+            }
+            else
+            {
+                OnItemCollected?.Invoke(m_ObstacleData.m_PowerUpType);
+            }
         }
         else if (collision.gameObject.CompareTag("Projectile"))
         {
             StopAllCoroutines();
             ObstaclePoolManager.Instance.ReturnToPool(gameObject);
-            OnAsteroidDestroyed?.Invoke(m_ObstacleData.m_GainedConfidenceOnDestroy);
-            OnAddScore?.Invoke(m_ObstacleData.m_ScoreOnDestroy);
+
+            if (m_ObstacleData.m_ObstacleType == ObstacleData.ObstacleType.ASTEROID)
+            {
+                OnAsteroidDestroyed?.Invoke(m_ObstacleData.m_GainedConfidenceOnDestroy);
+                OnAddScore?.Invoke(m_ObstacleData.m_ScoreOnDestroy);
+            }
+            else
+            {
+                OnItemCollected?.Invoke(m_ObstacleData.m_PowerUpType);
+            }
         }
     }
 }

@@ -41,8 +41,8 @@ public class ObstaclePortalScript : MonoBehaviour
     private void SpawnObstacle()
     {
         // I have many dependencies ;-; Anyway, 2/3 chance for an asteroid
-        //bool spawnAsteroid = Random.Range(0, 3) < 2;
-        bool spawnAsteroid = true;
+        bool spawnAsteroid = Random.Range(0, 3) < 2;
+        //bool spawnAsteroid = true;
 
         GameObject spawnObject = null;
         if (spawnAsteroid)

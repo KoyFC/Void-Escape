@@ -2710,7 +2710,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb91d7301a1081c4c8eca59caff87e76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RotationSpeed: 5
+  m_RotationSpeed: 7.5
 --- !u!1 &1196205615
 GameObject:
   m_ObjectHideFlags: 0
@@ -5130,7 +5130,8 @@ MonoBehaviour:
   - {fileID: 5071747192845782190, guid: 9655156a4d1104141bedc6ade2509dd3, type: 3}
   - {fileID: 1512436594364093776, guid: 5feecc3e1a3f2074298894bbbd44e62d, type: 3}
   m_ItemParent: {fileID: 7151938503600118788}
-  m_ItemPrefabs: []
+  m_ItemPrefabs:
+  - {fileID: 7160685784636109299, guid: 5551d87cff4998942a5b376ab297df71, type: 3}
 --- !u!1 &3341716627599052774
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Asteroid
   - Projectile
+  - Item
+  - Portal
   layers:
   - Default
   - TransparentFX

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(PlayerInputScript))]
 [RequireComponent(typeof(PlayerMovementScript))]
@@ -10,6 +11,16 @@ public class PlayerController : MonoBehaviour
     internal PlayerHealthScript m_PlayerHealth = null;
     internal PlayerShootingScript m_PlayerShooting = null;
 
+    private void OnEnable()
+    {
+        ObstacleController.OnItemCollected += HandleItemCollected;
+    }
+
+    private void OnDisable()
+    {
+        ObstacleController.OnItemCollected -= HandleItemCollected;
+    }
+
     void Awake()
     {
         GetAllComponents();
@@ -20,5 +31,42 @@ public class PlayerController : MonoBehaviour
         m_PlayerMovement = GetComponent<PlayerMovementScript>();
         m_PlayerHealth = GetComponent<PlayerHealthScript>();
         m_PlayerShooting = GetComponent<PlayerShootingScript>();
+    }
+
+    private void HandleItemCollected(PowerUpType type)
+    {
+        StartCoroutine(PowerUp(type));
+    }
+
+    private IEnumerator PowerUp(PowerUpType type)
+    {
+        float duration = 10f;
+        switch (type)
+        {
+            case PowerUpType.NO_FIRE_COOLDOWN:
+                break;
+            case PowerUpType.SHIELD:
+                break;
+            case PowerUpType.SLOW_MO:
+                Time.timeScale = 0.5f;
+                break;
+            case PowerUpType.SCORE_MULTIPLIER:
+                break;
+        }
+
+        yield return new WaitForSecondsRealtime(duration);
+
+        switch (type)
+        {
+            case PowerUpType.NO_FIRE_COOLDOWN:
+                break;
+            case PowerUpType.SHIELD:
+                break;
+            case PowerUpType.SLOW_MO:
+                Time.timeScale = 1f;
+                break;
+            case PowerUpType.SCORE_MULTIPLIER:
+                break;
+        }
     }
 }
