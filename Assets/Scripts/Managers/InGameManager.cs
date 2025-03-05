@@ -127,7 +127,7 @@ public class InGameManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSecondsRealtime(0.25f);
             yield return new WaitUntil(() => !m_ChangingPerspective);
             AddScore(1);
         }
