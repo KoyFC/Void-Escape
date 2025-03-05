@@ -88,12 +88,12 @@ public class InGameUIManager : MonoBehaviour
 
     private void Update()
     {
-        if (m_ConfidenceSlider.gameObject.activeSelf && !InGameManager.Instance.m_ChangingPerspective)
+        if (m_ConfidenceSlider.gameObject.activeInHierarchy && !InGameManager.Instance.m_ChangingPerspective)
         {
             m_ConfidenceSlider.value -= (m_ConfidenceDepletionRate / 100f) * InGameManager.Instance.m_MaxConfidence * Time.deltaTime;
         }
 
-        if (m_ConfidenceSlider.gameObject.activeSelf && m_ConfidenceSlider.value <= 0)
+        if (m_ConfidenceSlider.gameObject.activeInHierarchy && m_ConfidenceSlider.value <= 0)
         {
             StartCoroutine(EnableGameOverScreen());
             OnConfidenceDepleted?.Invoke();

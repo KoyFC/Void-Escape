@@ -50,6 +50,11 @@ public class PlayerInputScript : MonoBehaviour
         HandleEvents();
     }
 
+    void OnDisable()
+    {
+        m_FireHeld = false;
+    }
+
     private void HandleInput()
     {
         m_PreviousPressed = m_PlayerInput.actions["Previous"].WasPressedThisFrame();
@@ -65,9 +70,9 @@ public class PlayerInputScript : MonoBehaviour
 
         m_FireHeld = m_PlayerInput.actions["Fire"].IsPressed();
 
-        if (UnityEngine.InputSystem.Accelerometer.current != null)
+        if (Accelerometer.current != null)
         {
-            m_Accelerometer = UnityEngine.InputSystem.Accelerometer.current.acceleration.ReadValue();
+            m_Accelerometer = Accelerometer.current.acceleration.ReadValue();
         }
         if (UnityEngine.InputSystem.Gyroscope.current != null)
         {

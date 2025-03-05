@@ -26,8 +26,6 @@ public class FadeManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-
-            //DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -51,6 +49,7 @@ public class FadeManager : MonoBehaviour
     
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Time.timeScale = 1f;
         StartCoroutine(FadeInPanel());
     }
     #endregion
@@ -83,7 +82,7 @@ public class FadeManager : MonoBehaviour
         float elapsedTime = 0f;
         while (elapsedTime < m_PanelFadeTime)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.unscaledDeltaTime;
             m_PanelImage.color = new Color(0f, 0f, 0f, Mathf.Lerp(0f, 1f, elapsedTime / m_PanelFadeTime));
             yield return null;
         }
@@ -92,9 +91,7 @@ public class FadeManager : MonoBehaviour
     private IEnumerator FadeOutAndLoad(string sceneName)
     {
         StartCoroutine(FadeOutPanel());
-        yield return new WaitForSeconds(m_PanelFadeTime + m_SceneLoadDelay);
-
-        //Debug.Log("Loading scene: " + sceneName);
+        yield return new WaitForSecondsRealtime(m_PanelFadeTime + m_SceneLoadDelay);
 
         m_SceneManager.LoadScene(sceneName);
     }
