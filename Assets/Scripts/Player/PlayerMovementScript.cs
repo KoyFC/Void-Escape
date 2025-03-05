@@ -142,7 +142,7 @@ public class PlayerMovementScript : MonoBehaviour
     }
     #endregion
 
-    #region Helper Methods
+    #region Position Helper Methods
     private void ResetPosition()
     {
         m_CurrentIndex = 0;
@@ -215,8 +215,7 @@ public class PlayerMovementScript : MonoBehaviour
             }
 
             transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
-            elapsedTime += Time.deltaTime;
-            elapsedTime /= Time.timeScale;
+            elapsedTime += Time.unscaledDeltaTime;
             yield return null;
         }
 
@@ -224,7 +223,9 @@ public class PlayerMovementScript : MonoBehaviour
 
         if (blockMovement) m_IsMoving = false;
     }
+    #endregion
 
+    #region Other Helper Methods
     private IEnumerator LerpRotation(Quaternion targetRotation)
     {
         float elapsedTime = 0;
@@ -234,8 +235,7 @@ public class PlayerMovementScript : MonoBehaviour
         while (elapsedTime < duration)
         {
             transform.rotation = Quaternion.Lerp(originalRotation, targetRotation, elapsedTime / duration);
-            elapsedTime += Time.deltaTime;
-            elapsedTime /= Time.timeScale;
+            elapsedTime += Time.unscaledDeltaTime;
             yield return null;
         }
         transform.rotation = targetRotation;
@@ -244,8 +244,7 @@ public class PlayerMovementScript : MonoBehaviour
         while (elapsedTime < duration)
         {
             transform.rotation = Quaternion.Lerp(targetRotation, Quaternion.identity, elapsedTime / duration);
-            elapsedTime += Time.deltaTime;
-            elapsedTime /= Time.timeScale;
+            elapsedTime += Time.unscaledDeltaTime;
             yield return null;
         }
         transform.rotation = Quaternion.identity;
@@ -258,11 +257,9 @@ public class PlayerMovementScript : MonoBehaviour
         while (elapsedTime < duration)
         {
             transform.localScale = Vector3.Lerp(originalScale, targetScale, elapsedTime / duration);
-            elapsedTime += Time.deltaTime;
-            elapsedTime /= Time.timeScale;
+            elapsedTime += Time.unscaledDeltaTime;
             yield return null;
         }
     }
     #endregion
 }
-

@@ -5101,6 +5101,7 @@ MonoBehaviour:
   m_ObstacleSpawnRate: 1.1
   m_IsHorizontal: 1
   m_InvertedControls: 0
+  m_ShieldPrefab: {fileID: 7160685784636109299, guid: e0ca2b687088aa94186fb8a5dfa689c6, type: 3}
   m_MovementLerpDuration: 0.15
   m_RotationLerpDuration: 0.15
 --- !u!114 &3250340953356110328
@@ -5265,8 +5266,8 @@ GameObject:
   - component: {fileID: 3987852892236882604}
   - component: {fileID: 2596671554446158156}
   - component: {fileID: 5294651029427229296}
-  - component: {fileID: 3250340953356110328}
   - component: {fileID: 7552331170220344230}
+  - component: {fileID: 3250340953356110328}
   - component: {fileID: 4939366962292491232}
   m_Layer: 0
   m_Name: In Game Manager

@@ -74,6 +74,7 @@ public class InGameUIManager : MonoBehaviour
         {
             StartCoroutine(EnableGameOverScreen());
             OnConfidenceDepleted?.Invoke();
+            Time.timeScale = 1f;
         }
     }
 

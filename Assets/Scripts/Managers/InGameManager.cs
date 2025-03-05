@@ -33,6 +33,7 @@ public class InGameManager : MonoBehaviour
     public event Action OnPerspectiveChanged; // Event that allows the player to know when to reset its position
 
     [Header("Player Settings")]
+    public GameObject m_ShieldPrefab = null;
     public float m_MovementLerpDuration = 0.1f;
     public float m_RotationLerpDuration = 0.1f;
     #endregion

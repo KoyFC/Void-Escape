@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DoubleScoreItem
   m_EditorClassIdentifier: 
   m_ObstacleType: 1
-  m_LifeTime: 3
+  m_LifeTime: 4.5
   m_GainedConfidenceOnDestroy: 15
   m_ScoreOnDestroy: 0
   m_LostConfidenceOnCollision: 0
