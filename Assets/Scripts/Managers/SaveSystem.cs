@@ -137,6 +137,12 @@ public class SaveSystem
             // Create a new empty file and load again
             SaveSettingsData();
             Application.targetFrameRate = 60;
+
+#if UNITY_ANDROID
+            m_SaveData.settingsData.motionControls = true;
+#else
+            m_SaveData.settingsData.motionControls = false;
+#endif
             LoadSettingsData();
         }
         else
@@ -164,10 +170,7 @@ public class SaveSystem
     private static void HandleLoadSettingsData()
     {
         // Audio
-
-        Application.targetFrameRate = m_SaveData.settingsData.targetFPS;
-
-        QualitySettings.SetQualityLevel(m_SaveData.settingsData.qualityLevel);
+        GameManager.Instance.Load(m_SaveData.settingsData);
     }
 
     public static int ComparePlayerScores(GameManager.PlayerScore playerScore1, GameManager.PlayerScore playerScore2)
@@ -222,5 +225,5 @@ public struct LeaderboardSaveData
 public struct SettingsSaveData
 {
     public int targetFPS;
-    public int qualityLevel;
+    public bool motionControls;
 }

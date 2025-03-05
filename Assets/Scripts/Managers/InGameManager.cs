@@ -170,10 +170,8 @@ public class InGameManager : MonoBehaviour
 
         m_CameraStateAnimator.SetTrigger("GameOver");
 
-        // Disabling input
         PlayerInputScript.Instance.DisableInput();
 
-        // Add score to leaderboard
         GameManager.Instance.AddToLeaderboard(m_Score);
     }
     #endregion

@@ -8,19 +8,23 @@ public class InGameUIManager : MonoBehaviour
 {
     public static InGameUIManager Instance = null;
 
-    [SerializeField] private GameObject m_NormalCanvas = null;
+    [SerializeField] private GameObject m_BaseCanvas = null;
+    [SerializeField] private GameObject m_MotionCanvas = null;
+    [SerializeField] private GameObject m_NoMotionCanvas = null;
     [SerializeField] private GameObject m_GameOverScreen = null;
-
-    [SerializeField] private GameObject m_MoveButtons = null;
-    [SerializeField] private GameObject m_FireButton = null;
 
     [Header("Game Stats")]
     [SerializeField] private TextMeshProUGUI m_ScoreText = null;
     [SerializeField] private TextMeshProUGUI m_RoundText = null;
 
     [Header("Arrows")]
-    [SerializeField] private Image m_LeftArrowImage = null;
-    [SerializeField] private Image m_RightArrowImage = null;
+    private Image m_LeftArrow = null;
+    private Image m_RightArrow = null;
+    [SerializeField] private Image m_MotionLeftArrowImage = null;
+    [SerializeField] private Image m_MotionRightArrowImage = null;
+    [Space]
+    [SerializeField] private Image m_NoMotionLeftArrowImage = null;
+    [SerializeField] private Image m_NoMotionRightArrowImage = null;
 
     [Header("Slider")]
     public float m_ConfidenceDepletionRate = 5f;
@@ -39,6 +43,25 @@ public class InGameUIManager : MonoBehaviour
         {
             Destroy(this);
         }
+
+#if UNITY_EDITOR
+        m_LeftArrow = m_MotionLeftArrowImage;
+        m_RightArrow = m_MotionRightArrowImage;
+#elif UNITY_ANDROID
+        if (GameManager.Instance.m_MotionControls)
+        {
+            m_LeftArrow = m_MotionLeftArrowImage;
+            m_RightArrow = m_MotionRightArrowImage;
+        }
+        else
+        {
+            m_LeftArrow = m_NoMotionLeftArrowImage;
+            m_RightArrow = m_NoMotionRightArrowImage;
+        }
+#else 
+        m_LeftArrow = m_MotionLeftArrowImage;
+        m_RightArrow = m_MotionRightArrowImage;
+#endif
     }
 
     private void OnEnable()
@@ -95,26 +118,39 @@ public class InGameUIManager : MonoBehaviour
 
     public void EnableUIElements()
     {
-        m_ScoreText.gameObject.SetActive(true);
-        m_RoundText.gameObject.SetActive(true);
-        m_ConfidenceSlider.gameObject.SetActive(true);
-        m_MoveButtons.SetActive(true);
-        m_FireButton.SetActive(true);
+        m_BaseCanvas.SetActive(true);
+
+#if UNITY_EDITOR
+        m_MotionCanvas.SetActive(true);
+        m_NoMotionCanvas.SetActive(false);
+#elif UNITY_ANDROID
+        if (GameManager.Instance.m_MotionControls)
+        {
+            m_MotionCanvas.SetActive(true);
+            m_NoMotionCanvas.SetActive(false);
+        }
+        else
+        {
+            m_MotionCanvas.SetActive(false);
+            m_NoMotionCanvas.SetActive(true);
+        }
+#else
+        m_MotionCanvas.SetActive(true);
+        m_NoMotionCanvas.SetActive(false);
+#endif
     }
 
     public void DisableUIElements()
     {
-        m_ScoreText.gameObject.SetActive(false);
-        m_RoundText.gameObject.SetActive(false);
-        m_ConfidenceSlider.gameObject.SetActive(false);
-        m_MoveButtons.SetActive(false);
-        m_FireButton.SetActive(false);
+        m_BaseCanvas.SetActive(false);
+        m_MotionCanvas.SetActive(false);
+        m_NoMotionCanvas.SetActive(false);
     }
 
     public IEnumerator EnableGameOverScreen()
     {
         DisableUIElements();
-        m_NormalCanvas.SetActive(false);
+        m_BaseCanvas.SetActive(false);
 
         yield return new WaitForSeconds(2f);
         m_GameOverScreen.SetActive(true);
@@ -122,8 +158,8 @@ public class InGameUIManager : MonoBehaviour
 
     public void RotateArrows(bool returnToOriginal)
     {
-        StartCoroutine(RotateSprite(m_LeftArrowImage, -90f, returnToOriginal));
-        StartCoroutine(RotateSprite(m_RightArrowImage, -90f, returnToOriginal));
+        StartCoroutine(RotateSprite(m_LeftArrow, -90f, returnToOriginal));
+        StartCoroutine(RotateSprite(m_RightArrow, -90f, returnToOriginal));
     }
 
     private IEnumerator RotateSprite(Image image, float newZRotation, bool returnToOriginal)

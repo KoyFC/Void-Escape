@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public List<bool> m_UnlockedColors = new();
     public SpaceshipAttributes m_CurrentSpaceShip; // Holds the current spaceship attributes in order to instantiate it in the scene and save them
 
+    [HideInInspector] public bool m_MotionControls = true;
     #endregion
 
     #region Main Methods
@@ -73,7 +74,7 @@ public class GameManager : MonoBehaviour
         leaderboardData.leaderboard = m_Leaderboard;
 
         settingsData.targetFPS = Application.targetFrameRate;
-        // Save resolution
+        settingsData.motionControls = m_MotionControls;
     }
 
     public void Load(PlayerSaveData playerData)
@@ -94,7 +95,7 @@ public class GameManager : MonoBehaviour
     public void Load(SettingsSaveData settingsData)
     {
         Application.targetFrameRate = settingsData.targetFPS;
-        // Scale resolution
+        m_MotionControls = settingsData.motionControls;
     }
     #endregion
 

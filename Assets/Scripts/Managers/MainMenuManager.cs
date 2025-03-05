@@ -287,23 +287,9 @@ public class MainMenuManager : MonoBehaviour
         Application.targetFrameRate = fps;
     }
 
-    public void SetQuality(int qualityLevel)
+    public void SetMotionControls(bool motionControlsActive)
     {
-        switch (qualityLevel)
-        {
-            case 0:
-                QualitySettings.SetQualityLevel(0);
-                break;
-            case 1:
-                QualitySettings.SetQualityLevel(2);
-                break;
-            case 2:
-                QualitySettings.SetQualityLevel(4);
-                break;
-            case 3:
-                QualitySettings.SetQualityLevel(6);
-                break;
-        }
+        GameManager.Instance.m_MotionControls = motionControlsActive;
     }
 
     public void ResetData(int dataToReset)

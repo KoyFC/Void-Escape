@@ -22,10 +22,18 @@ public class PlayerMovementScript : MonoBehaviour
 #if UNITY_EDITOR
         PlayerInputScript.Instance.OnMovementPressed += HandleMovement;
 #elif UNITY_ANDROID
-        PlayerInputScript.Instance.OnMovementPressed += HandleMovementAccelerometer;
+        if (GameManager.Instance.m_MotionControls)
+        {
+            PlayerInputScript.Instance.OnMovementPressed += HandleMovementAccelerometer;
+        }
+        else
+        {
+            PlayerInputScript.Instance.OnMovementPressed += HandleMovement;
+        }
 #else
         PlayerInputScript.Instance.OnMovementPressed += HandleMovement;
 #endif
+
         InGameManager.Instance.OnPerspectiveChanged += ResetPosition;
         InGameUIManager.OnConfidenceDepleted += HandleGameOver;
     }
@@ -35,10 +43,18 @@ public class PlayerMovementScript : MonoBehaviour
 #if UNITY_EDITOR
         PlayerInputScript.Instance.OnMovementPressed -= HandleMovement;
 #elif UNITY_ANDROID
-        PlayerInputScript.Instance.OnMovementPressed -= HandleMovementAccelerometer;
+        if (GameManager.Instance.m_MotionControls)
+        {
+            PlayerInputScript.Instance.OnMovementPressed -= HandleMovementAccelerometer;
+        }
+        else
+        {
+            PlayerInputScript.Instance.OnMovementPressed -= HandleMovement;
+        }
 #else
         PlayerInputScript.Instance.OnMovementPressed -= HandleMovement;
 #endif
+
         InGameManager.Instance.OnPerspectiveChanged -= ResetPosition;
         InGameUIManager.OnConfidenceDepleted -= HandleGameOver;
     }
@@ -93,18 +109,19 @@ public class PlayerMovementScript : MonoBehaviour
         m_PreviousIndex = m_CurrentIndex;
 
         Vector3 accelerometer = PlayerInputScript.Instance.m_Accelerometer;
-        float sensitivity = 0.25f;
+        float upperSensitivity = 0.3f;
+        float lowerSensitivity = 0.15f;
 
         // Determining the new index based on the accelerometer input
-        if (accelerometer.x > sensitivity)
+        if (accelerometer.x > upperSensitivity)
         {
             m_CurrentIndex = 1;
         }
-        else if (accelerometer.x < -sensitivity)
+        else if (accelerometer.x < -upperSensitivity)
         {
             m_CurrentIndex = -1;
         }
-        else
+        else if (accelerometer.x < lowerSensitivity && accelerometer.x > -lowerSensitivity)
         {
             m_CurrentIndex = 0;
         }
