@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using CandyCoded.HapticFeedback;
 
 public class ObstacleController : MonoBehaviour
 {
@@ -73,10 +74,12 @@ public class ObstacleController : MonoBehaviour
             {
                 OnAsteroidDestroyed?.Invoke(-m_ObstacleData.m_LostConfidenceOnCollision);
                 OnAddScore?.Invoke(-m_ObstacleData.m_ScoreOnCollision);
+                Handheld.Vibrate();
             }
             else
             {
                 OnItemCollected?.Invoke(m_ObstacleData.m_PowerUpType);
+                HapticFeedback.MediumFeedback();
             }
         }
         else if (collision.gameObject.CompareTag("Projectile"))
@@ -86,6 +89,17 @@ public class ObstacleController : MonoBehaviour
 
             if (m_ObstacleData.m_ObstacleType == ObstacleData.ObstacleType.ASTEROID)
             {
+                OnAsteroidDestroyed?.Invoke(m_ObstacleData.m_GainedConfidenceOnDestroy);
+                OnAddScore?.Invoke(m_ObstacleData.m_ScoreOnDestroy);
+            }
+        }
+        else if (collision.gameObject.CompareTag("Shield"))
+        {
+            if (m_ObstacleData.m_ObstacleType == ObstacleData.ObstacleType.ASTEROID)
+            {
+                StopAllCoroutines();
+                ObstaclePoolManager.Instance.ReturnToPool(gameObject);
+
                 OnAsteroidDestroyed?.Invoke(m_ObstacleData.m_GainedConfidenceOnDestroy);
                 OnAddScore?.Invoke(m_ObstacleData.m_ScoreOnDestroy);
             }

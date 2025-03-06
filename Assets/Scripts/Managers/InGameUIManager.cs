@@ -6,6 +6,7 @@ using System;
 
 public class InGameUIManager : MonoBehaviour
 {
+    #region Variables
     public static InGameUIManager Instance = null;
 
     [SerializeField] private GameObject m_BaseCanvas = null;
@@ -26,12 +27,19 @@ public class InGameUIManager : MonoBehaviour
     [SerializeField] private Image m_NoMotionLeftArrowImage = null;
     [SerializeField] private Image m_NoMotionRightArrowImage = null;
 
-    [Header("Slider")]
+    [Header("Confidence Slider")]
     public float m_ConfidenceDepletionRate = 5f;
     [SerializeField] private Slider m_ConfidenceSlider = null;
 
     public static event Action OnConfidenceDepleted;
 
+    [Header("Power-Up Sliders")]
+    [SerializeField] private Slider m_NoCooldownSlider = null;
+    [SerializeField] private Slider m_ShieldSlider = null;
+    [SerializeField] private Slider m_SlowMoSlider = null;
+    #endregion
+
+    #region Main Methods
     void Awake()
     {
         if (Instance == null)
@@ -67,15 +75,25 @@ public class InGameUIManager : MonoBehaviour
     private void OnEnable()
     {
         ObstacleController.OnAsteroidDestroyed += UpdateConfidenceSlider;
+
         InGameManager.Instance.OnScoreChanged += UpdateScoreText;
         InGameManager.Instance.OnDifficultyChanged += UpdateRoundText;
+
+        PlayerItemController.OnNoCooldwnTimeChanged += UpdateNoCooldownSlider;
+        PlayerItemController.OnShieldTimeChanged += UpdateShieldSlider;
+        PlayerItemController.OnSlowMoTimeChanged += UpdateSlowMoSlider;
     }
 
     private void OnDisable()
     {
         ObstacleController.OnAsteroidDestroyed -= UpdateConfidenceSlider;
+
         InGameManager.Instance.OnScoreChanged -= UpdateScoreText;
         InGameManager.Instance.OnDifficultyChanged -= UpdateRoundText;
+
+        PlayerItemController.OnNoCooldwnTimeChanged -= UpdateNoCooldownSlider;
+        PlayerItemController.OnShieldTimeChanged -= UpdateShieldSlider;
+        PlayerItemController.OnSlowMoTimeChanged -= UpdateSlowMoSlider;
     }
 
     void Start()
@@ -84,6 +102,19 @@ public class InGameUIManager : MonoBehaviour
 
         m_ConfidenceSlider.maxValue = maxConfidence;
         m_ConfidenceSlider.value = maxConfidence;
+
+        m_NoCooldownSlider.maxValue = 7.5f;
+        m_NoCooldownSlider.value = 0f;
+        m_NoCooldownSlider.gameObject.SetActive(false);
+
+        m_ShieldSlider.maxValue = 10f;
+        m_ShieldSlider.value = 0f;
+        m_ShieldSlider.gameObject.SetActive(false);
+
+        m_SlowMoSlider.maxValue = 10f;
+        m_SlowMoSlider.value = 0f;
+        m_SlowMoSlider.gameObject.SetActive(false);
+
     }
 
     private void Update()
@@ -100,7 +131,9 @@ public class InGameUIManager : MonoBehaviour
             Time.timeScale = 1f;
         }
     }
+    #endregion
 
+    #region UI Updates
     private void UpdateScoreText(int newScore)
     {
         m_ScoreText.text = "Score: " + newScore;
@@ -116,6 +149,38 @@ public class InGameUIManager : MonoBehaviour
         m_ConfidenceSlider.value += newValue;
     }
 
+    private void UpdateNoCooldownSlider(float newValue)
+    {
+        m_NoCooldownSlider.value = newValue;
+        SetSliderActive(m_NoCooldownSlider);
+    }
+
+    private void UpdateShieldSlider(float newValue)
+    {
+        m_ShieldSlider.value = newValue;
+        SetSliderActive(m_ShieldSlider);
+    }
+
+    private void UpdateSlowMoSlider(float newValue)
+    {
+        m_SlowMoSlider.value = newValue;
+        SetSliderActive(m_SlowMoSlider);
+    }
+
+    private void SetSliderActive(Slider slider)
+    {
+        if (slider.value <= 0)
+        {
+            slider.gameObject.SetActive(false);
+        }
+        else
+        {
+            slider.gameObject.SetActive(true);
+        }
+    }
+    #endregion
+
+    #region UI Elements
     public void EnableUIElements()
     {
         m_BaseCanvas.SetActive(true);
@@ -155,7 +220,9 @@ public class InGameUIManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         m_GameOverScreen.SetActive(true);
     }
+    #endregion
 
+    #region Arrow Rotation
     public void RotateArrows(bool returnToOriginal)
     {
         StartCoroutine(RotateSprite(m_LeftArrow, -90f, returnToOriginal));
@@ -181,4 +248,5 @@ public class InGameUIManager : MonoBehaviour
 
         image.transform.rotation = endRotation;
     }
+    #endregion
 }

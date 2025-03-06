@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4299681993676856757}
   m_Layer: 0
   m_Name: Shield Prefab
-  m_TagString: Projectile
+  m_TagString: Shield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 40b1823b558afbe47b4542f2d72a2f26, type: 2}
+  - {fileID: 2100000, guid: fedd996fa32f8244d8c5d3bdbf653e0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -104,9 +104,9 @@ MonoBehaviour:
   - type: 0
     scale: {x: 15, y: 15, z: 15}
   - type: 1
-    scale: {x: 15, y: 15, z: 15}
+    scale: {x: 15.5, y: 15.5, z: 15.5}
   - type: 2
-    scale: {x: 16.5, y: 16.5, z: 16.5}
+    scale: {x: 15, y: 15, z: 15}
   - type: 3
     scale: {x: 15, y: 15, z: 15}
 --- !u!135 &4299681993676856757
@@ -128,5 +128,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.55
+  m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}

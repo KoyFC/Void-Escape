@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using System;
+using CandyCoded.HapticFeedback;
 
 public class PlayerShootingScript : MonoBehaviour
 {
@@ -71,5 +71,6 @@ public class PlayerShootingScript : MonoBehaviour
         GameObject bullet = ProjectilePoolManager.Instance.GetProjectile();
 
         bullet.transform.position = m_FirePoint.position;
+        HapticFeedback.LightFeedback();
     }
 }
