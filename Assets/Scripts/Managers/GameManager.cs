@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public SpaceshipAttributes m_CurrentSpaceShip; // Holds the current spaceship attributes in order to instantiate it in the scene and save them
 
     [HideInInspector] public bool m_MotionControls = true;
+    [HideInInspector] public bool m_DynamicResolutionActive = false;
     #endregion
 
     #region Main Methods
@@ -75,6 +76,7 @@ public class GameManager : MonoBehaviour
 
         settingsData.targetFPS = Application.targetFrameRate;
         settingsData.motionControls = m_MotionControls;
+        settingsData.dynamicResolution = m_DynamicResolutionActive;
     }
 
     public void Load(PlayerSaveData playerData)
@@ -96,6 +98,7 @@ public class GameManager : MonoBehaviour
     {
         Application.targetFrameRate = settingsData.targetFPS;
         m_MotionControls = settingsData.motionControls;
+        m_DynamicResolutionActive = settingsData.dynamicResolution;
     }
     #endregion
 
@@ -209,6 +212,8 @@ public class GameManager : MonoBehaviour
     private void ResetSettingsData()
     {
         Application.targetFrameRate = 60;
+        m_MotionControls = false;
+        m_DynamicResolutionActive = false;
     }
     #endregion
 }

@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class DynamicResolutionTest : MonoBehaviour
 {
-    [SerializeField] private int m_Width = 1920;
-    [SerializeField] private int m_Height = 1080;
+    public static DynamicResolutionTest Instance = null;
+    private int m_Width = 1920;
+    private int m_Height = 1080;
     [SerializeField] private bool m_FullScreen = true;
 
     FrameTiming[] m_FrameTimings = new FrameTiming[3];
@@ -26,8 +27,25 @@ public class DynamicResolutionTest : MonoBehaviour
     double m_GpuFrameTime;
     double m_CpuFrameTime;
 
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+
+        m_Width = Screen.width;
+        m_Height = Screen.height;
+    }
+
     void Start()
     {
+        if (!GameManager.Instance.m_DynamicResolutionActive) Destroy(this);
+
         SetResolution(m_Width, m_Height, m_FullScreen);
     }
 
@@ -53,6 +71,12 @@ public class DynamicResolutionTest : MonoBehaviour
 
         m_GpuFrameTime = (double)m_FrameTimings[0].gpuFrameTime;
         m_CpuFrameTime = (double)m_FrameTimings[0].cpuFrameTime;
+
+        // If framerate is around 60 fps (above 55) we don't need to adjust resolution
+        if (1.0 / m_GpuFrameTime * 1000.0 > 55.0 && 1.0 / m_CpuFrameTime * 1000.0 > 55.0)
+        {
+            return;
+        }
 
         // Adjusting resolution scale based on frame time to achieve target frame rate
         double targetFrameTime = 1000.0 / Application.targetFrameRate; // Frame time in milliseconds

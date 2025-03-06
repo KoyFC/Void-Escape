@@ -70,3 +70,7 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+/.utmp
+/.utmp/RelWithDebInfo
+/.utmp/RelWithDebInfo/646f395m
+/.utmp/RelWithDebInfo/646f395m/arm64-v8a

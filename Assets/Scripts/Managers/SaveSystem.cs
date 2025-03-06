@@ -205,6 +205,7 @@ public class SaveSystem
     #endregion
 }
 
+#region Save Data Structs
 [System.Serializable]
 public struct PlayerSaveData
 {
@@ -226,4 +227,6 @@ public struct SettingsSaveData
 {
     public int targetFPS;
     public bool motionControls;
+    public bool dynamicResolution;
 }
+#endregion

@@ -41,13 +41,21 @@ public class MainMenuManager : MonoBehaviour
 
     [Header("UI Elements")]
     [SerializeField] private CanvasGroup m_MainMenuCanvas = null;
+
     [Space]
     [SerializeField] private TextMeshProUGUI m_CreditText = null;
     [SerializeField] private TextMeshProUGUI m_LeaderboardText = null;
     [SerializeField] private TMP_InputField m_InputField = null;
+
+    [Space]
+    [SerializeField] private TMP_Dropdown m_TargetFramerateDropdown = null;
+    [SerializeField] private TMP_Dropdown m_MotionControlsDropdown = null;
+    [SerializeField] private TMP_Dropdown m_DynamicResolutionDropdown = null;
+
     [Space]
     [SerializeField] private ShipTypeButton[] m_ShipTypeSettingsButtons = null;
     [SerializeField] private ShipColorButton[] m_ShipColorSettingsButtons = null;
+
     [Space]
     [SerializeField] private ShipTypeButton[] m_ShipTypeShopButtons = null;
     [SerializeField] private ShipColorButton[] m_ShipColorShopButtons = null;
@@ -118,10 +126,50 @@ public class MainMenuManager : MonoBehaviour
     {
         m_InputField.text = GameManager.Instance.m_CurrentName;
 
+        UpdateTargetFramerateDropdown();
+        UpdateMotionControlsDropdown();
+        UpdateDynamicResolutionDropdown();
+
         UpdateShipTypeLocks();
         UpdateShipColorLocks();
         UpdateShipTypeShop();
         UpdateShipColorShop();
+
+    }
+
+    private void UpdateTargetFramerateDropdown()
+    {
+        switch (Application.targetFrameRate)
+        {
+            case -1:
+                m_TargetFramerateDropdown.value = 0;
+                break;
+            case 60:
+                m_TargetFramerateDropdown.value = 1;
+                break;
+            case 120:
+                m_TargetFramerateDropdown.value = 2;
+                break;
+            case 144:
+                m_TargetFramerateDropdown.value = 3;
+                break;
+            case 200:
+                m_TargetFramerateDropdown.value = 4;
+                break;
+            default:
+                m_TargetFramerateDropdown.value = 1;
+                break;
+        }
+    }
+
+    private void UpdateMotionControlsDropdown()
+    {
+        m_MotionControlsDropdown.value = GameManager.Instance.m_MotionControls ? 0 : 1;
+    }
+
+    private void UpdateDynamicResolutionDropdown()
+    {
+        m_DynamicResolutionDropdown.value = GameManager.Instance.m_DynamicResolutionActive ? 1 : 0;
     }
 
     private void UpdateCreditText(int newCredits)
@@ -284,12 +332,52 @@ public class MainMenuManager : MonoBehaviour
 
     public void SetTargetFramerate(int fps)
     {
+        switch (fps)
+        {
+            case 0:
+                fps = -1;
+                break;
+            case 1:
+                fps = 60;
+                break;
+            case 2:
+                fps = 120;
+                break;
+            case 3:
+                fps = 144;
+                break;
+            default:
+                fps = 200;
+                break;
+        }
+
         Application.targetFrameRate = fps;
     }
 
-    public void SetMotionControls(bool motionControlsActive)
+    public void SetMotionControls(int motionControls)
     {
-        GameManager.Instance.m_MotionControls = motionControlsActive;
+        switch (motionControls)
+        {
+            case 0:
+                GameManager.Instance.m_MotionControls = true;
+                break;
+            case 1:
+                GameManager.Instance.m_MotionControls = false;
+                break;
+        }
+    }
+
+    public void SetGraphicsMode(int graphicsMode)
+    {
+        switch (graphicsMode)
+        {
+            case 0:
+                GameManager.Instance.m_DynamicResolutionActive = false;
+                break;
+            case 1:
+                GameManager.Instance.m_DynamicResolutionActive = true;
+                break;
+        }
     }
 
     public void ResetData(int dataToReset)
