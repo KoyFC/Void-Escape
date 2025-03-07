@@ -33,10 +33,14 @@ public class InGameUIManager : MonoBehaviour
 
     public static event Action OnConfidenceDepleted;
 
-    [Header("Power-Up Sliders")]
+    [Header("Power-Up Elements")]
     [SerializeField] private Slider m_NoCooldownSlider = null;
     [SerializeField] private Slider m_ShieldSlider = null;
     [SerializeField] private Slider m_SlowMoSlider = null;
+    [SerializeField] private TextMeshProUGUI m_ScoreMultiplierText = null;
+
+    [Header("Perspective Change Indicator")]
+    [SerializeField] private GameObject m_PerspectiveChangeIndicator = null;
     #endregion
 
     #region Main Methods
@@ -76,24 +80,28 @@ public class InGameUIManager : MonoBehaviour
     {
         ObstacleController.OnAsteroidDestroyed += UpdateConfidenceSlider;
 
+        InGameManager.Instance.OnAlmostPerspectiveChanged += FlashPerspectiveChangeIndicator;
         InGameManager.Instance.OnScoreChanged += UpdateScoreText;
         InGameManager.Instance.OnDifficultyChanged += UpdateRoundText;
 
         PlayerItemController.OnNoCooldwnTimeChanged += UpdateNoCooldownSlider;
         PlayerItemController.OnShieldTimeChanged += UpdateShieldSlider;
         PlayerItemController.OnSlowMoTimeChanged += UpdateSlowMoSlider;
+        PlayerItemController.OnScoreMultiplierChanged += UpdateScoreMultiplierText;
     }
 
     private void OnDisable()
     {
         ObstacleController.OnAsteroidDestroyed -= UpdateConfidenceSlider;
 
+        InGameManager.Instance.OnAlmostPerspectiveChanged -= FlashPerspectiveChangeIndicator;
         InGameManager.Instance.OnScoreChanged -= UpdateScoreText;
         InGameManager.Instance.OnDifficultyChanged -= UpdateRoundText;
 
         PlayerItemController.OnNoCooldwnTimeChanged -= UpdateNoCooldownSlider;
         PlayerItemController.OnShieldTimeChanged -= UpdateShieldSlider;
         PlayerItemController.OnSlowMoTimeChanged -= UpdateSlowMoSlider;
+        PlayerItemController.OnScoreMultiplierChanged -= UpdateScoreMultiplierText;
     }
 
     void Start()
@@ -134,6 +142,11 @@ public class InGameUIManager : MonoBehaviour
     #endregion
 
     #region UI Updates
+    private void FlashPerspectiveChangeIndicator()
+    {
+        StartCoroutine(FlashIndicator());
+    }
+
     private void UpdateScoreText(int newScore)
     {
         m_ScoreText.text = "Score: " + newScore;
@@ -165,6 +178,20 @@ public class InGameUIManager : MonoBehaviour
     {
         m_SlowMoSlider.value = newValue;
         SetSliderActive(m_SlowMoSlider);
+    }
+
+    private void UpdateScoreMultiplierText(int multiplier)
+    {
+        m_ScoreMultiplierText.text = "x" + multiplier;
+
+        if (multiplier <= 1)
+        {
+            m_ScoreMultiplierText.gameObject.SetActive(false);
+        }
+        else
+        {
+            m_ScoreMultiplierText.gameObject.SetActive(true);
+        }
     }
 
     private void SetSliderActive(Slider slider)
@@ -219,6 +246,19 @@ public class InGameUIManager : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
         m_GameOverScreen.SetActive(true);
+    }
+    #endregion
+
+    #region Perspective Change Indicator
+    private IEnumerator FlashIndicator()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            m_PerspectiveChangeIndicator.SetActive(true);
+            yield return new WaitForSeconds(0.4f);
+            m_PerspectiveChangeIndicator.SetActive(false);
+            yield return new WaitForSeconds(0.4f);
+        }
     }
     #endregion
 

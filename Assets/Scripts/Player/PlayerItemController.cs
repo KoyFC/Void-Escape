@@ -15,6 +15,7 @@ public class PlayerItemController : MonoBehaviour
     public static event Action<float> OnNoCooldwnTimeChanged;
     public static event Action<float> OnShieldTimeChanged;
     public static event Action<float> OnSlowMoTimeChanged; 
+    public static event Action<int> OnScoreMultiplierChanged;
 
     void Start()
     {
@@ -127,9 +128,11 @@ public class PlayerItemController : MonoBehaviour
     private IEnumerator ScoreMultiplier(float duration)
     {
         InGameManager.Instance.m_ScoreMultiplier *= 2;
+        OnScoreMultiplierChanged?.Invoke(InGameManager.Instance.m_ScoreMultiplier);
 
         yield return new WaitForSeconds(duration);
 
         InGameManager.Instance.m_ScoreMultiplier /= 2;
+        OnScoreMultiplierChanged?.Invoke(InGameManager.Instance.m_ScoreMultiplier);
     }
 }

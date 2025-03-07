@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 225c67f66b91feb418772b78277ba530
+guid: 7f54b0c584898784db667cdc1f197194
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -123,51 +123,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Direction-arrows_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 1024
-        width: 1024
-        height: 1024
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ed4a4e9dc07c3c84aa6d2edd6922e891
-      internalID: -2064757026
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Direction-arrows_1
-      rect:
-        serializedVersion: 2
-        x: 1024
-        y: 1024
-        width: 1024
-        height: 1024
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b83dae0ec5d38f3498a537d485c3688d
-      internalID: 234514174
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Direction-arrows_2
+      name: cartoon-exclamation_0
       rect:
         serializedVersion: 2
         x: 0
@@ -182,30 +138,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 80ff2c6bc2638ec4eb2a7eceb3534b86
-      internalID: -620531591
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Direction-arrows_3
-      rect:
-        serializedVersion: 2
-        x: 1024
-        y: 0
-        width: 1024
-        height: 1024
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d5dade8e3c4dc5d4f816790cfc2fe319
-      internalID: 1212790102
+      spriteID: ab5fb123b98dd454eb9371b42ca2fe7e
+      internalID: 799395245
       vertices: []
       indices: 
       edges: []
@@ -214,7 +148,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 9534badb7a3e8114791667e65b2cc0eb
+    spriteID: cabab23cb0eec4c4ab81f5474fbe044d
     internalID: 0
     vertices: []
     indices: 
@@ -224,10 +158,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Direction-arrows_0: -2064757026
-      Direction-arrows_1: 234514174
-      Direction-arrows_2: -620531591
-      Direction-arrows_3: 1212790102
+      cartoon-exclamation_0: 799395245
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

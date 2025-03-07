@@ -24,12 +24,13 @@ public class InGameManager : MonoBehaviour
 
     [Header("Game Settings")]
     [SerializeField] private float m_CinematicStateDuration = 2.5f;
-    [SerializeField] private float m_GameStateDuration = 10f;
+    [Min(8)][SerializeField] private float m_GameStateDuration = 10f;
     public bool m_ChangingPerspective = false;
     [SerializeField] private float m_ObstacleSpawnRate = 1.5f;
 
     [HideInInspector] public bool m_IsHorizontal = true;
     public bool m_InvertedControls = false;
+    public event Action OnAlmostPerspectiveChanged;
     public event Action OnPerspectiveChanged; // Event that allows the player to know when to reset its position
 
     [Header("Player Settings")]
@@ -184,7 +185,11 @@ public class InGameManager : MonoBehaviour
 
         while (true)
         {
-            yield return new WaitForSeconds(m_GameStateDuration - 1);
+            yield return new WaitForSeconds(m_GameStateDuration - 4f);
+
+            // Wait for a bit to allow the player to get ready for the perspective change
+            OnAlmostPerspectiveChanged?.Invoke();
+            yield return new WaitForSeconds(3f);
 
             yield return new WaitUntil(() => !m_PlayerController.m_PlayerMovement.m_IsMoving);
             m_PlayerController.m_PlayerShooting.StopAllCoroutines(); // To prevent the player from shooting while changing perspective
