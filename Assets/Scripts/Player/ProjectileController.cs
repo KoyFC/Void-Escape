@@ -13,7 +13,7 @@ public class ProjectileController : MonoBehaviour
 
     private void Update()
     {
-        transform.position += Vector3.forward * m_Speed * Time.deltaTime;
+        transform.position += transform.up * m_Speed * Time.deltaTime;
     }
 
     private IEnumerator DeactivateProjectile()
@@ -24,9 +24,7 @@ public class ProjectileController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        bool collidedWithObstacle =
-            collision.gameObject.CompareTag("Asteroid")
-            || collision.gameObject.CompareTag("Item");
+        bool collidedWithObstacle = collision.gameObject.CompareTag("Asteroid") || collision.gameObject.CompareTag("Item");
 
         if (collidedWithObstacle)
         {

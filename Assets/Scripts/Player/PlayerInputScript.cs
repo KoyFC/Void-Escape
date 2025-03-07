@@ -12,6 +12,7 @@ public class PlayerInputScript : MonoBehaviour
     [HideInInspector] public bool m_PreviousPressed = false;
     [HideInInspector] public bool m_NextPressed = false;
     [HideInInspector] public bool m_FireHeld = false;
+    [HideInInspector] public bool m_Fire2Held = false;
     [HideInInspector] public Vector3 m_Accelerometer = Vector3.zero;
     [HideInInspector] public Vector3 m_Gyroscope = Vector3.zero;
 
@@ -28,9 +29,9 @@ public class PlayerInputScript : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (UnityEngine.InputSystem.Accelerometer.current != null)
+        if (Accelerometer.current != null)
         {
-            InputSystem.EnableDevice(UnityEngine.InputSystem.Accelerometer.current);
+            InputSystem.EnableDevice(Accelerometer.current);
         }
 
         if (UnityEngine.InputSystem.Gyroscope.current != null)
@@ -68,7 +69,8 @@ public class PlayerInputScript : MonoBehaviour
             m_NextPressed = aux;
         }
 
-        m_FireHeld = m_PlayerInput.actions["Fire"].IsPressed();
+        m_Fire2Held = m_PlayerInput.actions["Fire2"].IsPressed();
+        m_FireHeld = m_PlayerInput.actions["Fire"].IsPressed() && !m_Fire2Held;
 
         if (Accelerometer.current != null)
         {
@@ -83,7 +85,7 @@ public class PlayerInputScript : MonoBehaviour
     private void HandleEvents()
     {
         if (m_PreviousPressed || m_NextPressed 
-            || Mathf.Abs(m_Accelerometer.x) > 0.1f || Mathf.Abs(m_Accelerometer.y) > 0.1f)
+            || Mathf.Abs(m_Accelerometer.x) > 0.05f || Mathf.Abs(m_Accelerometer.y) > 0.05f)
         {
             OnMovementPressed?.Invoke();
         }

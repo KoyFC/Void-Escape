@@ -28,7 +28,7 @@ public class ProjectilePoolManager : MonoBehaviour
 
     private void CreatePool()
     {
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < 60; i++)
         {
             GameObject projectile = Instantiate(m_ProjectilePrefab);
             projectile.SetActive(false);

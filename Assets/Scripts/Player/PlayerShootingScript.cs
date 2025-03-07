@@ -8,6 +8,9 @@ public class PlayerShootingScript : MonoBehaviour
     internal float m_UnmodifiedCurrentFireRate = 0.5f;
     internal float m_CurrentFireRate = 0.5f;
     internal bool m_CanFire = false;
+    bool m_MultiShoot = false;
+
+    private float m_MultiShootProjectileRotation = 25f;
 
     private Transform m_FirePoint;
 
@@ -29,7 +32,10 @@ public class PlayerShootingScript : MonoBehaviour
 
     private void Update()
     {
-        if (PlayerInputScript.Instance.m_FireHeld && m_CanFire)
+        m_MultiShoot = PlayerInputScript.Instance.m_Fire2Held;
+        bool fire = PlayerInputScript.Instance.m_FireHeld || PlayerInputScript.Instance.m_Fire2Held;
+
+        if (fire && m_CanFire)
         {
             StartCoroutine(FireWeapon());
         }
@@ -61,6 +67,11 @@ public class PlayerShootingScript : MonoBehaviour
 
         Fire();
 
+        if (m_MultiShoot)
+        {
+            yield return new WaitForSecondsRealtime(m_CurrentFireRate);
+        }
+
         yield return new WaitForSecondsRealtime(m_CurrentFireRate);
 
         m_CanFire = true;
@@ -69,8 +80,35 @@ public class PlayerShootingScript : MonoBehaviour
     private void Fire()
     {
         GameObject bullet = ProjectilePoolManager.Instance.GetProjectile();
-
         bullet.transform.position = m_FirePoint.position;
+        bullet.transform.rotation = Quaternion.Euler(90, 0, 0);
         HapticFeedback.LightFeedback();
+
+        if (m_MultiShoot)
+        {
+            float xRotationDiff, zRotation;
+
+            if (InGameManager.Instance.m_IsHorizontal)
+            {
+                xRotationDiff = 0;
+                zRotation = m_MultiShootProjectileRotation;
+            }
+            else
+            {
+                xRotationDiff = m_MultiShootProjectileRotation;
+                zRotation = 0f;
+            }
+
+
+            GameObject bullet1 = ProjectilePoolManager.Instance.GetProjectile();
+            bullet1.transform.position = m_FirePoint.position;
+            bullet1.transform.rotation = Quaternion.Euler(90 - xRotationDiff, 0, -zRotation);
+            HapticFeedback.LightFeedback();
+
+            GameObject bullet2 = ProjectilePoolManager.Instance.GetProjectile();
+            bullet2.transform.position = m_FirePoint.position;
+            bullet2.transform.rotation = Quaternion.Euler(90 + xRotationDiff, 0, zRotation);
+            HapticFeedback.LightFeedback();
+        }
     }
 }
